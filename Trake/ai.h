@@ -12,9 +12,11 @@ class AI
     AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron);
     ~AI();
     void read_input();
+    void defensive();
   private:
     void update_coordinates();
     void update_direction();
+    void turn_random_direction();
     void change_direction(Input::Direction direction);
     bool is_direction_safe(Input::Direction direction);
     bool is_left_safe();

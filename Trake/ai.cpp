@@ -30,16 +30,14 @@ void AI::read_input()
 {
   update_coordinates();
   update_direction();
+  defensive();
+}
+
+void AI::defensive()
+{
   if (!is_direction_safe(m_direction))
   {
-    if (is_left_safe())
-      this->change_direction(Input::LEFT);
-    else if (is_right_safe())
-      this->change_direction(Input::RIGHT);
-    else if (is_down_safe())
-      this->change_direction(Input::DOWN);
-    else if (is_up_safe())
-      this->change_direction(Input::UP);
+    turn_random_direction();
   }
 }
 
@@ -52,6 +50,48 @@ void AI::update_coordinates()
 void AI::update_direction()
 {
   m_direction = m_snakes[m_player_num]->get_direction();
+}
+
+void AI::turn_random_direction()
+{
+  int random = rand() % 2;
+  Input::Direction direction = m_direction;
+  switch (m_direction)
+  {
+    case Input::LEFT: //Turn up or down
+    case Input::RIGHT:
+      if (random == 0) direction = Input::DOWN;
+      else direction = Input::UP;
+      break;
+    case Input::DOWN: //Turn left or right
+    case Input::UP:
+      if (random == 0) direction = Input::LEFT;
+      else direction = Input::RIGHT;
+      break;
+    default:
+      assert(false);
+  }
+  if (!is_direction_safe(direction))
+  {
+    switch (direction)
+    {
+      case Input::LEFT:
+        direction = Input::RIGHT;
+        break;
+      case Input::RIGHT:
+        direction = Input::LEFT;
+        break;
+      case Input::DOWN:
+        direction = Input::UP;
+        break;
+      case Input::UP:
+        direction = Input::DOWN;
+        break;
+      default:
+        assert(false);
+    }
+  }
+  this->change_direction(direction);
 }
 
 void AI::change_direction(Input::Direction direction)
