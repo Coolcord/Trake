@@ -1,5 +1,6 @@
 #include "snake.h"
 #include "snake_piece.h"
+#include "pellet.h"
 #include "rectangle.h"
 #include <allegro5/allegro_color.h>
 #include <assert.h>
@@ -112,6 +113,7 @@ void Snake::move()
   else if (collision == Collision_Table::PELLET)
   {
     ++m_grow;
+    m_collision_table->get_pellet(collision_key)->eat();
   }
   m_pieces->front()->draw();
   m_collision_table->insert(collision_key, this);
@@ -136,13 +138,15 @@ void Snake::move()
       if (m_tron || m_grow > 0)
       {
         if (m_grow > 0)
+        {
           --m_grow;
+        }
         (*iter)->set_type(Snake_Piece::BODY);
         Rectangle *rectangle = this->create_rectangle(tmp_direction, tmp_x, tmp_y, m_size-1);
         Snake_Piece *snake_piece = new Snake_Piece(tmp_direction, Snake_Piece::TAIL, rectangle);
+        snake_piece->draw();
         ++m_size;
         m_pieces->push_back(snake_piece);
-        break; //don't continue the for loop
       }
       else
       {

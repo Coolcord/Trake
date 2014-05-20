@@ -78,3 +78,13 @@ Snake *Collision_Table::get_snake(std::string key)
     return (*iter).second->m_collision_object.union_snake;
 }
 
+Pellet *Collision_Table::get_pellet(std::string key)
+{
+  std::unordered_map<std::string, Collision_Table::Node*>::iterator iter = m_table->find(key);
+  if (iter == m_table->end())
+    return NULL;
+  else
+    return (*iter).second->m_collision_object.union_pellet;
+}
+
+
