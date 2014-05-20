@@ -8,14 +8,40 @@
 #include "pellet.h"
 #include "collision_table.h"
 
+/* trake 0 1
+         ^ ^
+         | |
+1 for tron |
+  Num snakes
+*/
 int main(int argc, char **argv){
 
   bool tron = false;
+  int num_snakes = 4;
   if (argc > 1)
   {
     if (strcmp(argv[1], "1") == 0)
     {
       tron = true;
+    }
+  }
+  if (argc > 2)
+  {
+    if (strcmp(argv[2], "1") == 0)
+    {
+      num_snakes = 1;
+    }
+    else if (strcmp(argv[2], "2") == 0)
+    {
+      num_snakes = 2;
+    }
+    else if (strcmp(argv[2], "3") == 0)
+    {
+      num_snakes = 3;
+    }
+    else if (strcmp(argv[2], "4") == 0)
+    {
+      num_snakes = 4;
     }
   }
   ALLEGRO_DISPLAY *display = NULL;
@@ -73,10 +99,15 @@ int main(int argc, char **argv){
 
   Collision_Table *collision_table = new Collision_Table();
   Pellet *pellet = new Pellet(snake_width, max_x, max_y, max_spawn_time, collision_table, tron);
-  Snake *snake1 = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
-  Snake *snake2 = new Snake(player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
-  Snake *snake3 = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
-  Snake *snake4 = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
+
+  Snake *snake1 = NULL;
+  Snake *snake2 = NULL;
+  Snake *snake3 = NULL;
+  Snake *snake4 = NULL;
+  snake1 = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 2) snake2 = new Snake(player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 3) snake3 = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 4) snake4 = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   al_flip_display();
   bool quit = false;
@@ -95,9 +126,9 @@ int main(int argc, char **argv){
   while (!quit)
   {
     snake1->move();
-    snake2->move();
-    snake3->move();
-    snake4->move();
+    if (snake2) snake2->move();
+    if (snake3) snake3->move();
+    if (snake4) snake4->move();
     pellet->handle_state();
     if (wait_time > 0)
     {

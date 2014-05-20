@@ -41,16 +41,16 @@ namespace Input
             snake1->change_direction(Direction::UP);
             break;
           case ALLEGRO_KEY_A:
-            snake2->change_direction(Direction::LEFT);
+            if (snake2) snake2->change_direction(Direction::LEFT);
             break;
           case ALLEGRO_KEY_D:
-            snake2->change_direction(Direction::RIGHT);
+            if (snake2) snake2->change_direction(Direction::RIGHT);
             break;
           case ALLEGRO_KEY_S:
-            snake2->change_direction(Direction::DOWN);
+            if (snake2) snake2->change_direction(Direction::DOWN);
             break;
           case ALLEGRO_KEY_W:
-            snake2->change_direction(Direction::UP);
+            if (snake2) snake2->change_direction(Direction::UP);
             break;
           default:
             break;
