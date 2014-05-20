@@ -100,35 +100,38 @@ int main(int argc, char **argv){
   Collision_Table *collision_table = new Collision_Table();
   Pellet *pellet = new Pellet(snake_width, max_x, max_y, max_spawn_time, collision_table, tron);
 
-  Snake *snake1 = NULL;
-  Snake *snake2 = NULL;
-  Snake *snake3 = NULL;
-  Snake *snake4 = NULL;
-  snake1 = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
-  if (num_snakes >= 2) snake2 = new Snake(player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
-  if (num_snakes >= 3) snake3 = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
-  if (num_snakes >= 4) snake4 = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
+  Snake *snakes[4];
+  for (int i = 0; i < 4; i++)
+  {
+    snakes[i] = NULL;
+  }
+  snakes[0] = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 2) snakes[1] = new Snake(player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 3) snakes[2] = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 4) snakes[3] = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   al_flip_display();
   bool quit = false;
   float wait_time = 0.05;
 
   Input::Input_Thread_Data data;
-  data.snake1 = snake1;
-  data.snake2 = snake2;
+  for (int i = 0; i < 4; i++)
+  {
+    data.snakes[i] = snakes[i];
+  }
   data.event = event;
   data.quit = &quit;
 
   //Prepare input thread
-  ALLEGRO_THREAD *thread_1 = al_create_thread(Input::Input_Thread, &data);
-  al_start_thread(thread_1);
+  ALLEGRO_THREAD *input_thread = al_create_thread(Input::Input_Thread, &data);
+  al_start_thread(input_thread);
   
   while (!quit)
   {
-    snake1->move();
-    if (snake2) snake2->move();
-    if (snake3) snake3->move();
-    if (snake4) snake4->move();
+    snakes[0]->move();
+    if (snakes[1]) snakes[1]->move();
+    if (snakes[2]) snakes[2]->move();
+    if (snakes[3]) snakes[3]->move();
     pellet->handle_state();
     if (wait_time > 0)
     {

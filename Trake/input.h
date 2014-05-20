@@ -9,8 +9,7 @@ namespace Input
 {
   struct Input_Thread_Data
   {
-    Snake *snake1;
-    Snake *snake2;
+    Snake *snakes[4];
     ALLEGRO_EVENT_QUEUE *event;
     bool *quit;
   };
@@ -25,7 +24,7 @@ namespace Input
   };
 
   void *Input_Thread(ALLEGRO_THREAD *thread, void *arg);
-  void read_input(Snake *snake1, Snake *snake2, ALLEGRO_EVENT_QUEUE *event, bool *quit);
+  void read_input(Snake *snakes[], ALLEGRO_EVENT_QUEUE *event, bool *quit);
 }
 
 #endif
