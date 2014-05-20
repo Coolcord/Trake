@@ -1,10 +1,11 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h>
+#include <cstdlib>
 #include "pellet.h"
 #include "rectangle.h"
 #include "collision_table.h"
 
-Pellet::Pellet(float width, float max_x, float max_y, Collision_Table *collision_table, bool tron)
+Pellet::Pellet(float width, float max_x, float max_y, int spawn_countdown_max, Collision_Table *collision_table, bool tron)
 {
   assert(collision_table);
   m_width = width;
@@ -12,7 +13,8 @@ Pellet::Pellet(float width, float max_x, float max_y, Collision_Table *collision
   m_max_y = max_y;
   m_tron = tron;
   m_value = 0;
-  m_spawn_countdown = 10;
+  m_spawn_countdown_max = spawn_countdown_max + 1;
+  m_spawn_countdown = rand() % m_spawn_countdown_max;
   m_collision_table = collision_table;
   m_exists = false;
   m_rectangle = new Rectangle(0, 0, m_width, m_width, true, al_color_name("white"));
@@ -41,8 +43,18 @@ void Pellet::spawn()
 {
   assert(!m_exists);
   m_value = 3;
-  float x = m_max_x / 2;
-  float y = m_max_y / 2;
+  float test_x = rand() % ((int)m_max_x + 1);
+  float x = 0;
+  while (x < test_x)
+  {
+    x += m_width;
+  }
+  float test_y = rand() % ((int)m_max_y + 1);
+  float y = 0;
+  while (y < test_y)
+  {
+    y += m_width;
+  }
   Collision_Table::Type collision = m_collision_table->check_collision(x, y);
   if (collision == Collision_Table::NONE)
   {
@@ -60,6 +72,6 @@ void Pellet::eat(int &grow)
   assert(m_exists);
   grow += m_value;
   m_exists = false;
-  m_spawn_countdown = 10;
+  m_spawn_countdown = rand() % m_spawn_countdown_max;
 }
 

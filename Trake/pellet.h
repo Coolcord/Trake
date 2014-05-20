@@ -7,7 +7,7 @@ class Collision_Table;
 class Pellet
 {
   public:
-    Pellet(float width, float max_x, float max_y, Collision_Table *collision_table, bool tron);
+    Pellet(float width, float max_x, float max_y, int spawn_countdown_max, Collision_Table *collision_table, bool tron);
     ~Pellet();
     void handle_state();
     void eat(int &grow);
@@ -18,6 +18,7 @@ class Pellet
     int m_value;
     bool m_exists;
     bool m_tron;
+    int m_spawn_countdown_max;
     int m_spawn_countdown;
     void spawn();
     Rectangle *m_rectangle;

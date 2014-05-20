@@ -55,9 +55,10 @@ int main(int argc, char **argv){
   }
   float player_1_start_x = max_x;
   float player_2_start_x = 0;
+  int max_spawn_time = 100;
 
   Collision_Table *collision_table = new Collision_Table();
-  Pellet *pellet = new Pellet(snake_width, max_x, max_y, collision_table, tron);
+  Pellet *pellet = new Pellet(snake_width, max_x, max_y, max_spawn_time, collision_table, tron);
   Snake *snake1 = new Snake(player_1_start_x, 0, Input::DOWN, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
   Snake *snake2 = new Snake(player_2_start_x, 0, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
 
