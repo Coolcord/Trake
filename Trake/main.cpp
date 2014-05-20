@@ -133,11 +133,11 @@ int main(int argc, char **argv){
   
   while (!quit)
   {
-    if (ai1) ai1->read_input();
-    if (ai2) ai2->read_input();
     snakes[0]->move();
     if (snakes[1]) snakes[1]->move();
+    if (ai1) ai1->read_input();
     if (snakes[2]) snakes[2]->move();
+    if (ai2) ai2->read_input();
     if (snakes[3]) snakes[3]->move();
     pellet->handle_state();
     if (wait_time > 0)
