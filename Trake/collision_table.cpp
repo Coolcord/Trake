@@ -1,0 +1,63 @@
+#include "collision_table.h"
+#include "snake.h"
+#include <iterator>
+
+Collision_Table::Collision_Table()
+{
+  m_table = new std::unordered_map<std::string, Collision_Table::Node*>();
+}
+
+Collision_Table::~Collision_Table()
+{
+  
+}
+
+Collision_Table::Node::Node(Snake *snake)
+{
+  m_type = Collision_Table::SNAKE;
+  m_snake = snake;
+}
+
+void Collision_Table::insert(std::string key, Snake *snake)
+{
+  m_table->insert(std::pair<std::string, Collision_Table::Node*>(key, new Node(snake)));
+}
+
+void Collision_Table::insert(float x, float y, Snake *snake)
+{
+  return this->insert(std::to_string(x) + std::to_string(y), snake);
+}
+
+void Collision_Table::remove(std::string key)
+{
+  m_table->erase(key);
+}
+
+void Collision_Table::remove(float x, float y)
+{
+  return this->remove(std::to_string(x) + std::to_string(y));
+}
+
+Collision_Table::Type Collision_Table::check_collision(std::string key)
+{
+  std::unordered_map<std::string, Collision_Table::Node*>::iterator iter = m_table->find(key);
+  if (iter == m_table->end())
+    return Collision_Table::NONE;
+  else
+    return (*iter).second->m_type;
+}
+
+Collision_Table::Type Collision_Table::check_collision(float x, float y)
+{
+  return this->check_collision(std::to_string(x) + std::to_string(y));
+}
+
+Snake *Collision_Table::get_snake(std::string key)
+{
+  std::unordered_map<std::string, Collision_Table::Node*>::iterator iter = m_table->find(key);
+  if (iter == m_table->end())
+    return NULL;
+  else
+    return (*iter).second->m_snake;
+}
+
