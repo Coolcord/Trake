@@ -39,6 +39,7 @@ int main(int argc, char **argv){
   al_register_event_source(event, al_get_keyboard_event_source());
   al_register_event_source(event, al_get_display_event_source(display));
 
+  bool tron = true;
   float snake_width = screen_width/100;
   float max_x = 0;
   float max_y = 0;
@@ -54,8 +55,8 @@ int main(int argc, char **argv){
   float player_2_start_x = 0;
 
   Collision_Table *collision_table = new Collision_Table();
-  Snake *snake1 = new Snake(player_1_start_x, 0, Input::DOWN, 50, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, false);
-  Snake *snake2 = new Snake(player_2_start_x, 0, Input::DOWN, 50, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, false);
+  Snake *snake1 = new Snake(player_1_start_x, 0, Input::DOWN, 50, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
+  Snake *snake2 = new Snake(player_2_start_x, 0, Input::DOWN, 50, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
 
   al_flip_display();
   bool quit = false;

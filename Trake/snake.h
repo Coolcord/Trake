@@ -6,6 +6,7 @@
 #include <vector>
 #include "input.h"
 class Snake_Piece;
+class Rectangle;
 class Collision_Table;
 
 class Snake
@@ -14,6 +15,7 @@ class Snake
     Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron);
     ~Snake();
     void move();
+    Rectangle *create_rectangle(Input::Direction direction, float x, float y, int posiiton);
     void draw();
     void change_direction(Input::Direction direction);
     void grow(int size);

@@ -31,29 +31,7 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
   m_collision_table->insert(x, y, this);
   for (int i = 1; i < m_size - 1; i++)
   { //Body
-    Rectangle *rectangle = NULL;
-    switch(direction)
-    {
-      case Input::LEFT:
-        rectangle = new Rectangle(x+(i*m_width), y, m_width, m_width, true, m_color);
-        m_collision_table->insert(x+(i*m_width), y, this);
-        break;
-      case Input::RIGHT:
-        rectangle = new Rectangle(x-(i*m_width), y, m_width, m_width, true, m_color);
-        m_collision_table->insert(x-(i*m_width), y, this);
-        break;
-      case Input::DOWN:
-        rectangle = new Rectangle(x, y-(i*m_width), m_width, m_width, true, m_color);
-        m_collision_table->insert(x, y-(i*m_width), this);
-        break;
-      case Input::UP:
-        rectangle = new Rectangle(x, y+(i*m_width), m_width, m_width, true, m_color);
-        m_collision_table->insert(x, y+(i*m_width), this);
-        break;
-      default:
-        assert(false);
-    }
-    assert(rectangle);
+    Rectangle *rectangle = this->create_rectangle(direction, x, y, i);
     Snake_Piece *snake_piece = NULL;
     if (i == m_size - 1)
     { //Tail
@@ -150,7 +128,18 @@ void Snake::move()
     }
     else //tail
     {
-      if (!m_tron)
+      if (m_tron || m_grow > 0)
+      {
+        if (m_grow > 0)
+          --m_grow;
+        (*iter)->set_type(Snake_Piece::BODY);
+        Rectangle *rectangle = this->create_rectangle(tmp_direction, tmp_x, tmp_y, m_size-1);
+        Snake_Piece *snake_piece = new Snake_Piece(tmp_direction, Snake_Piece::TAIL, rectangle);
+        ++m_size;
+        m_pieces->push_back(snake_piece);
+        break; //don't continue the for loop
+      }
+      else
       {
         al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
         m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
@@ -166,6 +155,34 @@ void Snake::move()
       change_direction(tmp_direction);
     }
   }
+}
+
+Rectangle *Snake::create_rectangle(Input::Direction direction, float x, float y, int position)
+{
+  Rectangle *rectangle = NULL;
+  switch(direction)
+  {
+    case Input::LEFT:
+      rectangle = new Rectangle(x+(position*m_width), y, m_width, m_width, true, m_color);
+      m_collision_table->insert(x+(position*m_width), y, this);
+      break;
+    case Input::RIGHT:
+      rectangle = new Rectangle(x-(position*m_width), y, m_width, m_width, true, m_color);
+      m_collision_table->insert(x-(position*m_width), y, this);
+      break;
+    case Input::DOWN:
+      rectangle = new Rectangle(x, y-(position*m_width), m_width, m_width, true, m_color);
+      m_collision_table->insert(x, y-(position*m_width), this);
+      break;
+    case Input::UP:
+      rectangle = new Rectangle(x, y+(position*m_width), m_width, m_width, true, m_color);
+      m_collision_table->insert(x, y+(position*m_width), this);
+      break;
+    default:
+      assert(false);
+  }
+  assert(rectangle);
+  return rectangle;
 }
 
 void Snake::draw()
