@@ -269,8 +269,33 @@ void Snake::change_direction(Input::Direction direction)
   m_pieces->front()->set_direction(direction);
 }
 
-void Snake::grow(int size)
+float Snake::get_x()
 {
-  m_grow += size;
+  return m_pieces->front()->get_x();
+}
+
+float Snake::get_y()
+{
+  return m_pieces->front()->get_y();
+}
+
+float Snake::get_width()
+{
+  return m_width;
+}
+
+Input::Direction Snake::get_direction()
+{
+  return m_pieces->front()->get_direction();
+}
+
+float Snake::get_max_x()
+{
+  return m_max_x;
+}
+
+float Snake::get_max_y()
+{
+  return m_max_y;
 }
 

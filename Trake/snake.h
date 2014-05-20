@@ -18,7 +18,12 @@ class Snake
     Rectangle *create_rectangle(Input::Direction direction, float x, float y, int posiiton);
     void draw();
     void change_direction(Input::Direction direction);
-    void grow(int size);
+    float get_x();
+    float get_y();
+    float get_width();
+    Input::Direction get_direction();
+    float get_max_x();
+    float get_max_y();
   private:
     float m_width; //width and height of each piece
     int m_size; //number of pieces

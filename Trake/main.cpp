@@ -4,6 +4,7 @@
 #include <allegro5/allegro_color.h>
 #include <string>
 #include "input.h"
+#include "ai.h"
 #include "snake.h"
 #include "pellet.h"
 #include "collision_table.h"
@@ -110,6 +111,10 @@ int main(int argc, char **argv){
   if (num_snakes >= 3) snakes[2] = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
   if (num_snakes >= 4) snakes[3] = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
+  //AI
+  AI *ai1 = new AI(snakes, 2, pellet, collision_table, tron);
+  AI *ai2 = new AI(snakes, 3, pellet, collision_table, tron);
+
   al_flip_display();
   bool quit = false;
   float wait_time = 0.05;
@@ -128,6 +133,8 @@ int main(int argc, char **argv){
   
   while (!quit)
   {
+    if (ai1) ai1->read_input();
+    if (ai2) ai2->read_input();
     snakes[0]->move();
     if (snakes[1]) snakes[1]->move();
     if (snakes[2]) snakes[2]->move();
@@ -141,9 +148,14 @@ int main(int argc, char **argv){
     al_flip_display();
   }
 
-  //al_clear_to_color(Color::Black());
-  //al_flip_display();
-  //al_rest(1);
+  for (int i = 0; i < 4; i++)
+  {
+    delete snakes[i];
+  }
+  delete pellet;
+  delete ai1;
+  delete ai2;
+  delete collision_table;
   al_destroy_display(display);
 
   return 0;

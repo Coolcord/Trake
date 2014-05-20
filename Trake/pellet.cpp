@@ -14,7 +14,7 @@ Pellet::Pellet(float width, float max_x, float max_y, int spawn_countdown_max, C
   m_tron = tron;
   m_value = 0;
   m_spawn_countdown_max = spawn_countdown_max + 1;
-  m_spawn_countdown = rand() % m_spawn_countdown_max;
+  m_spawn_countdown = rand() % (m_spawn_countdown_max / 2);
   m_collision_table = collision_table;
   m_exists = false;
   m_rectangle = new Rectangle(0, 0, m_width, m_width, true, al_color_name("white"));
