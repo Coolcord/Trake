@@ -9,16 +9,18 @@
 #include "pellet.h"
 #include "collision_table.h"
 
-/* trake 0 1
-         ^ ^
-         | |
-1 for tron |
-  Num snakes
+/* trake 0 1 1
+         ^ ^ ^
+         | | |
+1 for tron | |
+  Num snakes |
+        Num AI
 */
 int main(int argc, char **argv){
 
   bool tron = false;
   int num_snakes = 4;
+  int num_ai = 2;
   if (argc > 1)
   {
     if (strcmp(argv[1], "1") == 0)
@@ -43,6 +45,25 @@ int main(int argc, char **argv){
     else if (strcmp(argv[2], "4") == 0)
     {
       num_snakes = 4;
+    }
+  }
+  if (argc > 3)
+  {
+    if (strcmp(argv[3], "1") == 0)
+    {
+      num_ai = 1;
+    }
+    else if (strcmp(argv[3], "2") == 0)
+    {
+      num_ai = 2;
+    }
+    else if (strcmp(argv[3], "3") == 0)
+    {
+      num_ai = 3;
+    }
+    else if (strcmp(argv[3], "4") == 0)
+    {
+      num_ai = 4;
     }
   }
   ALLEGRO_DISPLAY *display = NULL;
@@ -117,13 +138,14 @@ int main(int argc, char **argv){
   AI *ai3 = NULL;
   AI *ai4 = NULL;
 
-  ai3 = new AI(snakes, 0, pellet, collision_table, tron);
-  if (num_snakes > 1)
+  if (num_snakes >= 1 && num_ai > 3)
+    ai3 = new AI(snakes, 0, pellet, collision_table, tron);
+  if (num_snakes > 1 && num_ai > 2)
     ai4 = new AI(snakes, 1, pellet, collision_table, tron);
 
-  if (num_snakes > 2)
+  if (num_snakes > 2 && num_ai > 1)
     ai1 = new AI(snakes, 2, pellet, collision_table, tron);
-  if (num_snakes > 3)
+  if (num_snakes > 3 && num_ai >= 1)
     ai2 = new AI(snakes, 3, pellet, collision_table, tron);
 
   al_flip_display();
