@@ -60,7 +60,7 @@ int main(int argc, char **argv){
 
   al_flip_display();
   bool quit = false;
-  float wait_time = 0.10;
+  float wait_time = 0.05;
 
   Input::Input_Thread_Data data;
   data.snake1 = snake1;
@@ -79,7 +79,7 @@ int main(int argc, char **argv){
     if (wait_time > 0)
     {
       al_rest(wait_time);
-      wait_time -= 0.0002; //slowly get faster
+      wait_time -= 0.00001; //slowly get faster
     }
     al_flip_display();
   }
