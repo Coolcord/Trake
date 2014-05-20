@@ -69,7 +69,8 @@ void Pellet::spawn()
 
 void Pellet::eat(int &grow)
 {
-  assert(m_exists);
+  if (!m_exists)
+    return;
   grow += m_value;
   m_exists = false;
   m_spawn_countdown = rand() % m_spawn_countdown_max;

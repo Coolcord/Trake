@@ -112,6 +112,9 @@ int main(int argc, char **argv){
   if (num_snakes >= 4) snakes[3] = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   //AI
+  //AI *ai3 = new AI(snakes, 0, pellet, collision_table, tron);
+  AI *ai4 = new AI(snakes, 1, pellet, collision_table, tron);
+
   AI *ai1 = new AI(snakes, 2, pellet, collision_table, tron);
   AI *ai2 = new AI(snakes, 3, pellet, collision_table, tron);
 
@@ -133,7 +136,9 @@ int main(int argc, char **argv){
   
   while (!quit)
   {
+    //ai3->read_input();
     snakes[0]->move();
+    ai4->read_input();
     if (snakes[1]) snakes[1]->move();
     if (ai1) ai1->read_input();
     if (snakes[2]) snakes[2]->move();
