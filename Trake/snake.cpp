@@ -14,7 +14,10 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
   assert(size >= 3);
   assert(collision_table);
   m_width = width;
-  m_size = size;
+  if (tron)
+    m_size = 3;
+  else
+    m_size = size;
   m_color = color;
   m_pieces = new std::vector<Snake_Piece*>();
   m_grow = 0;
@@ -141,12 +144,19 @@ void Snake::move()
         {
           --m_grow;
         }
+        assert(*iter);
         (*iter)->set_type(Snake_Piece::BODY);
-        Rectangle *rectangle = this->create_rectangle(tmp_direction, tmp_x, tmp_y, m_size-1);
+        Rectangle *rectangle = this->create_rectangle(tmp_direction, prev_x, prev_y, m_size-1);
         Snake_Piece *snake_piece = new Snake_Piece(tmp_direction, Snake_Piece::TAIL, rectangle);
-        snake_piece->draw();
+        assert(snake_piece);
         ++m_size;
         m_pieces->push_back(snake_piece);
+        if (!m_tron)
+        {
+          al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
+          m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+        }
+        break;
       }
       else
       {
