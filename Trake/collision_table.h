@@ -1,7 +1,7 @@
 #ifndef COLLISION_TABLE_H
 #define COLLISION_TABLE_H
 
-#include <string.h>
+#include <string>
 #include <unordered_map>
 
 class Snake;

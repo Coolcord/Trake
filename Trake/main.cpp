@@ -2,13 +2,22 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
+#include <string>
 #include "input.h"
 #include "snake.h"
 #include "pellet.h"
 #include "collision_table.h"
 
 int main(int argc, char **argv){
- 
+
+  bool tron = false;
+  if (argc > 1)
+  {
+    if (strcmp(argv[1], "1") == 0)
+    {
+      tron = true;
+    }
+  }
   ALLEGRO_DISPLAY *display = NULL;
   ALLEGRO_DISPLAY_MODE disp_data;
 
@@ -40,7 +49,6 @@ int main(int argc, char **argv){
   al_register_event_source(event, al_get_keyboard_event_source());
   al_register_event_source(event, al_get_display_event_source(display));
 
-  bool tron = false;
   int snake_length = 5;
   float snake_width = screen_width/100;
   float max_x = 0;
