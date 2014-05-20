@@ -33,7 +33,7 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
   //Head
   m_pieces->push_back(new Snake_Piece(direction, Snake_Piece::HEAD, new Rectangle(x, y, m_width, m_width, true, m_color)));
   m_collision_table->insert(x, y, this);
-  for (int i = 1; i < m_size - 1; i++)
+  for (int i = 1; i < m_size; i++)
   { //Body
     Rectangle *rectangle = this->create_rectangle(direction, x, y, i);
     Snake_Piece *snake_piece = NULL;
@@ -115,8 +115,7 @@ void Snake::move()
   }
   else if (collision == Collision_Table::PELLET)
   {
-    ++m_grow;
-    m_collision_table->get_pellet(collision_key)->eat();
+    m_collision_table->get_pellet(collision_key)->eat(m_grow);
   }
   m_pieces->front()->draw();
   m_collision_table->insert(collision_key, this);

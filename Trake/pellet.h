@@ -10,11 +10,12 @@ class Pellet
     Pellet(float width, float max_x, float max_y, Collision_Table *collision_table, bool tron);
     ~Pellet();
     void handle_state();
-    void eat();
+    void eat(int &grow);
   private:
     float m_width;
     float m_max_x;
     float m_max_y;
+    int m_value;
     bool m_exists;
     bool m_tron;
     int m_spawn_countdown;

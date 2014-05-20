@@ -11,6 +11,7 @@ Pellet::Pellet(float width, float max_x, float max_y, Collision_Table *collision
   m_max_x = max_x;
   m_max_y = max_y;
   m_tron = tron;
+  m_value = 0;
   m_spawn_countdown = 10;
   m_collision_table = collision_table;
   m_exists = false;
@@ -39,6 +40,7 @@ void Pellet::handle_state()
 void Pellet::spawn()
 {
   assert(!m_exists);
+  m_value = 3;
   float x = m_max_x / 2;
   float y = m_max_y / 2;
   Collision_Table::Type collision = m_collision_table->check_collision(x, y);
@@ -53,9 +55,10 @@ void Pellet::spawn()
   }
 }
 
-void Pellet::eat()
+void Pellet::eat(int &grow)
 {
   assert(m_exists);
+  grow += m_value;
   m_exists = false;
   m_spawn_countdown = 10;
 }
