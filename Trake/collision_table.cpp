@@ -1,5 +1,6 @@
 #include "collision_table.h"
 #include "snake.h"
+#include "pellet.h"
 #include <iterator>
 
 Collision_Table::Collision_Table()
@@ -15,7 +16,13 @@ Collision_Table::~Collision_Table()
 Collision_Table::Node::Node(Snake *snake)
 {
   m_type = Collision_Table::SNAKE;
-  m_snake = snake;
+  m_collision_object.union_snake = snake;
+}
+
+Collision_Table::Node::Node(Pellet *pellet)
+{
+  m_type = Collision_Table::PELLET;
+  m_collision_object.union_pellet = pellet;
 }
 
 void Collision_Table::insert(std::string key, Snake *snake)
@@ -26,6 +33,16 @@ void Collision_Table::insert(std::string key, Snake *snake)
 void Collision_Table::insert(float x, float y, Snake *snake)
 {
   return this->insert(std::to_string(x) + std::to_string(y), snake);
+}
+
+void Collision_Table::insert(std::string key, Pellet *pellet)
+{
+  m_table->insert(std::pair<std::string, Collision_Table::Node*>(key, new Node(pellet)));
+}
+
+void Collision_Table::insert(float x, float y, Pellet *pellet)
+{
+  return this->insert(std::to_string(x) + std::to_string(y), pellet);
 }
 
 void Collision_Table::remove(std::string key)
@@ -58,6 +75,6 @@ Snake *Collision_Table::get_snake(std::string key)
   if (iter == m_table->end())
     return NULL;
   else
-    return (*iter).second->m_snake;
+    return (*iter).second->m_collision_object.union_snake;
 }
 
