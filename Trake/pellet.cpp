@@ -2,6 +2,7 @@
 #include <allegro5/allegro_color.h>
 #include <cstdlib>
 #include "pellet.h"
+#include "snake.h"
 #include "rectangle.h"
 #include "collision_table.h"
 
@@ -69,10 +70,25 @@ void Pellet::spawn()
 
 void Pellet::eat(int &grow)
 {
-  if (!m_exists)
-    return;
+  assert(m_exists);
   grow += m_value;
   m_exists = false;
+  m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());
   m_spawn_countdown = rand() % m_spawn_countdown_max;
+}
+
+bool Pellet::exists()
+{
+  return m_exists;
+}
+
+float Pellet::get_x()
+{
+  return m_rectangle->get_x();
+}
+
+float Pellet::get_y()
+{
+  return m_rectangle->get_y();
 }
 

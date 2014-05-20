@@ -12,8 +12,12 @@ class AI
     AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron);
     ~AI();
     void read_input();
-    void defensive();
   private:
+    bool try_move_to_pellet();
+    bool move_to_pellet();
+    bool move_to_pellet_x(bool try_again);
+    bool move_to_pellet_y(bool try_again);
+    void defensive();
     void update_coordinates();
     void update_direction();
     void turn_random_direction();
@@ -23,6 +27,14 @@ class AI
     bool is_right_safe();
     bool is_down_safe();
     bool is_up_safe();
+    bool try_go_left();
+    bool try_go_right();
+    bool try_go_down();
+    bool try_go_up();
+    bool go_left();
+    bool go_right();
+    bool go_down();
+    bool go_up();
     Snake *m_snakes[4];
     int m_player_num;
     Pellet *m_pellet;

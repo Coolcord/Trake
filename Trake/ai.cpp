@@ -9,6 +9,7 @@ AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collisi
   {
     m_snakes[i] = snakes[i];
   }
+  assert(pellet);
   m_pellet = pellet;
   m_collision_table = collision_table;
   m_player_num = player_num;
@@ -30,7 +31,84 @@ void AI::read_input()
 {
   update_coordinates();
   update_direction();
-  defensive();
+  if (!try_move_to_pellet()) defensive();
+}
+
+bool AI::try_move_to_pellet()
+{
+  if (!m_pellet->exists()) return false;
+  return move_to_pellet();
+}
+
+bool AI::move_to_pellet()
+{
+  int random = rand() % 2;
+  bool need_x = false;
+  bool need_y = false;
+  if (m_x != m_pellet->get_x()) need_x = true;
+  if (m_y != m_pellet->get_y()) need_y = true;
+  if (random == 0)
+  { //Try x first
+    if (need_x && move_to_pellet_x(true))
+      return true;
+    else if (need_y && move_to_pellet_y(true))
+      return true;
+    else
+      return false;
+  }
+  else
+  { //Try y first
+    if (need_y && move_to_pellet_y(true))
+      return true;
+    else if (need_x && move_to_pellet_x(true))
+      return true;
+    else
+      return false;
+  }
+}
+
+bool AI::move_to_pellet_x(bool try_again)
+{
+  if (m_x < m_pellet->get_x()) 
+  {
+    if (try_go_right())
+      return true;
+    else if (!try_again)
+      return move_to_pellet_y(false);
+    else
+      return false;
+  }
+  else 
+  {
+    if (try_go_left())
+      return true;
+    else if (!try_again)
+      return move_to_pellet_y(false);
+    else
+      return false;
+  }
+}
+
+bool AI::move_to_pellet_y(bool try_again)
+{
+  if (m_y < m_pellet->get_y())
+  { 
+    if (try_go_down())
+      return true;
+    else if (!try_again)
+      return move_to_pellet_y(false);
+    else
+      return false;
+  } 
+  else 
+  { 
+    if (try_go_up())
+      return true;
+    else if (!try_again)
+      return move_to_pellet_y(false);
+    else
+      return false;
+  }
 }
 
 void AI::defensive()
@@ -151,5 +229,109 @@ bool AI::is_down_safe()
 bool AI::is_up_safe()
 {
   return is_direction_safe(Input::UP);
+}
+
+bool AI::try_go_left()
+{
+  if (is_left_safe())
+    return go_left();
+  else
+    return false;
+}
+
+bool AI::try_go_right()
+{
+  if (is_right_safe())
+    return go_right();
+  else
+    return false;
+}
+
+bool AI::try_go_down()
+{
+  if (is_down_safe())
+    return go_down();
+  else
+    return false;
+}
+
+bool AI::try_go_up()
+{
+  if (is_up_safe())
+    return go_up();
+  else
+    return false;
+}
+
+bool AI::go_left()
+{
+  switch (m_direction)
+  {
+    case Input::LEFT:
+      break; //nothing to change
+    case Input::RIGHT: //facing the wrong way!
+      return false;
+    case Input::DOWN:
+    case Input::UP:
+      change_direction(Input::LEFT);
+      break;
+    default:
+      assert(false);
+  }
+  return true;
+}
+
+bool AI::go_right()
+{
+  switch (m_direction)
+  {
+    case Input::RIGHT:
+      break; //nothing to change
+    case Input::LEFT: //facing the wrong way!
+      return false;
+    case Input::DOWN:
+    case Input::UP:
+      change_direction(Input::RIGHT);
+      break;
+    default:
+      assert(false);
+  }
+  return true;
+}
+
+bool AI::go_down()
+{
+  switch (m_direction)
+  {
+    case Input::DOWN:
+      break; //nothing to change
+    case Input::UP: //facing the wrong way!
+      return false;
+    case Input::LEFT:
+    case Input::RIGHT:
+      change_direction(Input::DOWN);
+      break;
+    default:
+      assert(false);
+  }
+  return true;
+}
+
+bool AI::go_up()
+{
+  switch (m_direction)
+  {
+    case Input::UP:
+      break; //nothing to change
+    case Input::DOWN: //facing the wrong way!
+      return false;
+    case Input::LEFT:
+    case Input::RIGHT:
+      change_direction(Input::UP);
+      break;
+    default:
+      assert(false);
+  }
+  return true;
 }
 

@@ -112,11 +112,19 @@ int main(int argc, char **argv){
   if (num_snakes >= 4) snakes[3] = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   //AI
-  //AI *ai3 = new AI(snakes, 0, pellet, collision_table, tron);
-  AI *ai4 = new AI(snakes, 1, pellet, collision_table, tron);
+  AI *ai1 = NULL;
+  AI *ai2 = NULL;
+  AI *ai3 = NULL;
+  AI *ai4 = NULL;
 
-  AI *ai1 = new AI(snakes, 2, pellet, collision_table, tron);
-  AI *ai2 = new AI(snakes, 3, pellet, collision_table, tron);
+  ai3 = new AI(snakes, 0, pellet, collision_table, tron);
+  if (num_snakes > 1)
+    ai4 = new AI(snakes, 1, pellet, collision_table, tron);
+
+  if (num_snakes > 2)
+    ai1 = new AI(snakes, 2, pellet, collision_table, tron);
+  if (num_snakes > 3)
+    ai2 = new AI(snakes, 3, pellet, collision_table, tron);
 
   al_flip_display();
   bool quit = false;
@@ -136,15 +144,15 @@ int main(int argc, char **argv){
   
   while (!quit)
   {
-    //ai3->read_input();
+    pellet->handle_state();
+    if (ai3) ai3->read_input();
     snakes[0]->move();
-    ai4->read_input();
+    if (ai4) ai4->read_input();
     if (snakes[1]) snakes[1]->move();
     if (ai1) ai1->read_input();
     if (snakes[2]) snakes[2]->move();
     if (ai2) ai2->read_input();
     if (snakes[3]) snakes[3]->move();
-    pellet->handle_state();
     if (wait_time > 0)
     {
       al_rest(wait_time);

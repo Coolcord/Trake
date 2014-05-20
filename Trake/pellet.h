@@ -1,6 +1,7 @@
 #ifndef PELLET_H
 #define PELLET_H
 
+class Snake;
 class Rectangle;
 class Collision_Table;
 
@@ -11,6 +12,9 @@ class Pellet
     ~Pellet();
     void handle_state();
     void eat(int &grow);
+    bool exists();
+    float get_x();
+    float get_y();
   private:
     float m_width;
     float m_max_x;
