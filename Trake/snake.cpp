@@ -53,7 +53,11 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
 
 Snake::~Snake()
 {
-  
+  for (std::vector<Snake_Piece*>::iterator iter = m_pieces->begin(); iter != m_pieces->end(); ++iter)
+  {
+    delete (*iter);
+  }
+  m_pieces->clear();
 }
 
 void Snake::move()

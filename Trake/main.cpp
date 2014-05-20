@@ -63,12 +63,20 @@ int main(int argc, char **argv){
   }
   float player_1_start_x = max_x;
   float player_2_start_x = 0;
+  float player_3_start_x = 0;
+  float player_4_start_x = max_x;
+  float player_1_start_y = 0;
+  float player_2_start_y = 0;
+  float player_3_start_y = max_y;
+  float player_4_start_y = max_y;
   int max_spawn_time = 100;
 
   Collision_Table *collision_table = new Collision_Table();
   Pellet *pellet = new Pellet(snake_width, max_x, max_y, max_spawn_time, collision_table, tron);
-  Snake *snake1 = new Snake(player_1_start_x, 0, Input::DOWN, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
-  Snake *snake2 = new Snake(player_2_start_x, 0, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
+  Snake *snake1 = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
+  Snake *snake2 = new Snake(player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
+  Snake *snake3 = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
+  Snake *snake4 = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   al_flip_display();
   bool quit = false;
@@ -88,6 +96,8 @@ int main(int argc, char **argv){
   {
     snake1->move();
     snake2->move();
+    snake3->move();
+    snake4->move();
     pellet->handle_state();
     if (wait_time > 0)
     {

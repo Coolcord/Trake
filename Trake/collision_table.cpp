@@ -10,7 +10,11 @@ Collision_Table::Collision_Table()
 
 Collision_Table::~Collision_Table()
 {
-  
+  for (std::unordered_map<std::string, Collision_Table::Node*>::iterator iter = m_table->begin(); iter != m_table->end(); ++iter)
+  {
+    delete (*iter).second;
+  }
+  m_table->clear();
 }
 
 Collision_Table::Node::Node(Snake *snake)
