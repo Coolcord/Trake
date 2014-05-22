@@ -50,7 +50,11 @@ int main(int argc, char **argv){
   }
   if (argc > 3)
   {
-    if (strcmp(argv[3], "1") == 0)
+    if (strcmp(argv[3], "0") == 0)
+    {
+      num_ai = 0;
+    }
+    else if (strcmp(argv[3], "1") == 0)
     {
       num_ai = 1;
     }
@@ -123,9 +127,11 @@ int main(int argc, char **argv){
   Collision_Table *collision_table = new Collision_Table();
   Pellet *pellet = new Pellet(snake_width, max_x, max_y, max_spawn_time, collision_table, tron);
 
+  AI *ai[4];
   Snake *snakes[4];
   for (int i = 0; i < 4; i++)
   {
+    ai[i] = NULL;
     snakes[i] = NULL;
   }
   snakes[0] = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
@@ -134,51 +140,55 @@ int main(int argc, char **argv){
   if (num_snakes >= 4) snakes[3] = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   //AI
-  AI *ai1 = NULL;
-  AI *ai2 = NULL;
-  AI *ai3 = NULL;
-  AI *ai4 = NULL;
-
-  if (num_snakes >= 1 && num_ai > 3)
-    ai3 = new AI(snakes, 0, pellet, collision_table, tron);
-  if (num_snakes > 1 && num_ai > 2)
+  for (int i = 0; i < 4; i++)
+  {
+    if (num_snakes >= i+1 && num_snakes - num_ai < i+1)
+      ai[i] = new AI(snakes, i, pellet, collision_table, tron);
+  }
+  /*
+  if (num_snakes >= 1 && (num_snakes - num_ai <= 0))
+    ai[0] = new AI(snakes, 0, pellet, collision_table, tron);
+  if (num_snakes > 1 && (num_snakes - num_ai <= 0))
     ai4 = new AI(snakes, 1, pellet, collision_table, tron);
 
-  if (num_snakes > 2 && num_ai > 1)
+  if (num_snakes > 2 && (num_snakes - num_ai <= 0))
     ai1 = new AI(snakes, 2, pellet, collision_table, tron);
-  if (num_snakes > 3 && num_ai >= 1)
+  if (num_snakes > 3 && (num_snakes - num_ai <= 0))
     ai2 = new AI(snakes, 3, pellet, collision_table, tron);
+  */
 
   al_flip_display();
+  bool paused = false;
   bool quit = false;
   float wait_time = 0.05;
 
   Input::Input_Thread_Data data;
   for (int i = 0; i < 4; i++)
   {
+    data.ai[i] = ai[i];
     data.snakes[i] = snakes[i];
   }
   data.event = event;
+  data.paused = &paused;
   data.quit = &quit;
 
   //Prepare input thread
   ALLEGRO_THREAD *input_thread = al_create_thread(Input::Input_Thread, &data);
   al_start_thread(input_thread);
 
-  //Start music
-  
-  
   while (!quit)
   {
+    if (paused)
+    {
+      al_rest(0.1);
+      continue;
+    }
     pellet->handle_state();
-    if (ai3) ai3->read_input();
-    snakes[0]->move();
-    if (ai4) ai4->read_input();
-    if (snakes[1]) snakes[1]->move();
-    if (ai1) ai1->read_input();
-    if (snakes[2]) snakes[2]->move();
-    if (ai2) ai2->read_input();
-    if (snakes[3]) snakes[3]->move();
+    for (int i = 0; i < 4; i++)
+    {
+      if (ai[i]) ai[i]->read_input();
+      if (snakes[i]) snakes[i]->move();
+    }
     if (wait_time > 0)
     {
       al_rest(wait_time);
@@ -190,10 +200,9 @@ int main(int argc, char **argv){
   for (int i = 0; i < 4; i++)
   {
     delete snakes[i];
+    delete ai[i];
   }
   delete pellet;
-  delete ai1;
-  delete ai2;
   delete collision_table;
   al_destroy_display(display);
 
