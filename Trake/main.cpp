@@ -2,6 +2,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
+#include <allegro5/allegro_audio.h>
 #include <string>
 #include "input.h"
 #include "ai.h"
@@ -163,6 +164,9 @@ int main(int argc, char **argv){
   //Prepare input thread
   ALLEGRO_THREAD *input_thread = al_create_thread(Input::Input_Thread, &data);
   al_start_thread(input_thread);
+
+  //Start music
+  
   
   while (!quit)
   {

@@ -133,7 +133,8 @@ void Snake::move()
     (*iter)->set_x(prev_x);
     (*iter)->set_y(prev_y);
     (*iter)->set_direction(prev_direction);
-    if (std::next(iter) != m_pieces->end())
+    //if (std::next(iter) != m_pieces->end())
+    if ((*iter) != m_pieces->back())
     {
       prev_x = tmp_x;
       prev_y = tmp_y;
@@ -147,7 +148,6 @@ void Snake::move()
         {
           --m_grow;
         }
-        assert(*iter);
         (*iter)->set_type(Snake_Piece::BODY);
         Rectangle *rectangle = this->create_rectangle(tmp_direction, prev_x, prev_y, m_size-1);
         Snake_Piece *snake_piece = new Snake_Piece(tmp_direction, Snake_Piece::TAIL, rectangle);
@@ -158,13 +158,14 @@ void Snake::move()
         {
           al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
           m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+          break;
         }
-        break;
       }
       else
       {
         al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
         m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+        break;
       }
     }
   }
