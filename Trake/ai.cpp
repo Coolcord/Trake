@@ -8,7 +8,8 @@
 #include <iterator>
 #include <algorithm>
 
-const int TURN_CHANCE = 40;
+const int SNAKE_TURN_CHANCE = 25;
+const int TRON_TURN_CHANCE = 40;
 const int MAX_LOOK_AHEAD = 100;
 const int MAX_OFFENSIVE_MOVES = 5;
 
@@ -48,7 +49,7 @@ void AI::read_input()
     return;
   if (!m_tron)
   {
-    if (rand() % TURN_CHANCE == 0)
+    if (rand() % SNAKE_TURN_CHANCE == 0)
     {
       if (ok_to_turn())
       {
@@ -153,7 +154,7 @@ void AI::defensive()
 void AI::offensive()
 {
   assert(m_offensive_count > 0);
-  int random = rand() % TURN_CHANCE;
+  int random = rand() % TRON_TURN_CHANCE;
   if (random == 0)
   {
     if (ok_to_turn())
