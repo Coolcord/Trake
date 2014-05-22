@@ -194,13 +194,13 @@ bool AI::ok_to_turn()
   {
     case Input::LEFT:
     case Input::RIGHT:
-      if (is_up_safe_later() && is_down_safe_later())
+      if (is_up_safe_later() || is_down_safe_later())
         return true;
       else
         return false;
     case Input::DOWN:
     case Input::UP:
-      if (is_left_safe_later() && is_right_safe_later())
+      if (is_left_safe_later() || is_right_safe_later())
         return true;
       else
         return false;

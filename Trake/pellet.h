@@ -15,6 +15,7 @@ class Pellet
     bool exists();
     float get_x();
     float get_y();
+    void draw();
   private:
     float m_width;
     float m_max_x;

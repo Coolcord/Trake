@@ -116,3 +116,8 @@ float Pellet::get_y()
   return m_rectangle->get_y();
 }
 
+void Pellet::draw()
+{
+  m_rectangle->draw();
+}
+
