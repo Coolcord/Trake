@@ -50,8 +50,11 @@ void AI::read_input()
   {
     if (rand() % TURN_CHANCE == 0)
     {
-      go_safest_turn_direction();
-      return;
+      if (ok_to_turn())
+      {
+        go_safest_turn_direction();
+        return;
+      }
     }
   }
   else if (m_offensive_count > 0)
@@ -153,14 +156,14 @@ void AI::offensive()
   int random = rand() % TURN_CHANCE;
   if (random == 0)
   {
-    --m_offensive_count;
-    go_safest_turn_direction();
-    return;
+    if (ok_to_turn())
+    {
+      --m_offensive_count;
+      go_safest_turn_direction();
+      return;
+    }
   }
-  else
-  {
-    defensive();
-  }
+  defensive();
 }
 
 void AI::update_coordinates()
@@ -182,6 +185,27 @@ void AI::go_safest_direction()
 void AI::go_safest_turn_direction()
 {
   change_direction(find_safest_turn_direction());
+}
+
+bool AI::ok_to_turn()
+{
+  switch (m_direction)
+  {
+    case Input::LEFT:
+    case Input::RIGHT:
+      if (is_up_safe_later() && is_down_safe_later())
+        return true;
+      else
+        return false;
+    case Input::DOWN:
+    case Input::UP:
+      if (is_left_safe_later() && is_right_safe_later())
+        return true;
+      else
+        return false;
+    default:
+        assert(false);
+  }
 }
 
 Input::Direction AI::get_random_turn_direction()
@@ -276,14 +300,15 @@ int AI::how_long_is_direction_safe(Input::Direction direction)
   alive = simulate_direction(m_direction, simulated_table);
   ++safe_moves;
   assert(alive);
-  while (alive && safe_moves < MAX_LOOK_AHEAD)
+  while (safe_moves < MAX_LOOK_AHEAD)
   {
     if (!is_direction_safe(m_direction))
     {
       m_direction = find_safe_direction();
     }
     alive = simulate_direction(m_direction, simulated_table);
-    ++safe_moves;
+    if (!alive) break;
+    else ++safe_moves;
   }
   
   //Restore "reality"
@@ -418,6 +443,7 @@ bool AI::go_left()
     case Input::LEFT:
       break; //nothing to change
     case Input::RIGHT: //facing the wrong way!
+      assert(false);
       return false;
     case Input::DOWN:
     case Input::UP:
@@ -436,6 +462,7 @@ bool AI::go_right()
     case Input::RIGHT:
       break; //nothing to change
     case Input::LEFT: //facing the wrong way!
+      assert(false);
       return false;
     case Input::DOWN:
     case Input::UP:
@@ -454,6 +481,7 @@ bool AI::go_down()
     case Input::DOWN:
       break; //nothing to change
     case Input::UP: //facing the wrong way!
+      assert(false);
       return false;
     case Input::LEFT:
     case Input::RIGHT:
@@ -472,6 +500,7 @@ bool AI::go_up()
     case Input::UP:
       break; //nothing to change
     case Input::DOWN: //facing the wrong way!
+      assert(false);
       return false;
     case Input::LEFT:
     case Input::RIGHT:

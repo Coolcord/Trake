@@ -133,7 +133,6 @@ void Snake::move()
     (*iter)->set_x(prev_x);
     (*iter)->set_y(prev_y);
     (*iter)->set_direction(prev_direction);
-    //if (std::next(iter) != m_pieces->end())
     if ((*iter) != m_pieces->back())
     {
       prev_x = tmp_x;
@@ -158,8 +157,8 @@ void Snake::move()
         {
           al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
           m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
-          break;
         }
+        break;
       }
       else
       {

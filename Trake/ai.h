@@ -23,6 +23,7 @@ class AI
     void update_direction();
     void go_safest_direction();
     void go_safest_turn_direction();
+    bool ok_to_turn();
     void turn_random_direction();
     void change_direction(Input::Direction direction);
     int how_long_is_direction_safe(Input::Direction direction);
