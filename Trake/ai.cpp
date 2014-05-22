@@ -444,7 +444,6 @@ bool AI::go_left()
     case Input::LEFT:
       break; //nothing to change
     case Input::RIGHT: //facing the wrong way!
-      assert(false);
       return false;
     case Input::DOWN:
     case Input::UP:
@@ -463,7 +462,6 @@ bool AI::go_right()
     case Input::RIGHT:
       break; //nothing to change
     case Input::LEFT: //facing the wrong way!
-      assert(false);
       return false;
     case Input::DOWN:
     case Input::UP:
@@ -482,7 +480,6 @@ bool AI::go_down()
     case Input::DOWN:
       break; //nothing to change
     case Input::UP: //facing the wrong way!
-      assert(false);
       return false;
     case Input::LEFT:
     case Input::RIGHT:
@@ -501,7 +498,6 @@ bool AI::go_up()
     case Input::UP:
       break; //nothing to change
     case Input::DOWN: //facing the wrong way!
-      assert(false);
       return false;
     case Input::LEFT:
     case Input::RIGHT:
