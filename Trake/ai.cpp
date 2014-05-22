@@ -10,6 +10,7 @@
 
 const int TURN_CHANCE = 40;
 const int MAX_LOOK_AHEAD = 100;
+const int MAX_OFFENSIVE_MOVES = 5;
 
 AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron)
 {
@@ -26,6 +27,10 @@ AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collisi
   m_max_x = snakes[m_player_num]->get_max_x();
   m_max_y = snakes[m_player_num]->get_max_y();
   m_width = snakes[m_player_num]->get_width();
+  if (m_tron)
+    m_offensive_count = rand() % MAX_OFFENSIVE_MOVES + 1;
+  else
+    m_offensive_count = 0;
   update_coordinates();
   update_direction();
 }
@@ -45,13 +50,14 @@ void AI::read_input()
   {
     if (rand() % TURN_CHANCE == 0)
     {
-      Input::Direction direction = get_random_turn_direction();
-      if (is_direction_safe_later(direction))
-      {
-        this->change_direction(direction);
-        return;
-      }
+      go_safest_turn_direction();
+      return;
     }
+  }
+  else if (m_offensive_count > 0)
+  {
+    offensive();
+    return;
   }
   defensive();
 }
@@ -137,7 +143,23 @@ void AI::defensive()
 {
   if (!is_direction_safe_later(m_direction))
   {
-    turn_safest_direction();
+    go_safest_direction();
+  }
+}
+
+void AI::offensive()
+{
+  assert(m_offensive_count > 0);
+  int random = rand() % TURN_CHANCE;
+  if (random == 0)
+  {
+    --m_offensive_count;
+    go_safest_turn_direction();
+    return;
+  }
+  else
+  {
+    defensive();
   }
 }
 
@@ -152,9 +174,14 @@ void AI::update_direction()
   m_direction = m_snakes[m_player_num]->get_direction();
 }
 
-void AI::turn_safest_direction()
+void AI::go_safest_direction()
 {
   change_direction(find_safest_direction());
+}
+
+void AI::go_safest_turn_direction()
+{
+  change_direction(find_safest_turn_direction());
 }
 
 Input::Direction AI::get_random_turn_direction()
@@ -253,7 +280,7 @@ int AI::how_long_is_direction_safe(Input::Direction direction)
   {
     if (!is_direction_safe(m_direction))
     {
-      m_direction = get_random_turn_direction();
+      m_direction = find_safe_direction();
     }
     alive = simulate_direction(m_direction, simulated_table);
     ++safe_moves;
@@ -550,6 +577,31 @@ bool AI::simulate_direction(Input::Direction direction, Collision_Table *simulat
   return false;
 }
 
+Input::Direction AI::find_safe_direction()
+{
+  switch (m_direction)
+  {
+    case Input::LEFT:
+      if (is_down_safe()) return Input::DOWN;
+      else if (is_up_safe()) return Input::UP;
+      else return Input::LEFT;
+    case Input::RIGHT:
+      if (is_down_safe()) return Input::DOWN;
+      else if (is_up_safe()) return Input::UP;
+      else return Input::RIGHT;
+    case Input::DOWN:
+      if (is_left_safe()) return Input::LEFT;
+      else if (is_right_safe()) return Input::RIGHT;
+      else return Input::DOWN;
+    case Input::UP:
+      if (is_left_safe()) return Input::LEFT;
+      else if (is_right_safe()) return Input::RIGHT;
+      else return Input::UP;
+    default:
+      assert(false);
+  }
+}
+
 Input::Direction AI::find_safest_direction()
 {
   int left_moves = how_long_is_direction_safe(Input::LEFT);
@@ -607,6 +659,45 @@ Input::Direction AI::find_safest_direction()
       else if (max == left_moves)
         return Input::LEFT;
       else if (max == right_moves)
+        return Input::RIGHT;
+      else
+        assert(false);
+      break;
+    default:
+      assert(false);
+  }
+}
+
+Input::Direction AI::find_safest_turn_direction()
+{
+  int left_moves = 0;
+  int right_moves = 0;
+  int down_moves = 0;
+  int up_moves = 0;
+  switch (m_direction)
+  {
+    case Input::LEFT:
+    case Input::RIGHT:
+      down_moves = how_long_is_direction_safe(Input::DOWN);
+      up_moves = how_long_is_direction_safe(Input::UP);
+      if (down_moves == up_moves)
+        return get_random_turn_direction();
+      else if (down_moves > up_moves)
+        return Input::DOWN;
+      else if (up_moves > down_moves)
+        return Input::UP;
+      else
+        assert(false);
+      break;
+    case Input::DOWN:
+    case Input::UP:
+      left_moves = how_long_is_direction_safe(Input::LEFT);
+      right_moves = how_long_is_direction_safe(Input::RIGHT);
+      if (left_moves == right_moves)
+        return get_random_turn_direction();
+      else if (left_moves > right_moves)
+        return Input::LEFT;
+      else if (right_moves > left_moves)
         return Input::RIGHT;
       else
         assert(false);

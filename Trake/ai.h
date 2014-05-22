@@ -18,9 +18,11 @@ class AI
     bool move_to_pellet_x(bool try_again);
     bool move_to_pellet_y(bool try_again);
     void defensive();
+    void offensive();
     void update_coordinates();
     void update_direction();
-    void turn_safest_direction();
+    void go_safest_direction();
+    void go_safest_turn_direction();
     void turn_random_direction();
     void change_direction(Input::Direction direction);
     int how_long_is_direction_safe(Input::Direction direction);
@@ -47,7 +49,9 @@ class AI
     bool simulate_down(Collision_Table *simulated_table);
     bool simulate_up(Collision_Table *simulated_table);
     bool simulate_direction(Input::Direction direction, Collision_Table *simulated_table);
+    Input::Direction find_safe_direction();
     Input::Direction find_safest_direction();
+    Input::Direction find_safest_turn_direction();
     Input::Direction get_random_turn_direction();
     Snake *m_snakes[4];
     int m_player_num;
@@ -60,6 +64,7 @@ class AI
     float m_max_x;
     float m_max_y;
     bool m_tron;
+    int m_offensive_count;
 };
 
 #endif
