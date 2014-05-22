@@ -8,6 +8,7 @@
 #include <iterator>
 #include <algorithm>
 
+const int TURN_CHANCE = 40;
 const int MAX_LOOK_AHEAD = 100;
 
 AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron)
@@ -38,7 +39,21 @@ void AI::read_input()
 {
   update_coordinates();
   update_direction();
-  if (!try_move_to_pellet()) defensive();
+  if (try_move_to_pellet())
+    return;
+  if (!m_tron)
+  {
+    if (rand() % TURN_CHANCE == 0)
+    {
+      Input::Direction direction = get_random_turn_direction();
+      if (is_direction_safe_later(direction))
+      {
+        this->change_direction(direction);
+        return;
+      }
+    }
+  }
+  defensive();
 }
 
 bool AI::try_move_to_pellet()
