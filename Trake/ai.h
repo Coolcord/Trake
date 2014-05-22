@@ -2,7 +2,7 @@
 #define AI_H
 
 #include "input.h"
-#include "collision_table.h"
+class Collision_Table;
 class Snake;
 class Pellet;
 
@@ -20,8 +20,15 @@ class AI
     void defensive();
     void update_coordinates();
     void update_direction();
+    void turn_safest_direction();
     void turn_random_direction();
     void change_direction(Input::Direction direction);
+    int how_long_is_direction_safe(Input::Direction direction);
+    bool is_direction_safe_later(Input::Direction direction);
+    bool is_left_safe_later();
+    bool is_right_safe_later();
+    bool is_down_safe_later();
+    bool is_up_safe_later();
     bool is_direction_safe(Input::Direction direction);
     bool is_left_safe();
     bool is_right_safe();
@@ -35,6 +42,13 @@ class AI
     bool go_right();
     bool go_down();
     bool go_up();
+    bool simulate_left(Collision_Table *simulated_table);
+    bool simulate_right(Collision_Table *simulated_table);
+    bool simulate_down(Collision_Table *simulated_table);
+    bool simulate_up(Collision_Table *simulated_table);
+    bool simulate_direction(Input::Direction direction, Collision_Table *simulated_table);
+    Input::Direction find_safest_direction();
+    Input::Direction get_random_turn_direction();
     Snake *m_snakes[4];
     int m_player_num;
     Pellet *m_pellet;

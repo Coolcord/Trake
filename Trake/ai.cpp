@@ -1,7 +1,14 @@
 #include "ai.h"
 #include "snake.h"
 #include "pellet.h"
+#include "collision_table.h"
 #include <assert.h>
+#include <string>
+#include <unordered_map>
+#include <iterator>
+#include <algorithm>
+
+const int MAX_LOOK_AHEAD = 100;
 
 AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron)
 {
@@ -113,9 +120,9 @@ bool AI::move_to_pellet_y(bool try_again)
 
 void AI::defensive()
 {
-  if (!is_direction_safe(m_direction))
+  if (!is_direction_safe_later(m_direction))
   {
-    turn_random_direction();
+    turn_safest_direction();
   }
 }
 
@@ -130,7 +137,12 @@ void AI::update_direction()
   m_direction = m_snakes[m_player_num]->get_direction();
 }
 
-void AI::turn_random_direction()
+void AI::turn_safest_direction()
+{
+  change_direction(find_safest_direction());
+}
+
+Input::Direction AI::get_random_turn_direction()
 {
   int random = rand() % 2;
   Input::Direction direction = m_direction;
@@ -169,12 +181,106 @@ void AI::turn_random_direction()
         assert(false);
     }
   }
-  this->change_direction(direction);
+  return direction;
+}
+
+void AI::turn_random_direction()
+{
+  this->change_direction(get_random_turn_direction());
 }
 
 void AI::change_direction(Input::Direction direction)
 {
   m_snakes[m_player_num]->change_direction(direction);
+}
+
+int AI::how_long_is_direction_safe(Input::Direction direction)
+{
+  if (!is_direction_safe(direction))
+    return 0; //don't bother running the simulation
+
+  //Save "reality"
+  float tmp_x = m_x;
+  float tmp_y = m_y;
+  Input::Direction tmp_direction = m_direction;
+  
+  //Prepare to run simulation
+  int safe_moves = 0;
+  bool alive = true;
+  m_direction = direction;
+  Collision_Table *simulated_table = new Collision_Table();
+  
+  for (std::unordered_map<std::string, Collision_Table::Node*>::iterator iter = m_collision_table->begin(); iter != m_collision_table->end(); ++iter)
+  {
+    Collision_Table::Node *node = NULL;
+    switch ((*iter).second->m_type)
+    {
+      case Collision_Table::SNAKE:
+        node = new Collision_Table::Node((*iter).second->m_collision_object.union_snake);
+        simulated_table->insert((*iter).first, node);
+        break;
+      case Collision_Table::PELLET:
+        node = new Collision_Table::Node((*iter).second->m_collision_object.union_pellet);
+        simulated_table->insert((*iter).first, node);
+        break;
+      case Collision_Table::NONE:
+        break;
+      default:
+        assert(false);
+    }
+  }
+
+  //Run simulation
+  alive = simulate_direction(m_direction, simulated_table);
+  ++safe_moves;
+  assert(alive);
+  while (alive && safe_moves < MAX_LOOK_AHEAD)
+  {
+    if (!is_direction_safe(m_direction))
+    {
+      m_direction = get_random_turn_direction();
+    }
+    alive = simulate_direction(m_direction, simulated_table);
+    ++safe_moves;
+  }
+  
+  //Restore "reality"
+  m_x = tmp_x;
+  m_y = tmp_y;
+  m_direction = tmp_direction;
+  delete simulated_table;
+  
+  return safe_moves;
+}
+
+bool AI::is_direction_safe_later(Input::Direction direction)
+{
+  int safe_moves = how_long_is_direction_safe(direction);
+  assert(safe_moves <= MAX_LOOK_AHEAD);
+  if (safe_moves == MAX_LOOK_AHEAD)
+    return true;
+  else
+    return false;
+}
+
+bool AI::is_left_safe_later()
+{
+  return is_direction_safe_later(Input::LEFT);
+}
+
+bool AI::is_right_safe_later()
+{
+  return is_direction_safe_later(Input::RIGHT);
+}
+
+bool AI::is_down_safe_later()
+{
+  return is_direction_safe_later(Input::DOWN);
+}
+
+bool AI::is_up_safe_later()
+{
+  return is_direction_safe_later(Input::UP);
 }
 
 bool AI::is_direction_safe(Input::Direction direction)
@@ -233,7 +339,7 @@ bool AI::is_up_safe()
 
 bool AI::try_go_left()
 {
-  if (is_left_safe())
+  if (is_left_safe_later())
     return go_left();
   else
     return false;
@@ -241,7 +347,7 @@ bool AI::try_go_left()
 
 bool AI::try_go_right()
 {
-  if (is_right_safe())
+  if (is_right_safe_later())
     return go_right();
   else
     return false;
@@ -249,7 +355,7 @@ bool AI::try_go_right()
 
 bool AI::try_go_down()
 {
-  if (is_down_safe())
+  if (is_down_safe_later())
     return go_down();
   else
     return false;
@@ -257,7 +363,7 @@ bool AI::try_go_down()
 
 bool AI::try_go_up()
 {
-  if (is_up_safe())
+  if (is_up_safe_later())
     return go_up();
   else
     return false;
@@ -333,5 +439,165 @@ bool AI::go_up()
       assert(false);
   }
   return true;
+}
+
+bool AI::simulate_left(Collision_Table *simulated_table)
+{
+  if (!is_left_safe())
+  {
+    return false;
+  }
+  if (m_x <= 0)
+  {
+    m_x = m_max_x;
+  }
+  else
+  {
+    m_x -= m_width;
+  }
+  simulated_table->insert(m_x, m_y, m_snakes[m_player_num]);
+  return true;
+}
+
+bool AI::simulate_right(Collision_Table *simulated_table)
+{
+  if (!is_right_safe())
+  {
+    return false;
+  }
+  if (m_x >= m_max_x)
+  {
+    m_x = 0;
+  }
+  else
+  {
+    m_x += m_width;
+  }
+  simulated_table->insert(m_x, m_y, m_snakes[m_player_num]);
+  return true;
+}
+
+bool AI::simulate_down(Collision_Table *simulated_table)
+{
+  if (!is_down_safe())
+  {
+    return false;
+  }
+  if (m_y >= m_max_y)
+  {
+    m_y = 0;
+  }
+  else
+  {
+    m_y += m_width;
+  }
+  simulated_table->insert(m_x, m_y, m_snakes[m_player_num]);
+  return true;
+}
+
+bool AI::simulate_up(Collision_Table *simulated_table)
+{
+  if (!is_up_safe())
+  {
+    return false;
+  }
+  if (m_y <= 0)
+  {
+    m_y = m_max_y;
+  }
+  else
+  {
+    m_y -= m_width;
+  }
+  simulated_table->insert(m_x, m_y, m_snakes[m_player_num]);
+  return true;
+}
+
+bool AI::simulate_direction(Input::Direction direction, Collision_Table *simulated_table)
+{
+  switch (direction)
+  {
+    case Input::LEFT:
+      return simulate_left(simulated_table);
+      break;
+    case Input::RIGHT:
+      return simulate_right(simulated_table);
+      break;
+    case Input::DOWN:
+      return simulate_down(simulated_table);
+      break;
+    case Input::UP:
+      return simulate_up(simulated_table);
+      break;
+    default:
+      assert(false);
+  }
+  return false;
+}
+
+Input::Direction AI::find_safest_direction()
+{
+  int left_moves = how_long_is_direction_safe(Input::LEFT);
+  int right_moves = how_long_is_direction_safe(Input::RIGHT);
+  int down_moves = how_long_is_direction_safe(Input::DOWN);
+  int up_moves = how_long_is_direction_safe(Input::UP);
+  int max = 0;
+  switch (m_direction)
+  {
+    case Input::LEFT:
+      max = std::max(left_moves, std::max(down_moves, up_moves));
+      if (max == left_moves)
+        return Input::LEFT;
+      else if (down_moves == up_moves)
+        return get_random_turn_direction();
+      else if (max == down_moves)
+        return Input::DOWN;
+      else if (max == up_moves)
+        return Input::UP;
+      else
+        assert(false);
+      break;
+    case Input::RIGHT:
+      max = std::max(right_moves, std::max(down_moves, up_moves));
+      if (max == right_moves)
+        return Input::RIGHT;
+      else if (down_moves == up_moves)
+        return get_random_turn_direction();
+      else if (max == down_moves)
+        return Input::DOWN;
+      else if (max == up_moves)
+        return Input::UP;
+      else
+        assert(false);
+      break;
+    case Input::DOWN:
+      max = std::max(down_moves, std::max(left_moves, right_moves));
+      if (max == down_moves)
+        return Input::DOWN;
+      else if (left_moves == right_moves)
+        return get_random_turn_direction();
+      else if (max == left_moves)
+        return Input::LEFT;
+      else if (max == right_moves)
+        return Input::RIGHT;
+      else
+        assert(false);
+      break;
+    case Input::UP:
+      max = std::max(up_moves, std::max(left_moves, right_moves));
+      if (max == up_moves)
+        return Input::UP;
+      else if (left_moves == right_moves)
+        return get_random_turn_direction();
+      else if (max == left_moves)
+        return Input::LEFT;
+      else if (max == right_moves)
+        return Input::RIGHT;
+      else
+        assert(false);
+      break;
+    default:
+      assert(false);
+  }
 }
 

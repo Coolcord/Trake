@@ -299,3 +299,13 @@ float Snake::get_max_y()
   return m_max_y;
 }
 
+bool Snake::is_dead()
+{
+  return m_dead;
+}
+
+void Snake::kill()
+{
+  m_dead = true;
+}
+

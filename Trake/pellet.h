@@ -24,7 +24,10 @@ class Pellet
     bool m_tron;
     int m_spawn_countdown_max;
     int m_spawn_countdown;
+    int m_respawn_time_max;
+    int m_respawn_time;
     void spawn();
+    void remove();
     Rectangle *m_rectangle;
     Collision_Table *m_collision_table;
 };

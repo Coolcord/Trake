@@ -24,6 +24,8 @@ class Snake
     Input::Direction get_direction();
     float get_max_x();
     float get_max_y();
+    bool is_dead();
+    void kill();
   private:
     float m_width; //width and height of each piece
     int m_size; //number of pieces

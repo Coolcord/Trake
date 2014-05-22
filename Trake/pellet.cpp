@@ -15,6 +15,8 @@ Pellet::Pellet(float width, float max_x, float max_y, int spawn_countdown_max, C
   m_tron = tron;
   m_value = 0;
   m_spawn_countdown_max = spawn_countdown_max + 1;
+  m_respawn_time_max = 500;
+  m_respawn_time = m_respawn_time_max;
   m_spawn_countdown = rand() % (m_spawn_countdown_max / 2);
   m_collision_table = collision_table;
   m_exists = false;
@@ -30,11 +32,19 @@ void Pellet::handle_state()
 {
   if (m_tron)
     return;
-  if (m_exists)
-    return;
   if (m_spawn_countdown > 0)
   {
     --m_spawn_countdown;
+    return;
+  }
+  if (m_exists && m_respawn_time > 0)
+  {
+    --m_respawn_time;
+    return;
+  }
+  if (m_respawn_time == 0)
+  {
+    this->remove();
     return;
   }
   spawn();
@@ -60,12 +70,26 @@ void Pellet::spawn()
   if (collision == Collision_Table::NONE)
   {
     m_exists = true;
+    m_respawn_time = m_respawn_time_max;
     m_rectangle->set_x(x);
     m_rectangle->set_y(y);
     m_rectangle->draw();
     m_collision_table->insert(x, y, this);
     m_rectangle->draw();
   }
+}
+
+void Pellet::remove()
+{
+  assert(m_respawn_time == 0);
+  m_exists = false;
+  m_respawn_time = m_respawn_time_max;
+  m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());
+  ALLEGRO_COLOR tmp_color = m_rectangle->get_color();
+  m_rectangle->set_color(al_color_name("black"));
+  m_rectangle->draw();
+  m_rectangle->set_color(tmp_color);
+  m_spawn_countdown = rand() % m_spawn_countdown_max;
 }
 
 void Pellet::eat(int &grow)
