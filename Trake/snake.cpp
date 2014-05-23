@@ -5,6 +5,7 @@
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 #include <iterator>
+#include <string>
 #include "collision_table.h"
 
 Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
@@ -29,13 +30,8 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
   m_changing_direction = false;
   m_next_direction = Input::NONE;
   m_tron = tron;
-  int random = rand() % 3;
-  if (random == 0)
-    m_dead_sound = al_load_sample("./sounds/squish1.wav");
-  else if (random == 1)
-    m_dead_sound = al_load_sample("./sounds/squish2.wav");
-  else
-    m_dead_sound = al_load_sample("./sounds/squish3.wav");
+  int random = (rand() % 3) + 1;
+  m_dead_sound = al_load_sample(("./sounds/squish" + std::to_string(random) + ".wav").c_str());
 
   //Head
   m_pieces->push_back(new Snake_Piece(direction, Snake_Piece::HEAD, new Rectangle(x, y, m_width, m_width, true, m_color)));

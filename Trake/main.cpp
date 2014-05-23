@@ -9,6 +9,7 @@
 #include "ai.h"
 #include "snake.h"
 #include "pellet.h"
+#include "music.h"
 #include "collision_table.h"
 
 /* trake 0 1 1
@@ -152,7 +153,8 @@ int main(int argc, char **argv){
   }
 
   //Start Music
-  //ALLEGRO_SAMPLE *soundEffect = al_load_sample("clapping.wav");
+  Music *music = new Music(tron);
+  music->play();
 
   al_flip_display();
   bool paused = false;
@@ -194,6 +196,7 @@ int main(int argc, char **argv){
     }
     al_flip_display();
   }
+  music->slow_to_stop();
 
   //al_destroy_sample(soundEffect);
   for (int i = 0; i < 4; i++)
@@ -203,6 +206,7 @@ int main(int argc, char **argv){
   }
   delete pellet;
   delete collision_table;
+  delete music;
   al_destroy_display(display);
 
   return 0;
