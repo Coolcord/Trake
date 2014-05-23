@@ -96,6 +96,11 @@ Snake *Collision_Table::get_snake(std::string key)
     return (*iter).second->m_collision_object.union_snake;
 }
 
+Snake *Collision_Table::get_snake(float x, float y)
+{
+  return this->get_snake(std::to_string(x) + std::to_string(y));
+}
+
 Pellet *Collision_Table::get_pellet(std::string key)
 {
   std::unordered_map<std::string, Collision_Table::Node*>::iterator iter = m_table->find(key);
@@ -103,5 +108,10 @@ Pellet *Collision_Table::get_pellet(std::string key)
     return NULL;
   else
     return (*iter).second->m_collision_object.union_pellet;
+}
+
+Pellet *Collision_Table::get_pellet(float x, float y)
+{
+  return this->get_pellet(std::to_string(x) + std::to_string(y));
 }
 

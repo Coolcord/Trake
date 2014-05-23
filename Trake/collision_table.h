@@ -45,7 +45,9 @@ class Collision_Table
     Type check_collision(std::string key);
     Type check_collision(float x, float y);
     Snake *get_snake(std::string key);
+    Snake *get_snake(float x, float y);
     Pellet *get_pellet(std::string key);
+    Pellet *get_pellet(float x, float y);
   private:
     std::unordered_map<std::string, Node*> *m_table;
 };

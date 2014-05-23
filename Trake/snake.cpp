@@ -155,15 +155,23 @@ void Snake::move()
         m_pieces->push_back(snake_piece);
         if (!m_tron)
         {
-          al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
-          m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+          Collision_Table::Type type = m_collision_table->check_collision(tmp_x, tmp_y);
+          if (type == Collision_Table::SNAKE && m_collision_table->get_snake(tmp_x, tmp_y) == this)
+          {
+            al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
+            m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+          }
         }
         break;
       }
       else
       {
-        al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
-        m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+        Collision_Table::Type type = m_collision_table->check_collision(tmp_x, tmp_y);
+        if (type == Collision_Table::SNAKE && m_collision_table->get_snake(tmp_x, tmp_y) == this)
+        {
+          al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
+          m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
+        }
         break;
       }
     }

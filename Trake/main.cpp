@@ -3,6 +3,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <string>
 #include "input.h"
 #include "ai.h"
@@ -97,6 +98,8 @@ int main(int argc, char **argv){
 
   //Events
   al_install_keyboard();
+  al_install_audio();
+  al_init_acodec_addon();
   ALLEGRO_EVENT_QUEUE *event = NULL;
   event = al_create_event_queue();
   al_register_event_source(event, al_get_keyboard_event_source());
@@ -145,17 +148,10 @@ int main(int argc, char **argv){
     if (num_snakes >= i+1 && num_snakes - num_ai < i+1)
       ai[i] = new AI(snakes, i, pellet, collision_table, tron);
   }
-  /*
-  if (num_snakes >= 1 && (num_snakes - num_ai <= 0))
-    ai[0] = new AI(snakes, 0, pellet, collision_table, tron);
-  if (num_snakes > 1 && (num_snakes - num_ai <= 0))
-    ai4 = new AI(snakes, 1, pellet, collision_table, tron);
 
-  if (num_snakes > 2 && (num_snakes - num_ai <= 0))
-    ai1 = new AI(snakes, 2, pellet, collision_table, tron);
-  if (num_snakes > 3 && (num_snakes - num_ai <= 0))
-    ai2 = new AI(snakes, 3, pellet, collision_table, tron);
-  */
+  //Start Music
+  //ALLEGRO_SAMPLE *soundEffect = al_load_sample("clapping.wav");
+  //al_reserve_samples(32);
 
   al_flip_display();
   bool paused = false;
@@ -183,6 +179,7 @@ int main(int argc, char **argv){
       al_rest(0.1);
       continue;
     }
+    //al_play_sample(soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
     pellet->handle_state();
     for (int i = 0; i < 4; i++)
     {
@@ -197,6 +194,7 @@ int main(int argc, char **argv){
     al_flip_display();
   }
 
+  //al_destroy_sample(soundEffect);
   for (int i = 0; i < 4; i++)
   {
     delete snakes[i];
