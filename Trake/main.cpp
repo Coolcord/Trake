@@ -20,6 +20,7 @@
 */
 int main(int argc, char **argv){
 
+  srand(time(NULL));
   bool tron = false;
   int num_snakes = 4;
   int num_ai = 2;
@@ -100,6 +101,7 @@ int main(int argc, char **argv){
   al_install_keyboard();
   al_install_audio();
   al_init_acodec_addon();
+  al_reserve_samples(32);
   ALLEGRO_EVENT_QUEUE *event = NULL;
   event = al_create_event_queue();
   al_register_event_source(event, al_get_keyboard_event_source());
@@ -151,7 +153,6 @@ int main(int argc, char **argv){
 
   //Start Music
   //ALLEGRO_SAMPLE *soundEffect = al_load_sample("clapping.wav");
-  //al_reserve_samples(32);
 
   al_flip_display();
   bool paused = false;

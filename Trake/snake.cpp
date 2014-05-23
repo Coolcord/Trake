@@ -29,6 +29,13 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
   m_changing_direction = false;
   m_next_direction = Input::NONE;
   m_tron = tron;
+  int random = rand() % 3;
+  if (random == 0)
+    m_dead_sound = al_load_sample("./sounds/squish1.wav");
+  else if (random == 1)
+    m_dead_sound = al_load_sample("./sounds/squish2.wav");
+  else
+    m_dead_sound = al_load_sample("./sounds/squish3.wav");
 
   //Head
   m_pieces->push_back(new Snake_Piece(direction, Snake_Piece::HEAD, new Rectangle(x, y, m_width, m_width, true, m_color)));
@@ -58,6 +65,7 @@ Snake::~Snake()
     delete (*iter);
   }
   m_pieces->clear();
+  al_destroy_sample(m_dead_sound);
 }
 
 void Snake::move()
@@ -112,6 +120,8 @@ void Snake::move()
   if (collision == Collision_Table::SNAKE)
   {
     m_dead = true;
+    float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.5)) + 0.75;
+    if (m_dead_sound) al_play_sample(m_dead_sound, 1.0, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
     m_pieces->front()->set_x(prev_x);
     m_pieces->front()->set_y(prev_y);
     this->draw();

@@ -3,6 +3,8 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <vector>
 #include "input.h"
 class Snake_Piece;
@@ -40,6 +42,7 @@ class Snake
     Input::Direction m_next_direction;
     bool m_dead;
     bool m_tron;
+    ALLEGRO_SAMPLE *m_dead_sound;
 };
 
 #endif

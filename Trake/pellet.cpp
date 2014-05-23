@@ -21,11 +21,13 @@ Pellet::Pellet(float width, float max_x, float max_y, int spawn_countdown_max, C
   m_collision_table = collision_table;
   m_exists = false;
   m_rectangle = new Rectangle(0, 0, m_width, m_width, true, al_color_name("white"));
+  m_eat_sound = al_load_sample("./sounds/eat.wav");
 }
 
 Pellet::~Pellet()
 {
   delete m_rectangle;
+  al_destroy_sample(m_eat_sound);
 }
 
 void Pellet::handle_state()
@@ -95,6 +97,7 @@ void Pellet::remove()
 void Pellet::eat(int &grow)
 {
   assert(m_exists);
+  //if (m_eat_sound) al_play_sample(m_eat_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
   grow += m_value;
   m_exists = false;
   m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());

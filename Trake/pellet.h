@@ -1,6 +1,9 @@
 #ifndef PELLET_H
 #define PELLET_H
 
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
 class Snake;
 class Rectangle;
 class Collision_Table;
@@ -31,6 +34,7 @@ class Pellet
     void remove();
     Rectangle *m_rectangle;
     Collision_Table *m_collision_table;
+    ALLEGRO_SAMPLE *m_eat_sound;
 };
 
 #endif
