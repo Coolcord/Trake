@@ -10,6 +10,7 @@ class Music
     Music(bool tron);
     ~Music();
     void play();
+    void speed_up();
     void slow_to_stop();
   private:
     bool m_tron;

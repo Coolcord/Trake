@@ -14,7 +14,7 @@ class Pellet
     Pellet(float width, float max_x, float max_y, int spawn_countdown_max, Collision_Table *collision_table, bool tron);
     ~Pellet();
     void handle_state();
-    void eat(int &grow);
+    void eat(Snake *snake);
     bool exists();
     float get_x();
     float get_y();

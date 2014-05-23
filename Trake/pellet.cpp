@@ -94,11 +94,11 @@ void Pellet::remove()
   m_spawn_countdown = rand() % m_spawn_countdown_max;
 }
 
-void Pellet::eat(int &grow)
+void Pellet::eat(Snake *snake)
 {
   assert(m_exists);
-  //if (m_eat_sound) al_play_sample(m_eat_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-  grow += m_value;
+  if (m_eat_sound) al_play_sample(m_eat_sound, 1.3, 0.0, snake->get_eat_sound_speed(), ALLEGRO_PLAYMODE_ONCE, NULL);
+  snake->grow(m_value);
   m_exists = false;
   m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());
   m_spawn_countdown = rand() % m_spawn_countdown_max;

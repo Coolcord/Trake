@@ -14,7 +14,7 @@ class Collision_Table;
 class Snake
 {
   public:
-    Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron);
+    Snake(int player_num, float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron);
     ~Snake();
     void move();
     Rectangle *create_rectangle(Input::Direction direction, float x, float y, int posiiton);
@@ -26,8 +26,10 @@ class Snake
     Input::Direction get_direction();
     float get_max_x();
     float get_max_y();
+    void grow(int value);
     bool is_dead();
     void kill();
+    float get_eat_sound_speed();
   private:
     float m_width; //width and height of each piece
     int m_size; //number of pieces
@@ -42,6 +44,7 @@ class Snake
     Input::Direction m_next_direction;
     bool m_dead;
     bool m_tron;
+    float m_eat_sound_speed;
     ALLEGRO_SAMPLE *m_dead_sound;
 };
 

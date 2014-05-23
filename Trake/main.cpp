@@ -140,10 +140,10 @@ int main(int argc, char **argv){
     ai[i] = NULL;
     snakes[i] = NULL;
   }
-  snakes[0] = new Snake(player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
-  if (num_snakes >= 2) snakes[1] = new Snake(player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
-  if (num_snakes >= 3) snakes[2] = new Snake(player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
-  if (num_snakes >= 4) snakes[3] = new Snake(player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
+  snakes[0] = new Snake(0, player_1_start_x, player_1_start_y, Input::LEFT, snake_length, al_color_name("lawngreen"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 2) snakes[1] = new Snake(1, player_2_start_x, player_2_start_y, Input::DOWN, snake_length, al_color_name("blue"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 3) snakes[2] = new Snake(2, player_3_start_x, player_3_start_y, Input::RIGHT, snake_length, al_color_name("red"), snake_width, max_x, max_y, true, collision_table, tron);
+  if (num_snakes >= 4) snakes[3] = new Snake(3, player_4_start_x, player_4_start_y, Input::UP, snake_length, al_color_name("yellow"), snake_width, max_x, max_y, true, collision_table, tron);
 
   //AI
   for (int i = 0; i < 4; i++)
@@ -182,7 +182,7 @@ int main(int argc, char **argv){
       al_rest(0.1);
       continue;
     }
-    //al_play_sample(soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+
     pellet->handle_state();
     for (int i = 0; i < 4; i++)
     {

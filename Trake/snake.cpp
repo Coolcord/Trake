@@ -8,7 +8,7 @@
 #include <string>
 #include "collision_table.h"
 
-Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
+Snake::Snake(int player_num, float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
 {
   assert(max_x > 0);
   assert(max_y > 0);
@@ -32,6 +32,7 @@ Snake::Snake(float x, float y, Input::Direction direction, int size, ALLEGRO_COL
   m_tron = tron;
   int random = (rand() % 3) + 1;
   m_dead_sound = al_load_sample(("./sounds/squish" + std::to_string(random) + ".wav").c_str());
+  m_eat_sound_speed = 0.7 + ((float)player_num * 0.2);
 
   //Head
   m_pieces->push_back(new Snake_Piece(direction, Snake_Piece::HEAD, new Rectangle(x, y, m_width, m_width, true, m_color)));
@@ -116,8 +117,8 @@ void Snake::move()
   if (collision == Collision_Table::SNAKE)
   {
     m_dead = true;
-    float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.5)) + 0.75;
-    if (m_dead_sound) al_play_sample(m_dead_sound, 1.0, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
+    float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.8)) + 0.6;
+    if (m_dead_sound) al_play_sample(m_dead_sound, 2.5, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
     m_pieces->front()->set_x(prev_x);
     m_pieces->front()->set_y(prev_y);
     this->draw();
@@ -125,7 +126,7 @@ void Snake::move()
   }
   else if (collision == Collision_Table::PELLET)
   {
-    m_collision_table->get_pellet(collision_key)->eat(m_grow);
+    m_collision_table->get_pellet(collision_key)->eat(this);
   }
   m_pieces->front()->draw();
   m_collision_table->insert(collision_key, this);
@@ -313,6 +314,11 @@ float Snake::get_max_y()
   return m_max_y;
 }
 
+void Snake::grow(int value)
+{
+  m_grow += value;
+}
+
 bool Snake::is_dead()
 {
   return m_dead;
@@ -322,4 +328,10 @@ void Snake::kill()
 {
   m_dead = true;
 }
+
+float Snake::get_eat_sound_speed()
+{
+  return m_eat_sound_speed;
+}
+
 

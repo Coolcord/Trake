@@ -35,6 +35,12 @@ void Music::play()
   if (m_song_instance) al_play_sample_instance(m_song_instance);
 }
 
+void Music::speed_up()
+{
+  double speed = al_get_sample_instance_speed(m_song_instance) + 0.0001;
+  al_set_sample_instance_speed(m_song_instance, speed);
+}
+
 void Music::slow_to_stop()
 {
   for (float i = al_get_sample_instance_speed(m_song_instance); i > 0; i -= 0.01)
