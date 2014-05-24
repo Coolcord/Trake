@@ -10,6 +10,7 @@
 #include "snake.h"
 #include "pellet.h"
 #include "music.h"
+#include "menu.h"
 #include "collision_table.h"
 
 /* trake 0 1 1
@@ -107,9 +108,16 @@ int main(int argc, char **argv){
   event = al_create_event_queue();
   al_register_event_source(event, al_get_keyboard_event_source());
   al_register_event_source(event, al_get_display_event_source(display));
+  float snake_width = screen_width/100;
+
+  //Show start menu
+  Menu *menu = new Menu(screen_width, screen_height, snake_width);
+  menu->show();
+
+  al_clear_to_color(al_color_name("black"));
+  al_flip_display();
 
   int snake_length = 5;
-  float snake_width = screen_width/100;
   float max_x = 0;
   float max_y = 0;
   while (max_x < screen_width-(snake_width*2))
