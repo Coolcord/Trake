@@ -2,6 +2,9 @@
 #define MENU_H
 
 #include "rectangle.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <vector>
 
 class Menu
@@ -12,6 +15,7 @@ class Menu
     void show();
   private:
     void draw();
+    void show_main();
     void create_t(float x, float y);
     void create_r(float x, float y);
     void create_a(float x, float y);
@@ -22,6 +26,7 @@ class Menu
     float m_screen_height;
     float m_snake_width;
     float m_thickness;
+    ALLEGRO_FONT *m_font;
     std::vector<Rectangle*> *m_title;
 };
 

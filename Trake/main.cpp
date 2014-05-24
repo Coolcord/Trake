@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
@@ -113,6 +115,8 @@ int main(int argc, char **argv){
   al_install_keyboard();
   al_install_audio();
   al_init_acodec_addon();
+  al_init_font_addon();
+  al_init_ttf_addon();
   al_reserve_samples(32);
   ALLEGRO_EVENT_QUEUE *event = NULL;
   event = al_create_event_queue();

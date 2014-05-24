@@ -1,5 +1,4 @@
 #include "menu.h"
-#include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 #include <iterator>
@@ -11,8 +10,9 @@ Menu::Menu(float screen_width, float screen_height, float snake_width)
   m_screen_height = screen_height;
   m_thickness = 4;
   m_snake_width = snake_width * m_thickness;
+  m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   m_title = new std::vector<Rectangle*>();
-  this->create_title(m_snake_width/2, m_snake_width*2);
+  this->create_title(m_snake_width/2, m_snake_width);
 }
 
 Menu::~Menu()
@@ -22,11 +22,21 @@ Menu::~Menu()
     delete (*iter);
   }
   m_title->clear();
+  al_destroy_font(m_font);
 }
 
 void Menu::show()
 {
+  this->show_main();
+}
+
+void Menu::show_main()
+{
   this->draw();
+  al_draw_text(m_font, al_color_name("white"), m_screen_width / 2, (m_screen_height/8)*5, ALLEGRO_ALIGN_CENTER, "Start");
+  al_draw_text(m_font, al_color_name("white"), m_screen_width / 2, ((m_screen_height/8)*5) + 80, ALLEGRO_ALIGN_CENTER, "Options");
+  al_draw_text(m_font, al_color_name("white"), m_screen_width / 2, ((m_screen_height/8)*5) + 160, ALLEGRO_ALIGN_CENTER, "Exit");
+  al_flip_display();
   al_rest(5);
 }
 
