@@ -27,8 +27,8 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_thickness = (float)i-1;
   m_snake_width = snake_width * m_thickness;
   m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
-  m_move_sound_up = al_load_sample("./sounds/pop1.wav");
-  m_move_sound_down = al_load_sample("./sounds/pop2.wav");
+  m_move_sound_up = al_load_sample("./sounds/pop2.wav");
+  m_move_sound_down = al_load_sample("./sounds/pop1.wav");
   m_game = new Game();
   m_title = new std::vector<Rectangle*>();
   x = (m_screen_width - x)/2;
@@ -53,34 +53,15 @@ void Menu::show()
   this->show_title();
 }
 
-void Menu::handle_input()
-{
-  switch (m_menu_screen)
-  {
-    case Menu::NONE:
-      break;
-    case Menu::TITLE:
-      break;
-    case Menu::PLAYERS:
-      break;
-    case Menu::GAMETYPE:
-      break;
-    case Menu::OPTIONS:
-      break;
-    default:
-      assert(false);
-  }
-}
-
 void Menu::show_title()
 {
   int selection = 0;
+  std::string items[3] = { "Start", "Options", "Exit" };
   while (true)
   {
     m_menu_screen = Menu::TITLE;
     al_clear_to_color(al_color_name("black"));
     this->draw_title_logo();
-    std::string items[3] = { "Start", "Options", "Exit" };
 
     //Draw Selections
     for (int i = 0; i < 3; i++)
@@ -105,22 +86,204 @@ void Menu::show_title()
       switch(e.keyboard.keycode)
       {
         case ALLEGRO_KEY_DOWN:
-          selection = (selection + 1) % 3;
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection = (selection + 1) % 3;
           break;
         case ALLEGRO_KEY_UP:
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
           if (selection < 0) selection = 2;
-          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           break;
         case ALLEGRO_KEY_ENTER:
-          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
-          this->draw_loading();
-          al_flip_display();
-          return;
+          if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+          switch (selection)
+          {
+            case 0: //Start
+              this->show_game_setup();
+              break;
+            case 1: //Options
+              this->show_options();
+              break;
+            case 2: //Exit
+              return;
+            default:
+              assert(false);
+          }
+          break;
       }
     }
   }
+}
+
+void Menu::show_game_setup()
+{
+  int selection = 0;
+  int gametype_selection = 0;
+  int win_selection = 0;
+  int human_players = 1;
+  int ai_players = 3;
+  std::string items[6] = { "Play!", "Game Type:", "Win Condition:", "Human Players:", "AI Players:", "Back" };
+    std::string gametype_items[2] = { "<   Snake   >", "<   Tron   >" };
+    std::string win_condition_items[2] = { "<   Score   >", "<   Survival   >" };
+  while (true)
+  {
+    m_menu_screen = Menu::GAME_SETUP;
+    al_clear_to_color(al_color_name("black"));
+
+    //Draw Selections
+    int y = m_screen_height/50;
+    for (int i = 0; i < 6; i++)
+    {
+      ALLEGRO_COLOR color;
+      if (selection == i)
+      {
+        color = al_color_name("lawngreen");
+      }
+      else
+      {
+        color = al_color_name("lightgray");
+      }
+      al_draw_text(m_font, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
+      y += 80;
+      switch (i)
+      {
+        case 1: //GameType
+          al_draw_text(m_font, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, gametype_items[gametype_selection].c_str());
+          y += 80;
+          break;
+        case 2: //Win Condition
+          al_draw_text(m_font, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, win_condition_items[win_selection].c_str());
+          y += 80;
+          break;
+        case 3: //Human Players
+          al_draw_text(m_font, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(human_players) + "   >").c_str());
+          y += 80;
+          break;
+        case 4: //AI Players
+          al_draw_text(m_font, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(ai_players) + "   >").c_str());
+          y += 80;
+          break;
+      }
+    }
+    al_flip_display();
+    
+    ALLEGRO_EVENT e;
+    al_wait_for_event(m_event, &e);
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      switch(e.keyboard.keycode)
+      {
+        case ALLEGRO_KEY_LEFT:
+          switch (selection)
+          {
+            case 1: //GameType
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --gametype_selection;
+              if (gametype_selection < 0)
+              gametype_selection = 1;
+              break;
+            case 2: //Win Condition
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --win_selection;
+              if (win_selection < 0)
+                win_selection = 1;
+              break;
+            case 3: //Human Players
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --human_players;
+              if (human_players < 0)
+                human_players = 0;
+              if (ai_players == 0 && human_players == 0)
+                human_players = 1;
+              while (ai_players + human_players > 4)
+                --ai_players;
+              break;
+            case 4: //AI Players
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --ai_players;
+              if (ai_players < 0)
+                ai_players = 0;
+              if (ai_players == 0 && human_players == 0)
+                human_players = 1;
+              while (ai_players + human_players > 4)
+                --human_players;
+              break;
+          }
+          break;
+        case ALLEGRO_KEY_RIGHT:
+          switch (selection)
+          {
+            case 1: //GameType
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              gametype_selection = (gametype_selection + 1) % 2;
+              break;
+            case 2: //Win Condition
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              win_selection = (win_selection + 1) % 2;
+              break;
+            case 3: //Human Players
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              ++human_players;
+              if (human_players > 4)
+                human_players = 4;
+              if (ai_players == 0 && human_players == 0)
+                human_players = 1;
+              while (ai_players + human_players > 4)
+                --ai_players;
+              break;
+            case 4: //AI Players
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              ++ai_players;
+              if (ai_players > 4)
+                ai_players = 4;
+              if (ai_players == 0 && human_players == 0)
+                human_players = 1;
+              while (ai_players + human_players > 4)
+                --human_players;
+              break;
+          }
+          break;
+        case ALLEGRO_KEY_DOWN:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection = (selection + 1) % 6;
+          break;
+        case ALLEGRO_KEY_UP:
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection -= 1;
+          if (selection < 0) selection = 5;
+          break;
+        case ALLEGRO_KEY_ENTER:
+          switch (selection)
+          {
+            case 0: //Play!
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              this->draw_loading();
+              al_flip_display();
+              al_rest(3);
+              break;
+            case 5: //Back
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+              return;
+          }
+          break;
+      }
+    }
+  }
+}
+
+void Menu::show_options()
+{
+
+}
+
+void Menu::show_control_setup()
+{
+
+}
+
+void Menu::show_credits()
+{
+
 }
 
 void Menu::draw_loading()

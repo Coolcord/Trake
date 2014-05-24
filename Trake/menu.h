@@ -18,19 +18,24 @@ class Menu
     {
       NONE,
       TITLE,
-      PLAYERS,
-      GAMETYPE,
-      OPTIONS
+      GAME_SETUP,
+      OPTIONS,
+      CONTROL_SETUP,
+      CREDITS
     };
     Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width);
     ~Menu();
     void show();
-    void handle_input();
   private:
+    void show_title();
+    void show_game_setup();
+    void show_options();
+    void show_control_setup();
+    void show_credits();
     void draw();
     void draw_loading();
     void draw_title_logo();
-    void show_title();
+    
     void create_t(float x, float y);
     void create_r(float x, float y);
     void create_a(float x, float y);
