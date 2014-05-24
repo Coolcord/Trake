@@ -46,6 +46,7 @@ class Menu
     int m_selection;
     float m_screen_width;
     float m_screen_height;
+    float m_title_snake_width;
     float m_snake_width;
     float m_thickness;
     Screen m_menu_screen;
