@@ -140,6 +140,7 @@ void Game::run()
   al_flip_display();
   al_rest(3);
 
+  al_flush_event_queue(m_event);
   al_join_thread(input_thread, NULL);
 
   //Deallocate Memory

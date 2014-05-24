@@ -18,7 +18,7 @@ namespace Input
   void read_input(AI *ai[], Snake *snakes[], ALLEGRO_EVENT_QUEUE *event, bool *paused, bool *quit)
   {
     ALLEGRO_EVENT e;
-    al_wait_for_event(event, &e);
+    al_wait_for_event_timed(event, &e, 3);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
       switch(e.keyboard.keycode)

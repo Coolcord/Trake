@@ -49,8 +49,10 @@ class Menu
     float m_title_snake_width;
     float m_snake_width;
     float m_thickness;
+    float m_font_medium_incrementor;
     Screen m_menu_screen;
-    ALLEGRO_FONT *m_font;
+    ALLEGRO_FONT *m_font_medium;
+    ALLEGRO_FONT *m_font_large;
     ALLEGRO_SAMPLE *m_move_sound_down;
     ALLEGRO_SAMPLE *m_move_sound_up;
     Game *m_game;
