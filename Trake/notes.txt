@@ -47,4 +47,6 @@ Exit
 
 To Do:
 Menu
+Game Object
+Scoreboard
 

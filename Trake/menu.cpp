@@ -15,14 +15,24 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_selection = 0;
   m_screen_width = screen_width;
   m_screen_height = screen_height;
-  m_thickness = 4;
+  int i = 0;
+  float title = 0.0;
+  float x = 0.0;
+  do
+  {
+    x = title;
+    ++i;
+    title = snake_width * 24 * (float)i;
+  } while (title < m_screen_width);
+  m_thickness = (float)i-1;
   m_snake_width = snake_width * m_thickness;
   m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   m_move_sound_up = al_load_sample("./sounds/pop1.wav");
   m_move_sound_down = al_load_sample("./sounds/pop2.wav");
   m_game = new Game();
   m_title = new std::vector<Rectangle*>();
-  this->create_title(m_snake_width/2, m_snake_width);
+  x = (m_screen_width - x)/2;
+  this->create_title(x, m_snake_width);
 }
 
 Menu::~Menu()
@@ -121,6 +131,7 @@ void Menu::draw_loading()
 
 void Menu::draw_title_logo()
 {
+  //Title logo's size is m_snake_width * 24
   for (std::vector<Rectangle*>::iterator iter = m_title->begin(); iter != m_title->end(); ++iter)
   {
     if (*iter) (*iter)->draw();
@@ -153,7 +164,7 @@ void Menu::create_r(float x, float y)
     m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
   }
   //Draw the horizontal lines
-  for (int i = 1; i < 4; i++)
+  for (int i = 1; i < 3; i++)
   {
     m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
     if (i != 3) m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
@@ -206,7 +217,7 @@ void Menu::create_e(float x, float y)
     m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
   }
   //Draw the horizontal lines
-  for (int i = 1; i < 4; i++)
+  for (int i = 1; i < 3; i++)
   {
     m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
     m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
