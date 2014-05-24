@@ -1,16 +1,26 @@
 #include "menu.h"
+#include "rectangle.h"
+#include "game.h"
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
+#include <assert.h>
+#include <string>
 #include <iterator>
 
 
-Menu::Menu(float screen_width, float screen_height, float snake_width)
+Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width)
 {
+  m_menu_screen = Menu::NONE;
+  m_event = event;
+  m_selection = 0;
   m_screen_width = screen_width;
   m_screen_height = screen_height;
   m_thickness = 4;
   m_snake_width = snake_width * m_thickness;
   m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
+  m_move_sound_up = al_load_sample("./sounds/pop1.wav");
+  m_move_sound_down = al_load_sample("./sounds/pop2.wav");
+  m_game = new Game();
   m_title = new std::vector<Rectangle*>();
   this->create_title(m_snake_width/2, m_snake_width);
 }
@@ -22,31 +32,99 @@ Menu::~Menu()
     delete (*iter);
   }
   m_title->clear();
+  al_destroy_sample(m_move_sound_down);
+  al_destroy_sample(m_move_sound_up);
   al_destroy_font(m_font);
+  delete m_game;
 }
 
 void Menu::show()
 {
-  this->show_main();
+  this->show_title();
 }
 
-void Menu::show_main()
+void Menu::handle_input()
 {
-  this->draw();
-  al_draw_text(m_font, al_color_name("white"), m_screen_width / 2, (m_screen_height/8)*5, ALLEGRO_ALIGN_CENTER, "Start");
-  al_draw_text(m_font, al_color_name("white"), m_screen_width / 2, ((m_screen_height/8)*5) + 80, ALLEGRO_ALIGN_CENTER, "Options");
-  al_draw_text(m_font, al_color_name("white"), m_screen_width / 2, ((m_screen_height/8)*5) + 160, ALLEGRO_ALIGN_CENTER, "Exit");
-  al_flip_display();
-  al_rest(5);
+  switch (m_menu_screen)
+  {
+    case Menu::NONE:
+      break;
+    case Menu::TITLE:
+      break;
+    case Menu::PLAYERS:
+      break;
+    case Menu::GAMETYPE:
+      break;
+    case Menu::OPTIONS:
+      break;
+    default:
+      assert(false);
+  }
 }
 
-void Menu::draw()
+void Menu::show_title()
+{
+  int selection = 0;
+  while (true)
+  {
+    m_menu_screen = Menu::TITLE;
+    al_clear_to_color(al_color_name("black"));
+    this->draw_title_logo();
+    std::string items[3] = { "Start", "Options", "Exit" };
+
+    //Draw Selections
+    for (int i = 0; i < 3; i++)
+    {
+      ALLEGRO_COLOR color;
+      if (selection == i)
+      {
+        color = al_color_name("lawngreen");
+      }
+      else
+      {
+        color = al_color_name("lightgray");
+      }
+      al_draw_text(m_font, color, m_screen_width/2, ((m_screen_height/8)*5)+(i*80), ALLEGRO_ALIGN_CENTER, items[i].c_str());
+    }
+    al_flip_display();
+    
+    ALLEGRO_EVENT e;
+    al_wait_for_event(m_event, &e);
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      switch(e.keyboard.keycode)
+      {
+        case ALLEGRO_KEY_DOWN:
+          selection = (selection + 1) % 3;
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          break;
+        case ALLEGRO_KEY_UP:
+          selection -= 1;
+          if (selection < 0) selection = 2;
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          break;
+        case ALLEGRO_KEY_ENTER:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+          this->draw_loading();
+          al_flip_display();
+          return;
+      }
+    }
+  }
+}
+
+void Menu::draw_loading()
+{
+  al_clear_to_color(al_color_name("black"));
+  al_draw_text(m_font, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
+}
+
+void Menu::draw_title_logo()
 {
   for (std::vector<Rectangle*>::iterator iter = m_title->begin(); iter != m_title->end(); ++iter)
   {
     if (*iter) (*iter)->draw();
   }
-  al_flip_display();
 }
 
 void Menu::create_t(float x, float y)

@@ -19,7 +19,7 @@ bool is_anyone_alive(Snake *snakes[])
 {
   for (int i = 0; i < 4; i++)
   {
-    if (!snakes[i]->is_dead())
+    if (snakes[i] && !snakes[i]->is_dead())
       return true;
   }
   return false;
@@ -125,11 +125,8 @@ int main(int argc, char **argv){
   float snake_width = screen_width/100;
 
   //Show start menu
-  Menu *menu = new Menu(screen_width, screen_height, snake_width);
+  Menu *menu = new Menu(event, screen_width, screen_height, snake_width);
   menu->show();
-
-  al_clear_to_color(al_color_name("black"));
-  al_flip_display();
 
   int snake_length = 5;
   float max_x = 0;
@@ -197,6 +194,8 @@ int main(int argc, char **argv){
   ALLEGRO_THREAD *input_thread = al_create_thread(Input::Input_Thread, &data);
   al_start_thread(input_thread);
 
+  al_clear_to_color(al_color_name("black"));
+  al_flip_display();
   while (!quit)
   {
     if (paused)
@@ -222,6 +221,11 @@ int main(int argc, char **argv){
   }
   music->slow_to_stop();
 
+  ALLEGRO_FONT *font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
+  al_clear_to_color(al_color_name("black"));
+  al_draw_text(font, al_color_name("lawngreen"), screen_width/2, screen_height/2, ALLEGRO_ALIGN_CENTER, "Game Over");
+  al_flip_display();
+  al_rest(3);
   //al_destroy_sample(soundEffect);
   for (int i = 0; i < 4; i++)
   {
@@ -231,6 +235,7 @@ int main(int argc, char **argv){
   delete pellet;
   delete collision_table;
   delete music;
+  al_destroy_font(font);
   al_destroy_display(display);
 
   return 0;

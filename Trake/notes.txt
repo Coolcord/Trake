@@ -1,0 +1,50 @@
+Start
+-->
+  //Add these up to get total snakes
+  Number of Players:
+  <0 - 4>
+  Number of AI:
+  <0 - 4>
+  Next
+  Back
+  
+  -->
+    GameType:
+    <Snake, Tron>
+
+    Win Condition:
+    <Score, Survival>
+
+    Rounds:
+    <1 - 10>
+    Start
+    Back
+
+Options
+-->
+  Music
+  <0 - 10>
+
+  Sound Effects
+  <0 - 10>
+
+  Controls
+  -->
+    Player 1 (Green)
+    <Left, Right, Down, Up>
+    Player 2 (Blue)
+    <Left, Right, Down, Up>
+    Player 3 (Yellow)
+    <Left, Right, Down, Up>
+    Player 4 (Red)
+    <Left, Right, Down, Up>
+
+Exit
+
+
+
+
+
+To Do:
+Menu
+
