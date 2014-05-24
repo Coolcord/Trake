@@ -7,6 +7,7 @@ class Rectangle
 {
   public:
     Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color);
+    Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color, float thickness);
     ~Rectangle() {}
     void draw();
     float get_x();

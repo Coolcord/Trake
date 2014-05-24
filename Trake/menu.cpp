@@ -9,9 +9,10 @@ Menu::Menu(float screen_width, float screen_height, float snake_width)
 {
   m_screen_width = screen_width;
   m_screen_height = screen_height;
-  m_snake_width = snake_width;
+  m_thickness = 4;
+  m_snake_width = snake_width * m_thickness;
   m_title = new std::vector<Rectangle*>();
-  this->create_title(0.0, 0.0);
+  this->create_title(m_snake_width/2, m_snake_width*2);
 }
 
 Menu::~Menu()
@@ -45,13 +46,13 @@ void Menu::create_t(float x, float y)
   //Start at the top
   for (int i = 0; i < 5; i++)
   {
-    m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color));
+    m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
     if (i == 2) vertical_x = x+(i*m_snake_width);
   }
   //Finish with a vertical line
   for (int i = 1; i < 5; i++)
   {
-    m_title->push_back(new Rectangle(vertical_x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color));
+    m_title->push_back(new Rectangle(vertical_x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
   }
 }
 
@@ -61,22 +62,76 @@ void Menu::create_r(float x, float y)
   //Start with a vertical line
   for (int i = 0; i < 5; i++)
   {
-    m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color));
+    m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
   }
   //Draw the horizontal lines
   for (int i = 1; i < 4; i++)
   {
-    m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color));
-    if (i != 3) m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color));
+    m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
+    if (i != 3) m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
   }
-  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(1*m_snake_width), m_snake_width, m_snake_width, false, color));
-  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(3*m_snake_width), m_snake_width, m_snake_width, false, color));
-  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(4*m_snake_width), m_snake_width, m_snake_width, false, color));
+  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(1*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(3*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(4*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+}
+
+void Menu::create_a(float x, float y)
+{
+  ALLEGRO_COLOR color = al_color_name("white");
+  //Draw Vertical Lines
+  for (int i = 1; i < 5; i++)
+  {
+    m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+    m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  }
+  //Draw Horizontal Lines
+  for (int i = 1; i < 3; i++)
+  {
+    m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  }
+}
+
+void Menu::create_k(float x, float y)
+{
+  ALLEGRO_COLOR color = al_color_name("red");
+  //Draw the left side
+  for (int i = 0; i < 5; i++)
+  {
+    m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  }
+  //Draw the rest of the letter
+  m_title->push_back(new Rectangle(x+(1*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(2*m_snake_width), y+(1*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(2*m_snake_width), y+(3*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(3*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
+  m_title->push_back(new Rectangle(x+(3*m_snake_width), y+(4*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+
+}
+
+void Menu::create_e(float x, float y)
+{
+  ALLEGRO_COLOR color = al_color_name("yellow");
+  //Draw the left side
+  for (int i = 0; i < 5; i++)
+  {
+    m_title->push_back(new Rectangle(x, y+(i*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  }
+  //Draw the horizontal lines
+  for (int i = 1; i < 4; i++)
+  {
+    m_title->push_back(new Rectangle(x+(i*m_snake_width), y, m_snake_width, m_snake_width, false, color, m_thickness));
+    m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(2*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+    m_title->push_back(new Rectangle(x+(i*m_snake_width), y+(4*m_snake_width), m_snake_width, m_snake_width, false, color, m_thickness));
+  }
 }
 
 void Menu::create_title(float x, float y)
 {
   this->create_t(x, y);
   this->create_r(x+(6*m_snake_width), y);
+  this->create_a(x+(11*m_snake_width), y);
+  this->create_k(x+(16*m_snake_width), y);
+  this->create_e(x+(21*m_snake_width), y);
 }
 

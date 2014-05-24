@@ -12,6 +12,17 @@ Rectangle::Rectangle(float x, float y, float width, float height, bool filled, A
   m_thickness = 1;
 }
 
+Rectangle::Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color, float thickness)
+{
+  m_x = x;
+  m_y = y;
+  m_width = width;
+  m_height = height;
+  m_filled = filled;
+  m_color = color;
+  m_thickness = thickness;
+}
+
 void Rectangle::draw()
 {
   if (m_filled)

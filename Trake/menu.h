@@ -14,10 +14,14 @@ class Menu
     void draw();
     void create_t(float x, float y);
     void create_r(float x, float y);
+    void create_a(float x, float y);
+    void create_k(float x, float y);
+    void create_e(float x, float y);
     void create_title(float x, float y);
     float m_screen_width;
     float m_screen_height;
     float m_snake_width;
+    float m_thickness;
     std::vector<Rectangle*> *m_title;
 };
 

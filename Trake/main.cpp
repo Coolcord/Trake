@@ -13,6 +13,16 @@
 #include "menu.h"
 #include "collision_table.h"
 
+bool is_anyone_alive(Snake *snakes[])
+{
+  for (int i = 0; i < 4; i++)
+  {
+    if (!snakes[i]->is_dead())
+      return true;
+  }
+  return false;
+}
+
 /* trake 0 1 1
          ^ ^ ^
          | | |
@@ -202,6 +212,8 @@ int main(int argc, char **argv){
       al_rest(wait_time);
       wait_time -= 0.00001; //slowly get faster
     }
+    if (!is_anyone_alive(snakes))
+      quit = true;
     al_flip_display();
   }
   music->slow_to_stop();
