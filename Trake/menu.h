@@ -43,7 +43,10 @@ class Menu
     void create_e(float x, float y);
     void create_title(float x, float y);
     ALLEGRO_EVENT_QUEUE *m_event;
-    int m_selection;
+    int m_gametype_selection;
+    int m_win_selection;
+    int m_human_players;
+    int m_ai_players;
     float m_screen_width;
     float m_screen_height;
     float m_title_snake_width;
