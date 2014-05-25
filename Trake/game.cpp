@@ -128,8 +128,16 @@ void Game::run()
       al_rest(wait_time);
       wait_time -= 0.00001; //slowly get faster
     }
-    if (!is_anyone_alive())
-      quit = true;
+    if (m_win_condition == 0)
+    {
+      if (!is_anyone_alive())
+        quit = true;
+    }
+    else
+    {
+      if (how_many_are_alive() <= 1)
+        quit = true;
+    }
     al_flip_display();
   }
   m_music->slow_to_stop();
@@ -167,5 +175,16 @@ bool Game::is_anyone_alive()
       return true;
   }
   return false;
+}
+
+int Game::how_many_are_alive()
+{
+  int alive = 0;
+  for (int i = 0; i < 4; i++)
+  {
+    if (m_snakes[i] && !m_snakes[i]->is_dead())
+      ++alive;
+  }
+  return alive;
 }
 

@@ -20,6 +20,7 @@ class Game
     void run();
   private:
     bool is_anyone_alive();
+    int how_many_are_alive();
     float m_screen_width;
     float m_screen_height;
     float m_snake_width;
