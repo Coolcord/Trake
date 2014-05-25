@@ -33,7 +33,6 @@ class Menu
     void show_control_setup();
     void show_credits();
     void draw();
-    void draw_loading();
     void draw_title_logo();
     
     void create_t(float x, float y);

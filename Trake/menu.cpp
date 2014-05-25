@@ -314,8 +314,6 @@ void Menu::show_game_setup()
           {
             case 0: //Play!
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
-              this->draw_loading();
-              al_flip_display();
               m_game = new Game(m_event, m_screen_width, m_screen_height, m_snake_width, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds);
               m_game->run();
               delete m_game;
@@ -457,12 +455,6 @@ void Menu::show_control_setup()
 void Menu::show_credits()
 {
 
-}
-
-void Menu::draw_loading()
-{
-  al_clear_to_color(al_color_name("black"));
-  al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
 }
 
 void Menu::draw_title_logo()
