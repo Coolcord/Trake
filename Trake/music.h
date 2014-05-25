@@ -7,7 +7,7 @@
 class Music
 {
   public:
-    Music(bool tron);
+    Music(float volume, bool tron);
     ~Music();
     void play();
     void speed_up();
@@ -18,6 +18,7 @@ class Music
     bool m_tron;
     unsigned int m_position;
     ALLEGRO_SAMPLE *m_song;
+    float m_volume;
     ALLEGRO_SAMPLE_INSTANCE *m_song_instance;
 };
 

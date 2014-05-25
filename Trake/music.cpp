@@ -2,8 +2,9 @@
 #include <allegro5/allegro.h>
 #include <string>
 
-Music::Music(bool tron)
+Music::Music(float volume, bool tron)
 {
+  m_volume = volume*0.1;
   m_tron = tron;
   int random = (rand() % 3) + 1;
   std::string song_name = "./music/";
@@ -20,6 +21,7 @@ Music::Music(bool tron)
     m_song_instance = NULL;
   if (m_song_instance)
   {
+    al_set_sample_instance_gain(m_song_instance, m_volume);
     al_set_sample_instance_playmode(m_song_instance, ALLEGRO_PLAYMODE_LOOP);
     al_attach_sample_instance_to_mixer(m_song_instance, al_get_default_mixer());
   }
@@ -33,7 +35,8 @@ Music::~Music()
 
 void Music::play()
 {
-  if (m_song_instance) al_play_sample_instance(m_song_instance);
+  if (m_song_instance && m_volume > 0)
+    al_play_sample_instance(m_song_instance);
 }
 
 void Music::speed_up()
@@ -55,7 +58,7 @@ void Music::slow_to_stop()
 
 void Music::pause()
 {
-  if (m_song_instance)
+  if (m_song_instance && m_volume > 0)
   {
     m_position = al_get_sample_instance_position(m_song_instance);
     al_stop_sample_instance(m_song_instance);
@@ -64,8 +67,9 @@ void Music::pause()
 
 void Music::resume()
 {
-  if (m_song_instance)
+  if (m_song_instance && m_volume > 0)
   {
+    al_set_sample_instance_gain(m_song_instance, m_volume);
     al_set_sample_instance_position(m_song_instance, m_position);
     al_play_sample_instance(m_song_instance);
   }
