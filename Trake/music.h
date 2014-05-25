@@ -12,8 +12,11 @@ class Music
     void play();
     void speed_up();
     void slow_to_stop();
+    void pause();
+    void resume();
   private:
     bool m_tron;
+    unsigned int m_position;
     ALLEGRO_SAMPLE *m_song;
     ALLEGRO_SAMPLE_INSTANCE *m_song_instance;
 };

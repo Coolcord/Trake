@@ -86,6 +86,7 @@ void Game::run()
   }
 
   //Prepare Input Thread
+  m_music = new Music(m_tron);
   bool paused = false;
   bool quit = false;
   float wait_time = 0.05;
@@ -95,6 +96,7 @@ void Game::run()
     data.ai[i] = m_ai[i];
     data.snakes[i] = m_snakes[i];
   }
+  data.music = m_music;
   data.event = m_event;
   data.paused = &paused;
   data.quit = &quit;
@@ -102,7 +104,6 @@ void Game::run()
   al_start_thread(input_thread);
 
   //Start Music
-  m_music = new Music(m_tron);
   m_music->play();
 
   //Clear the Screen

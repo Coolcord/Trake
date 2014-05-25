@@ -5,6 +5,7 @@
 
 class AI;
 class Snake;
+class Music;
 
 namespace Input
 {
@@ -13,6 +14,7 @@ namespace Input
     AI *ai[4];
     Snake *snakes[4];
     ALLEGRO_EVENT_QUEUE *event;
+    Music *music;
     bool *paused;
     bool *quit;
   };
@@ -27,7 +29,7 @@ namespace Input
   };
 
   void *Input_Thread(ALLEGRO_THREAD *thread, void *arg);
-  void read_input(AI *ai[], Snake *snakes[], ALLEGRO_EVENT_QUEUE *event, bool *paused, bool *quit);
+  void read_input(AI *ai[], Snake *snakes[], ALLEGRO_EVENT_QUEUE *event, Music *music, bool *paused, bool *quit);
 }
 
 #endif

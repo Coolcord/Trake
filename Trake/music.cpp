@@ -7,6 +7,7 @@ Music::Music(bool tron)
   m_tron = tron;
   int random = (rand() % 3) + 1;
   std::string song_name = "./music/";
+  m_position = 0;
   if (m_tron)
     song_name += "tron";
   else
@@ -48,5 +49,26 @@ void Music::slow_to_stop()
     al_set_sample_instance_speed(m_song_instance, i);
     al_rest(0.02);
   }
-  al_rest(0.1);
+  al_rest(0.2);
+  al_stop_sample_instance(m_song_instance);
 }
+
+void Music::pause()
+{
+  if (m_song_instance)
+  {
+    m_position = al_get_sample_instance_position(m_song_instance);
+    al_stop_sample_instance(m_song_instance);
+  }
+}
+
+void Music::resume()
+{
+  if (m_song_instance)
+  {
+    al_set_sample_instance_position(m_song_instance, m_position);
+    al_play_sample_instance(m_song_instance);
+  }
+}
+
+
