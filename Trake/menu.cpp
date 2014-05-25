@@ -18,6 +18,8 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_selection = 0;
   m_screen_width = screen_width;
   m_screen_height = screen_height;
+  m_music_level = 10;
+  m_sound_effects_level = 10;
   int i = 0;
   float title = 0.0;
   float x = 0.0;
@@ -86,7 +88,6 @@ void Menu::show_title()
     al_flip_display();
     
     ALLEGRO_EVENT e;
-    assert(m_event);
     al_wait_for_event(m_event, &e);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
@@ -142,7 +143,7 @@ void Menu::show_game_setup()
     std::string text = "";
 
     //Draw Selections
-    int y = m_screen_height/50;
+    float y = m_screen_height/50;
     for (int i = 0; i < 6; i++)
     {
       ALLEGRO_COLOR color;
@@ -309,7 +310,114 @@ void Menu::show_game_setup()
 
 void Menu::show_options()
 {
+  int selection = 0;
+  std::string items[5] = { "Music:", "Sound Effects:", "Controls", "Credits", "Back" };
+  while (true)
+  {
+    m_menu_screen = Menu::OPTIONS;
+    al_clear_to_color(al_color_name("black"));
 
+    //Draw Selections
+    float y = m_screen_height/50;
+    for (int i = 0; i < 5; i++)
+    {
+      ALLEGRO_COLOR color;
+      if (selection == i)
+      {
+        color = al_color_name("lawngreen");
+      }
+      else
+      {
+        color = al_color_name("lightgray");
+      }
+      al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
+      y += m_font_medium_incrementor;
+      switch (i)
+      {
+        case 0:
+          al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_music_level) + "   >").c_str());
+          y += m_font_medium_incrementor;
+          break;
+        case 1:
+          al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_sound_effects_level) + "   >").c_str());
+          y += m_font_medium_incrementor*2;
+          break;
+        case 3:
+          y += m_font_medium_incrementor;
+          break;
+      }
+    }
+    al_flip_display();
+    
+    ALLEGRO_EVENT e;
+    al_wait_for_event(m_event, &e);
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      switch(e.keyboard.keycode)
+      {
+        case ALLEGRO_KEY_LEFT:
+          switch (selection)
+          {
+            case 0: //Music level
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --m_music_level;
+              if (m_music_level < 0)
+                m_music_level = 0;
+              break;
+            case 1: //Sound effects level
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --m_sound_effects_level;
+              if (m_sound_effects_level < 0)
+                m_sound_effects_level = 0;
+              break;
+          }
+          break;
+        case ALLEGRO_KEY_RIGHT:
+          switch (selection)
+          {
+            case 0: //Music level
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              ++m_music_level;
+              if (m_music_level > 10)
+                m_music_level = 10;
+              break;
+            case 1: //Sound effects level
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              ++m_sound_effects_level;
+              if (m_sound_effects_level > 10)
+                m_sound_effects_level = 10;
+              break;
+          }
+          break;
+        case ALLEGRO_KEY_DOWN:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection = (selection + 1) % 5;
+          break;
+        case ALLEGRO_KEY_UP:
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          --selection;
+          if (selection < 0)
+            selection = 4;
+          break;
+        case ALLEGRO_KEY_ENTER:
+          switch (selection)
+          {
+            case 2: //Controls
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              this->show_control_setup();
+              break;
+            case 3: //Credits
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              this->show_credits();
+              break;
+            case 4: //Back
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+              return;
+          }
+          break;
+      }
+    }
+  }
 }
 
 void Menu::show_control_setup()

@@ -46,7 +46,8 @@ Exit
 
 
 To Do:
-Menu
-Game Object
+Options Menu
 Scoreboard
+Player 3 and 4 Support
+Make menus scale with resolution
 

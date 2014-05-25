@@ -50,6 +50,8 @@ class Menu
     float m_snake_width;
     float m_thickness;
     float m_font_medium_incrementor;
+    int m_music_level;
+    int m_sound_effects_level;
     Screen m_menu_screen;
     ALLEGRO_FONT *m_font_medium;
     ALLEGRO_FONT *m_font_large;
