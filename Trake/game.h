@@ -11,6 +11,7 @@ class Collision_Table;
 class Pellet;
 class Snake;
 class Music;
+class Scoreboard;
 
 class Game
 {
@@ -51,6 +52,7 @@ class Game
     Collision_Table *m_collision_table;
     Pellet *m_pellet;
     Music *m_music;
+    Scoreboard *m_scoreboard;
 };
 
 #endif

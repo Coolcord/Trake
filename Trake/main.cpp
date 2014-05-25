@@ -54,6 +54,7 @@ int main(int argc, char **argv){
   Menu *menu = new Menu(event, screen_width, screen_height, snake_width);
   menu->show();
 
+  delete menu;
   al_destroy_event_queue(event);
   al_destroy_display(display);
   return 0;

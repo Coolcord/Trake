@@ -5,6 +5,7 @@
 #include "pellet.h"
 #include "snake.h"
 #include "music.h"
+#include "scoreboard.h"
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 
@@ -111,6 +112,9 @@ void Game::run()
     ALLEGRO_THREAD *input_thread = al_create_thread(Input::Input_Thread, &data);
     al_start_thread(input_thread);
 
+    //Prepare the Scoreboard
+    m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_max_x, m_max_y, m_num_snakes, m_snakes);
+
     //Start Music
     m_music->play();
 
@@ -132,6 +136,7 @@ void Game::run()
         if (m_ai[i]) m_ai[i]->read_input();
         if (m_snakes[i]) m_snakes[i]->move();
       }
+      m_scoreboard->draw();
       if (wait_time > 0)
       {
         al_rest(wait_time);
@@ -176,6 +181,8 @@ void Game::run()
       delete m_ai[i];
       m_ai[i] = NULL;
     }
+    delete m_scoreboard;
+    m_scoreboard = NULL;
     delete m_pellet;
     m_pellet = NULL;
     delete m_collision_table;
