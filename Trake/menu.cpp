@@ -98,11 +98,11 @@ void Menu::show_title()
       switch(e.keyboard.keycode)
       {
         case ALLEGRO_KEY_DOWN:
-          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 3;
           break;
         case ALLEGRO_KEY_UP:
-          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
           if (selection < 0) selection = 2;
           break;
@@ -110,15 +110,15 @@ void Menu::show_title()
           switch (selection)
           {
             case 0: //Start
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_game_setup();
               break;
             case 1: //Options
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_options();
               break;
             case 2: //Exit
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
               al_rest(2);
               return;
             default:
@@ -208,7 +208,7 @@ void Menu::show_game_setup()
           switch (selection)
           {
             case 1: //GameType
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_gametype_selection;
               if (m_gametype_selection < 0)
               m_gametype_selection = 1;
@@ -216,20 +216,20 @@ void Menu::show_game_setup()
             case 2: //Win Condition
               if (m_ai_players + m_human_players > 1)
               {
-                if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+                if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
                 --m_win_selection;
                 if (m_win_selection < 0)
                   m_win_selection = 1;
               }
               break;
             case 3: //Rounds
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_rounds;
               if (m_rounds < 1)
                 m_rounds = 1;
               break;
             case 4: //Human Players
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_human_players;
               if (m_human_players < 0)
                 m_human_players = 0;
@@ -241,7 +241,7 @@ void Menu::show_game_setup()
                 m_win_selection = 0;
               break;
             case 5: //AI Players
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_ai_players;
               if (m_ai_players < 0)
                 m_ai_players = 0;
@@ -258,24 +258,24 @@ void Menu::show_game_setup()
           switch (selection)
           {
             case 1: //GameType
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               m_gametype_selection = (m_gametype_selection + 1) % 2;
               break;
             case 2: //Win Condition
               if (m_ai_players + m_human_players > 1)
               {
-                if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+                if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
                 m_win_selection = (m_win_selection + 1) % 2;
               }
               break;
             case 3: //Rounds
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_rounds;
               if (m_rounds > 10)
                 m_rounds = 10;
               break;
             case 4: //Human Players
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_human_players;
               if (m_human_players > 4)
                 m_human_players = 4;
@@ -287,7 +287,7 @@ void Menu::show_game_setup()
                 m_win_selection = 0;
               break;
             case 5: //AI Players
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_ai_players;
               if (m_ai_players > 4)
                 m_ai_players = 4;
@@ -301,11 +301,11 @@ void Menu::show_game_setup()
           }
           break;
         case ALLEGRO_KEY_DOWN:
-          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 7;
           break;
         case ALLEGRO_KEY_UP:
-          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
           if (selection < 0) selection = 6;
           break;
@@ -313,14 +313,14 @@ void Menu::show_game_setup()
           switch (selection)
           {
             case 0: //Play!
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               m_game = new Game(m_event, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds);
               m_game->run();
               delete m_game;
               m_game = NULL;
               return;
             case 6: //Back
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
               return;
           }
           break;
@@ -386,16 +386,16 @@ void Menu::show_options()
           switch (selection)
           {
             case 0: //Music level
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_music_level;
               if (m_music_level < 0)
                 m_music_level = 0;
               break;
             case 1: //Sound effects level
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_sound_effects_level;
               if (m_sound_effects_level < 0)
                 m_sound_effects_level = 0;
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               break;
           }
           break;
@@ -403,13 +403,13 @@ void Menu::show_options()
           switch (selection)
           {
             case 0: //Music level
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_music_level;
               if (m_music_level > 10)
                 m_music_level = 10;
               break;
             case 1: //Sound effects level
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_sound_effects_level;
               if (m_sound_effects_level > 10)
                 m_sound_effects_level = 10;
@@ -417,11 +417,11 @@ void Menu::show_options()
           }
           break;
         case ALLEGRO_KEY_DOWN:
-          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 5;
           break;
         case ALLEGRO_KEY_UP:
-          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           --selection;
           if (selection < 0)
             selection = 4;
@@ -430,15 +430,15 @@ void Menu::show_options()
           switch (selection)
           {
             case 2: //Controls
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_control_setup();
               break;
             case 3: //Credits
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_credits();
               break;
             case 4: //Back
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
               return;
           }
           break;

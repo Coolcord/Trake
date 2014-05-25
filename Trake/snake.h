@@ -14,7 +14,7 @@ class Collision_Table;
 class Snake
 {
   public:
-    Snake(int player_num, float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron);
+    Snake(int player_num, float x, float y, float volume, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron);
     ~Snake();
     void move();
     Rectangle *create_rectangle(Input::Direction direction, float x, float y, int posiiton);
@@ -38,6 +38,7 @@ class Snake
     int m_grow; //the amount left for the snake to grow
     float m_max_x;
     float m_max_y;
+    float m_volume;
     bool m_wrap;
     Collision_Table *m_collision_table;
     bool m_changing_direction;

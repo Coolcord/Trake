@@ -11,7 +11,7 @@ class Collision_Table;
 class Pellet
 {
   public:
-    Pellet(float width, float max_x, float max_y, int spawn_countdown_max, Collision_Table *collision_table, bool tron);
+    Pellet(float width, float max_x, float max_y, float volume, int spawn_countdown_max, Collision_Table *collision_table, bool tron);
     ~Pellet();
     void handle_state();
     void eat(Snake *snake);
@@ -23,6 +23,7 @@ class Pellet
     float m_width;
     float m_max_x;
     float m_max_y;
+    float m_volume;
     int m_value;
     bool m_exists;
     bool m_tron;

@@ -8,7 +8,7 @@
 #include <string>
 #include "collision_table.h"
 
-Snake::Snake(int player_num, float x, float y, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
+Snake::Snake(int player_num, float x, float y, float volume, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
 {
   assert(max_x > 0);
   assert(max_y > 0);
@@ -24,6 +24,7 @@ Snake::Snake(int player_num, float x, float y, Input::Direction direction, int s
   m_grow = 0;
   m_max_x = max_x;
   m_max_y = max_y;
+  m_volume = volume * 0.1;
   m_wrap = wrap;
   m_collision_table = collision_table;
   m_dead = false;
@@ -118,7 +119,7 @@ void Snake::move()
   {
     m_dead = true;
     float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.8)) + 0.6;
-    if (m_dead_sound) al_play_sample(m_dead_sound, 2.5, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
+    if (m_dead_sound) al_play_sample(m_dead_sound, 2.5*m_volume, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
     m_pieces->front()->set_x(prev_x);
     m_pieces->front()->set_y(prev_y);
     this->draw();

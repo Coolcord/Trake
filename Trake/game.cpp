@@ -77,13 +77,13 @@ void Game::run()
     m_collision_table = new Collision_Table();
 
     //Initialize Pellet
-    m_pellet = new Pellet(m_snake_width, m_max_x, m_max_y, m_max_spawn_time, m_collision_table, m_tron);
+    m_pellet = new Pellet(m_snake_width, m_max_x, m_max_y, m_sound_effects_level, m_max_spawn_time, m_collision_table, m_tron);
 
     //Initialize Snakes
-    m_snakes[0] = new Snake(0, m_player_1_start_x, m_player_1_start_y, Input::LEFT, m_start_snake_length, al_color_name("lawngreen"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
-    if (m_num_snakes >= 2) m_snakes[1] = new Snake(1, m_player_2_start_x, m_player_2_start_y, Input::DOWN, m_start_snake_length, al_color_name("blue"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
-    if (m_num_snakes >= 3) m_snakes[2] = new Snake(2, m_player_3_start_x, m_player_3_start_y, Input::RIGHT, m_start_snake_length, al_color_name("red"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
-    if (m_num_snakes >= 4) m_snakes[3] = new Snake(3, m_player_4_start_x, m_player_4_start_y, Input::UP, m_start_snake_length, al_color_name("yellow"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
+    m_snakes[0] = new Snake(0, m_player_1_start_x, m_player_1_start_y, m_sound_effects_level, Input::LEFT, m_start_snake_length, al_color_name("lawngreen"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
+    if (m_num_snakes >= 2) m_snakes[1] = new Snake(1, m_player_2_start_x, m_player_2_start_y, m_sound_effects_level, Input::DOWN, m_start_snake_length, al_color_name("blue"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
+    if (m_num_snakes >= 3) m_snakes[2] = new Snake(2, m_player_3_start_x, m_player_3_start_y, m_sound_effects_level, Input::RIGHT, m_start_snake_length, al_color_name("red"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
+    if (m_num_snakes >= 4) m_snakes[3] = new Snake(3, m_player_4_start_x, m_player_4_start_y, m_sound_effects_level, Input::UP, m_start_snake_length, al_color_name("yellow"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
 
     //Initialize AI
     for (int i = 0; i < 4; i++)
