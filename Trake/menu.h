@@ -45,6 +45,7 @@ class Menu
     ALLEGRO_EVENT_QUEUE *m_event;
     int m_gametype_selection;
     int m_win_selection;
+    int m_rounds;
     int m_human_players;
     int m_ai_players;
     float m_screen_width;

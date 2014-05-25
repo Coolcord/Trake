@@ -15,7 +15,7 @@ class Music;
 class Game
 {
   public:
-    Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, int human_players, int ai_players, int gametype, int win_condtion);
+    Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, int human_players, int ai_players, int gametype, int win_condtion, int rounds);
     ~Game();
     void run();
   private:
@@ -28,6 +28,7 @@ class Game
     float m_max_y;
     int m_num_snakes;
     int m_num_ai;
+    int m_rounds;
     bool m_tron;
     int m_win_condition;
     int m_start_snake_length;

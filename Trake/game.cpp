@@ -8,7 +8,7 @@
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, int human_players, int ai_players, int gametype, int win_condition)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, int human_players, int ai_players, int gametype, int win_condition, int rounds)
 {
   assert(event);
   assert(human_players + ai_players <= 4);
@@ -19,6 +19,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_width = screen_width;
   m_screen_height = screen_height;
   m_snake_width = snake_width;
+  m_rounds = rounds;
   m_max_x = 0;
   m_max_y = 0;
   while (m_max_x < m_screen_width-(m_snake_width*2))

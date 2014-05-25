@@ -17,6 +17,7 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_event = event;
   m_gametype_selection = 0;
   m_win_selection = 0;
+  m_rounds = 1;
   m_human_players = 1;
   m_ai_players = 3;
   m_screen_width = screen_width;
@@ -35,8 +36,8 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_thickness = (float)i-1;
   m_snake_width = snake_width;
   m_title_snake_width = snake_width * m_thickness;
-  m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", 52, 0);
-  m_font_medium_incrementor = 60;
+  m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", 42, 0);
+  m_font_medium_incrementor = 40;
   m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   m_move_sound_up = al_load_sample("./sounds/pop2.wav");
   m_move_sound_down = al_load_sample("./sounds/pop1.wav");
@@ -132,7 +133,7 @@ void Menu::show_title()
 void Menu::show_game_setup()
 {
   int selection = 0;
-  std::string items[6] = { "Play!", "Game Type:", "Win Condition:", "Human Players:", "AI Players:", "Back" };
+  std::string items[7] = { "Play!", "Game Type:", "Win Condition:", "Rounds:", "Human Players:", "AI Players:", "Back" };
     std::string gametype_items[2] = { "<   Snake   >", "<   Tron   >" };
     std::string win_condition_items[2] = { "Score", "Survival" };
   while (true)
@@ -143,7 +144,7 @@ void Menu::show_game_setup()
 
     //Draw Selections
     float y = m_screen_height/50;
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 7; i++)
     {
       ALLEGRO_COLOR color;
       if (selection == i)
@@ -155,32 +156,43 @@ void Menu::show_game_setup()
         color = al_color_name("lightgray");
       }
       al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
-      y += m_font_medium_incrementor;
       switch (i)
       {
         case 0: //Play!
-          y += m_font_medium_incrementor / 2;
+          y += m_font_medium_incrementor*2;
           break;
         case 1: //GameType
+          y += m_font_medium_incrementor;
           al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, gametype_items[m_gametype_selection].c_str());
           y += m_font_medium_incrementor;
+          y += m_font_medium_incrementor/2;
           break;
         case 2: //Win Condition
+          y += m_font_medium_incrementor;
           if (m_ai_players + m_human_players == 1)
                 text = win_condition_items[m_win_selection];
           else
               text = "<   " + win_condition_items[m_win_selection] + "   >";
           al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
           y += m_font_medium_incrementor;
+          y += m_font_medium_incrementor/2;
           break;
-        case 3: //Human Players
+        case 3: //Rounds
+          y += m_font_medium_incrementor;
+          al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_rounds) + "   >").c_str());
+          y += m_font_medium_incrementor;
+          y += m_font_medium_incrementor/2;
+          break;
+        case 4: //Human Players
+          y += m_font_medium_incrementor;
           al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_human_players) + "   >").c_str());
           y += m_font_medium_incrementor;
+          y += m_font_medium_incrementor/2;
           break;
-        case 4: //AI Players
-          al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_ai_players) + "   >").c_str());
+        case 5: //AI Players
           y += m_font_medium_incrementor;
-          y += m_font_medium_incrementor / 2; //extra space before back button
+          al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_ai_players) + "   >").c_str());
+          y += m_font_medium_incrementor*2; //extra space before back button
           break;
       }
     }
@@ -210,7 +222,13 @@ void Menu::show_game_setup()
                   m_win_selection = 1;
               }
               break;
-            case 3: //Human Players
+            case 3: //Rounds
+              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              --m_rounds;
+              if (m_rounds < 1)
+                m_rounds = 1;
+              break;
+            case 4: //Human Players
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_human_players;
               if (m_human_players < 0)
@@ -222,7 +240,7 @@ void Menu::show_game_setup()
               if (m_ai_players + m_human_players == 1)
                 m_win_selection = 0;
               break;
-            case 4: //AI Players
+            case 5: //AI Players
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_ai_players;
               if (m_ai_players < 0)
@@ -250,7 +268,13 @@ void Menu::show_game_setup()
                 m_win_selection = (m_win_selection + 1) % 2;
               }
               break;
-            case 3: //Human Players
+            case 3: //Rounds
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+              ++m_rounds;
+              if (m_rounds > 10)
+                m_rounds = 10;
+              break;
+            case 4: //Human Players
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_human_players;
               if (m_human_players > 4)
@@ -262,7 +286,7 @@ void Menu::show_game_setup()
               if (m_ai_players + m_human_players == 1)
                 m_win_selection = 0;
               break;
-            case 4: //AI Players
+            case 5: //AI Players
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               ++m_ai_players;
               if (m_ai_players > 4)
@@ -278,12 +302,12 @@ void Menu::show_game_setup()
           break;
         case ALLEGRO_KEY_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-          selection = (selection + 1) % 6;
+          selection = (selection + 1) % 7;
           break;
         case ALLEGRO_KEY_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
-          if (selection < 0) selection = 5;
+          if (selection < 0) selection = 6;
           break;
         case ALLEGRO_KEY_ENTER:
           switch (selection)
@@ -292,12 +316,12 @@ void Menu::show_game_setup()
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->draw_loading();
               al_flip_display();
-              m_game = new Game(m_event, m_screen_width, m_screen_height, m_snake_width, m_human_players, m_ai_players, m_gametype_selection, m_win_selection);
+              m_game = new Game(m_event, m_screen_width, m_screen_height, m_snake_width, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds);
               m_game->run();
               delete m_game;
               m_game = NULL;
               return;
-            case 5: //Back
+            case 6: //Back
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
               return;
           }
@@ -330,18 +354,24 @@ void Menu::show_options()
         color = al_color_name("lightgray");
       }
       al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
-      y += m_font_medium_incrementor;
       switch (i)
       {
         case 0:
+          y += m_font_medium_incrementor;
           al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_music_level) + "   >").c_str());
           y += m_font_medium_incrementor;
+          y += m_font_medium_incrementor/2;
           break;
         case 1:
+          y += m_font_medium_incrementor;
           al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_sound_effects_level) + "   >").c_str());
-          y += m_font_medium_incrementor*2;
+          y += m_font_medium_incrementor;
+          y += m_font_medium_incrementor/2;
           break;
         case 3:
+          y += m_font_medium_incrementor*2;
+          break;
+        default:
           y += m_font_medium_incrementor;
           break;
       }
