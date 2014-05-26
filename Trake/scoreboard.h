@@ -14,6 +14,7 @@ class Scoreboard
     Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, Snake *snakes[]);
     ~Scoreboard();
     void draw();
+    void draw_player_score(Snake *snake);
     void increment_score_by_one(Snake *snake);
   private:
     float m_screen_width;

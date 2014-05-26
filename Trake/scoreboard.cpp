@@ -61,31 +61,38 @@ Scoreboard::~Scoreboard()
 
 void Scoreboard::draw()
 {
-  ALLEGRO_COLOR text_color;
   al_draw_filled_rectangle(0, m_y-m_snake_width, m_screen_width, m_y, al_color_name("purple"));
   for (int i = 0; i < m_num_snakes; i++)
   {
-    if (m_snakes[i]->is_dead())
-    {
-      text_color = al_color_name("white");
-      ALLEGRO_COLOR tmp_color = m_backgrounds[i]->get_color();
-      m_backgrounds[i]->set_color(al_color_name("black"));
-      m_backgrounds[i]->set_filled(true);
-      m_backgrounds[i]->draw();
-      m_backgrounds[i]->set_color(tmp_color);
-      m_backgrounds[i]->set_filled(false);
-      m_backgrounds[i]->draw();
-    }
-    else
-    {
-      text_color = al_color_name("black");
-      m_backgrounds[i]->set_filled(true);
-      m_backgrounds[i]->draw();
-    }
-    std::string text_header = "Score: ";
-    al_draw_text(m_font, text_color, m_text_x[i], m_y, ALLEGRO_ALIGN_CENTER, text_header.c_str());
-    al_draw_text(m_font, text_color, m_text_x[i], m_y + (m_height / 2), ALLEGRO_ALIGN_CENTER, (std::to_string(m_player_score[i])).c_str());
+    this->draw_player_score(m_snakes[i]);
   }
+}
+
+void Scoreboard::draw_player_score(Snake *snake)
+{
+  assert(snake);
+  int player_num = snake->get_player_num();
+  ALLEGRO_COLOR text_color;
+  if (snake->is_dead())
+  {
+    text_color = al_color_name("white");
+    ALLEGRO_COLOR tmp_color = m_backgrounds[player_num]->get_color();
+    m_backgrounds[player_num]->set_color(al_color_name("black"));
+    m_backgrounds[player_num]->set_filled(true);
+    m_backgrounds[player_num]->draw();
+    m_backgrounds[player_num]->set_color(tmp_color);
+    m_backgrounds[player_num]->set_filled(false);
+    m_backgrounds[player_num]->draw();
+  }
+  else
+  {
+    text_color = al_color_name("black");
+    m_backgrounds[player_num]->set_filled(true);
+    m_backgrounds[player_num]->draw();
+  }
+  std::string text_header = "Score: ";
+  al_draw_text(m_font, text_color, m_text_x[player_num], m_y, ALLEGRO_ALIGN_CENTER, text_header.c_str());
+  al_draw_text(m_font, text_color, m_text_x[player_num], m_y + (m_height / 2), ALLEGRO_ALIGN_CENTER, (std::to_string(m_player_score[player_num])).c_str());
 }
 
 void Scoreboard::increment_score_by_one(Snake *snake)

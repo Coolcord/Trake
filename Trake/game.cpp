@@ -240,7 +240,7 @@ void Game::draw_loading(int round)
   al_clear_to_color(al_color_name("black"));
   std::string text = "";
   if (m_rounds > 1)
-    text = "Round " + std::to_string(round);
+    text = "Round " + std::to_string(round) + " of " + std::to_string(m_rounds);
   else //only show a loading screen when playing one round
     text = "Loading...";
   al_draw_text(m_font, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, text.c_str());
