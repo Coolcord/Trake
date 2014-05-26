@@ -46,12 +46,16 @@ Exit
 
 
 To Do:
-Use Escape to go back in menus
 Pause menu opens another box asking to quit
-Options Menu
+Make score mode carry points over between rounds
+Controls Menu
+Credits
+Sudden Death for Tie Breakers
 Show Rounds Screen between rounds
 Win Counter when rounds are more than 1
 Display 1st - 4th Place THEN Game Over
 Player 3 and 4 Support
 Make menus scale with resolution
+Save all settings to disk
+High Scores (top 10 for single match)
 

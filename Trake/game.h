@@ -22,7 +22,7 @@ class Game
   private:
     bool is_anyone_alive();
     int how_many_are_alive();
-    void draw_loading();
+    void draw_loading(int round);
     float m_screen_width;
     float m_screen_height;
     float m_snake_width;

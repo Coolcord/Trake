@@ -189,7 +189,10 @@ void Menu::show_game_setup()
           break;
         case 3: //Rounds
           y += m_font_medium_incrementor;
-          al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_rounds) + "   >").c_str());
+          if (m_ai_players + m_human_players > 1)
+            al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, ("<   " + std::to_string(m_rounds) + "   >").c_str());
+          else
+            al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, std::to_string(m_rounds).c_str());
           y += m_font_medium_incrementor;
           y += m_font_medium_incrementor/2;
           break;
@@ -233,10 +236,13 @@ void Menu::show_game_setup()
               }
               break;
             case 3: //Rounds
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
-              --m_rounds;
-              if (m_rounds < 1)
-                m_rounds = 1;
+              if (m_ai_players + m_human_players > 1)
+              {
+                if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+                --m_rounds;
+                if (m_rounds < 1)
+                  m_rounds = 1;
+              }
               break;
             case 4: //Human Players
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -248,7 +254,10 @@ void Menu::show_game_setup()
               while (m_ai_players + m_human_players > 4)
                 --m_ai_players;
               if (m_ai_players + m_human_players == 1)
+              {
                 m_win_selection = 0;
+                m_rounds = 1;
+              }
               break;
             case 5: //AI Players
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -260,7 +269,10 @@ void Menu::show_game_setup()
               while (m_ai_players + m_human_players > 4)
                 --m_human_players;
               if (m_ai_players + m_human_players == 1)
+              {
                 m_win_selection = 0;
+                m_rounds = 1;
+              }
               break;
           }
           break;
@@ -279,10 +291,13 @@ void Menu::show_game_setup()
               }
               break;
             case 3: //Rounds
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
-              ++m_rounds;
-              if (m_rounds > 10)
-                m_rounds = 10;
+              if (m_ai_players + m_human_players > 1)
+              {
+                if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
+                ++m_rounds;
+                if (m_rounds > 10)
+                  m_rounds = 10;
+              }
               break;
             case 4: //Human Players
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -294,7 +309,10 @@ void Menu::show_game_setup()
               while (m_ai_players + m_human_players > 4)
                 --m_ai_players;
               if (m_ai_players + m_human_players == 1)
+              {
                 m_win_selection = 0;
+                m_rounds = 1;
+              }
               break;
             case 5: //AI Players
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -306,7 +324,10 @@ void Menu::show_game_setup()
               while (m_ai_players + m_human_players > 4)
                 --m_human_players;
               if (m_ai_players + m_human_players == 1)
+              {
                 m_win_selection = 0;
+                m_rounds = 1;
+              }
               break;
           }
           break;

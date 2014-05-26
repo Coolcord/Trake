@@ -76,9 +76,10 @@ Game::~Game()
 
 void Game::run()
 {
-  this->draw_loading();
+  this->draw_loading(1);
   al_flip_display();
-  for (int rounds = m_rounds; rounds > 0; rounds--)
+
+  for (int rounds = 1; rounds <= m_rounds; rounds++)
   {
     //Initialize Collision Table
     m_collision_table = new Collision_Table();
@@ -127,6 +128,7 @@ void Game::run()
       data.snakes[i] = m_snakes[i];
     }
     data.music = m_music;
+    data.total_rounds = &m_rounds;
     data.rounds = &rounds;
     data.event = m_event;
     data.paused = &paused;
@@ -177,7 +179,7 @@ void Game::run()
     m_music->slow_to_stop();
 
     //Show the Game Over Screen
-    if (rounds <= 1)
+    if (rounds == m_rounds)
     {
       al_clear_to_color(al_color_name("black"));
       al_draw_text(m_font, al_color_name("lawngreen"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Game Over");
@@ -186,7 +188,7 @@ void Game::run()
     }
     else
     {
-      this->draw_loading();
+      this->draw_loading(rounds+1);
       al_flip_display();
     }
 
@@ -233,9 +235,14 @@ int Game::how_many_are_alive()
   return alive;
 }
 
-void Game::draw_loading()
+void Game::draw_loading(int round)
 {
   al_clear_to_color(al_color_name("black"));
-  al_draw_text(m_font, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
+  std::string text = "";
+  if (m_rounds > 1)
+    text = "Round " + std::to_string(round);
+  else //only show a loading screen when playing one round
+    text = "Loading...";
+  al_draw_text(m_font, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, text.c_str());
 }
 
