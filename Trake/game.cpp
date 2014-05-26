@@ -172,7 +172,6 @@ void Game::run()
         if (how_many_are_alive() <= 1)
           quit = true;
       }
-      m_scoreboard->draw();
       al_flip_display();
     }
     m_music->slow_to_stop();

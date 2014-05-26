@@ -46,8 +46,12 @@ Exit
 
 
 To Do:
+Use Escape to go back in menus
+Pause menu opens another box asking to quit
 Options Menu
-Scoreboard (Only in score mode)
+Show Rounds Screen between rounds
+Win Counter when rounds are more than 1
+Display 1st - 4th Place THEN Game Over
 Player 3 and 4 Support
 Make menus scale with resolution
 

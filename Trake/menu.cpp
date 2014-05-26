@@ -118,13 +118,23 @@ void Menu::show_title()
               this->show_options();
               break;
             case 2: //Exit
-              if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
-              al_rest(2);
+              if (m_move_sound_down)
+              {
+                al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+                al_rest(2);
+              }
               return;
             default:
               assert(false);
           }
           break;
+        case ALLEGRO_KEY_ESCAPE:
+          if (m_move_sound_down)
+          {
+            al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+            al_rest(2);
+          }
+          return;
       }
     }
   }
@@ -324,6 +334,9 @@ void Menu::show_game_setup()
               return;
           }
           break;
+        case ALLEGRO_KEY_ESCAPE:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+          return;
       }
     }
   }
@@ -442,6 +455,9 @@ void Menu::show_options()
               return;
           }
           break;
+        case ALLEGRO_KEY_ESCAPE:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+          return;
       }
     }
   }
