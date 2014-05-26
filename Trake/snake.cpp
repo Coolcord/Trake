@@ -202,6 +202,13 @@ void Snake::move()
       change_direction(tmp_direction);
     }
   }
+  //Increment the score in tron mode
+  if (m_tron && !m_dead)
+  {
+    assert(m_scoreboard);
+    m_scoreboard->increment_score_by_one(this);
+    m_scoreboard->draw();
+  }
 }
 
 Rectangle *Snake::create_rectangle(Input::Direction direction, float x, float y, int position)
