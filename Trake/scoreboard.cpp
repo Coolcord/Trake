@@ -62,6 +62,7 @@ Scoreboard::~Scoreboard()
 void Scoreboard::draw()
 {
   ALLEGRO_COLOR text_color;
+  al_draw_filled_rectangle(0, m_y-m_snake_width, m_screen_width, m_y, al_color_name("purple"));
   for (int i = 0; i < m_num_snakes; i++)
   {
     if (m_snakes[i]->is_dead())

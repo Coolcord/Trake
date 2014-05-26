@@ -22,8 +22,8 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_snake_width = snake_width;
   m_music_level = music_level;
   m_sound_effects_level = sound_effects_level;
-  m_rounds = rounds;
   m_win_condition = win_condition;
+  m_rounds = rounds;
   m_max_x = 0;
   m_max_y = 0;
   while (m_max_x < m_screen_width-(m_snake_width*2))
@@ -38,7 +38,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   assert(m_max_y > 0);
   m_scoreboard_y = m_max_y - (m_snake_width * 5);
   if (m_win_condition == 0)
-    m_game_height = m_scoreboard_y - m_snake_width;
+    m_game_height = m_scoreboard_y - (m_snake_width*2);
   else
     m_game_height = m_max_y;
   m_num_snakes = ai_players + human_players;
@@ -58,6 +58,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_player_3_start_y = m_game_height;
   m_player_4_start_y = m_game_height;
   m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
+  m_scoreboard = NULL;
   m_collision_table = NULL;
   m_pellet = NULL;
   m_music = NULL;
@@ -94,7 +95,9 @@ void Game::run()
       m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_snakes);
     }
     else
+    {
       m_scoreboard = NULL;
+    }
 
     //Send the Scoreboad to the snake objects
     for (int i = 0; i < m_num_snakes; i++)
@@ -136,7 +139,8 @@ void Game::run()
 
     //Clear the Screen
     al_clear_to_color(al_color_name("black"));
-    if (m_scoreboard) m_scoreboard->draw();
+    if (m_scoreboard)
+      m_scoreboard->draw();
     al_flip_display();
 
     while (!quit)
@@ -168,6 +172,7 @@ void Game::run()
         if (how_many_are_alive() <= 1)
           quit = true;
       }
+      m_scoreboard->draw();
       al_flip_display();
     }
     m_music->slow_to_stop();
