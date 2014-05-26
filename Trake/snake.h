@@ -9,6 +9,7 @@
 #include "input.h"
 class Snake_Piece;
 class Rectangle;
+class Scoreboard;
 class Collision_Table;
 
 class Snake
@@ -31,6 +32,7 @@ class Snake
     void kill();
     float get_eat_sound_speed();
     int get_player_num();
+    void set_scoreboard(Scoreboard *scoreboard);
   private:
     int m_player_num;
     float m_width; //width and height of each piece
@@ -42,6 +44,7 @@ class Snake
     float m_max_y;
     float m_volume;
     bool m_wrap;
+    Scoreboard *m_scoreboard;
     Collision_Table *m_collision_table;
     bool m_changing_direction;
     Input::Direction m_next_direction;

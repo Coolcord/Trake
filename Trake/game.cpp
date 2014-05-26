@@ -88,6 +88,12 @@ void Game::run()
     //Prepare the Scoreboard
     m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_snakes);
 
+    //Send the Scoreboad to the snake objects
+    for (int i = 0; i < m_num_snakes; i++)
+    {
+      m_snakes[i]->set_scoreboard(m_scoreboard);
+    }
+
     //Initialize Pellet
     m_pellet = new Pellet(m_snake_width, m_max_x, m_game_height, m_sound_effects_level, m_max_spawn_time, m_scoreboard, m_collision_table, m_tron);
 
@@ -154,7 +160,6 @@ void Game::run()
         if (how_many_are_alive() <= 1)
           quit = true;
       }
-      m_scoreboard->draw();
       al_flip_display();
     }
     m_music->slow_to_stop();

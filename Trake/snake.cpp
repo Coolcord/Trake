@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <iterator>
 #include <string>
+#include "scoreboard.h"
 #include "collision_table.h"
 
 Snake::Snake(int player_num, float x, float y, float volume, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
@@ -27,6 +28,7 @@ Snake::Snake(int player_num, float x, float y, float volume, Input::Direction di
   m_max_y = max_y;
   m_volume = volume * 0.1;
   m_wrap = wrap;
+  m_scoreboard = NULL; //set it to NULL for now
   m_collision_table = collision_table;
   m_dead = false;
   m_changing_direction = false;
@@ -119,6 +121,8 @@ void Snake::move()
   if (collision == Collision_Table::SNAKE)
   {
     m_dead = true;
+    assert(m_scoreboard);
+    m_scoreboard->draw();
     float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.8)) + 0.6;
     if (m_dead_sound) al_play_sample(m_dead_sound, 2.5*m_volume, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
     m_pieces->front()->set_x(prev_x);
@@ -333,6 +337,8 @@ bool Snake::is_dead()
 void Snake::kill()
 {
   m_dead = true;
+  assert(m_scoreboard);
+  m_scoreboard->draw();
 }
 
 float Snake::get_eat_sound_speed()
@@ -343,5 +349,10 @@ float Snake::get_eat_sound_speed()
 int Snake::get_player_num()
 {
   return m_player_num;
+}
+
+void Snake::set_scoreboard(Scoreboard *scoreboard)
+{
+  m_scoreboard = scoreboard;
 }
 
