@@ -28,6 +28,8 @@ class Game
     float m_snake_width;
     float m_max_x;
     float m_max_y;
+    float m_game_height;
+    float m_scoreboard_y;
     float m_music_level;
     float m_sound_effects_level;
     int m_num_snakes;

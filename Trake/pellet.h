@@ -6,12 +6,13 @@
 
 class Snake;
 class Rectangle;
+class Scoreboard;
 class Collision_Table;
 
 class Pellet
 {
   public:
-    Pellet(float width, float max_x, float max_y, float volume, int spawn_countdown_max, Collision_Table *collision_table, bool tron);
+    Pellet(float width, float max_x, float max_y, float volume, int spawn_countdown_max, Scoreboard *scoreboard, Collision_Table *collision_table, bool tron);
     ~Pellet();
     void handle_state();
     void eat(Snake *snake);
@@ -34,6 +35,7 @@ class Pellet
     void spawn();
     void remove();
     Rectangle *m_rectangle;
+    Scoreboard *m_scoreboard;
     Collision_Table *m_collision_table;
     ALLEGRO_SAMPLE *m_eat_sound;
 };

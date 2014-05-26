@@ -35,6 +35,8 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   }
   assert(m_max_x > 0);
   assert(m_max_y > 0);
+  m_scoreboard_y = m_max_y - (m_snake_width * 5);
+  m_game_height = m_scoreboard_y - m_snake_width;
   m_num_snakes = ai_players + human_players;
   m_num_ai = ai_players;
   if (gametype == 0)
@@ -50,8 +52,8 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_player_4_start_x = m_max_x;
   m_player_1_start_y = 0;
   m_player_2_start_y = 0;
-  m_player_3_start_y = m_max_y;
-  m_player_4_start_y = m_max_y;
+  m_player_3_start_y = m_game_height;
+  m_player_4_start_y = m_game_height;
   m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   m_collision_table = NULL;
   m_pellet = NULL;
@@ -77,14 +79,17 @@ void Game::run()
     //Initialize Collision Table
     m_collision_table = new Collision_Table();
 
-    //Initialize Pellet
-    m_pellet = new Pellet(m_snake_width, m_max_x, m_max_y, m_sound_effects_level, m_max_spawn_time, m_collision_table, m_tron);
-
     //Initialize Snakes
-    m_snakes[0] = new Snake(0, m_player_1_start_x, m_player_1_start_y, m_sound_effects_level, Input::LEFT, m_start_snake_length, al_color_name("lawngreen"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
-    if (m_num_snakes >= 2) m_snakes[1] = new Snake(1, m_player_2_start_x, m_player_2_start_y, m_sound_effects_level, Input::DOWN, m_start_snake_length, al_color_name("blue"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
-    if (m_num_snakes >= 3) m_snakes[2] = new Snake(2, m_player_3_start_x, m_player_3_start_y, m_sound_effects_level, Input::RIGHT, m_start_snake_length, al_color_name("red"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
-    if (m_num_snakes >= 4) m_snakes[3] = new Snake(3, m_player_4_start_x, m_player_4_start_y, m_sound_effects_level, Input::UP, m_start_snake_length, al_color_name("yellow"), m_snake_width, m_max_x, m_max_y, true, m_collision_table, m_tron);
+    m_snakes[0] = new Snake(0, m_player_1_start_x, m_player_1_start_y, m_sound_effects_level, Input::LEFT, m_start_snake_length, al_color_name("lawngreen"), m_snake_width, m_max_x, m_game_height, true, m_collision_table, m_tron);
+    if (m_num_snakes >= 2) m_snakes[1] = new Snake(1, m_player_2_start_x, m_player_2_start_y, m_sound_effects_level, Input::DOWN, m_start_snake_length, al_color_name("blue"), m_snake_width, m_max_x, m_game_height, true, m_collision_table, m_tron);
+    if (m_num_snakes >= 3) m_snakes[2] = new Snake(2, m_player_3_start_x, m_player_3_start_y, m_sound_effects_level, Input::RIGHT, m_start_snake_length, al_color_name("red"), m_snake_width, m_max_x, m_game_height, true, m_collision_table, m_tron);
+    if (m_num_snakes >= 4) m_snakes[3] = new Snake(3, m_player_4_start_x, m_player_4_start_y, m_sound_effects_level, Input::UP, m_start_snake_length, al_color_name("yellow"), m_snake_width, m_max_x, m_game_height, true, m_collision_table, m_tron);
+
+    //Prepare the Scoreboard
+    m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_snakes);
+
+    //Initialize Pellet
+    m_pellet = new Pellet(m_snake_width, m_max_x, m_game_height, m_sound_effects_level, m_max_spawn_time, m_scoreboard, m_collision_table, m_tron);
 
     //Initialize AI
     for (int i = 0; i < 4; i++)
@@ -112,14 +117,12 @@ void Game::run()
     ALLEGRO_THREAD *input_thread = al_create_thread(Input::Input_Thread, &data);
     al_start_thread(input_thread);
 
-    //Prepare the Scoreboard
-    m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_max_x, m_max_y, m_num_snakes, m_snakes);
-
     //Start Music
     m_music->play();
 
     //Clear the Screen
     al_clear_to_color(al_color_name("black"));
+    m_scoreboard->draw();
     al_flip_display();
 
     while (!quit)
@@ -136,7 +139,6 @@ void Game::run()
         if (m_ai[i]) m_ai[i]->read_input();
         if (m_snakes[i]) m_snakes[i]->move();
       }
-      m_scoreboard->draw();
       if (wait_time > 0)
       {
         al_rest(wait_time);
@@ -152,6 +154,7 @@ void Game::run()
         if (how_many_are_alive() <= 1)
           quit = true;
       }
+      m_scoreboard->draw();
       al_flip_display();
     }
     m_music->slow_to_stop();

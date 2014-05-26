@@ -14,6 +14,7 @@ Snake::Snake(int player_num, float x, float y, float volume, Input::Direction di
   assert(max_y > 0);
   assert(size >= 3);
   assert(collision_table);
+  m_player_num = player_num;
   m_width = width;
   if (tron)
     m_size = 3;
@@ -164,7 +165,9 @@ void Snake::move()
         if (!m_tron)
         {
           Collision_Table::Type type = m_collision_table->check_collision(tmp_x, tmp_y);
-          if (type == Collision_Table::SNAKE && m_collision_table->get_snake(tmp_x, tmp_y) == this)
+          if (type == Collision_Table::SNAKE 
+            && m_collision_table->get_snake(tmp_x, tmp_y) == this
+            && tmp_x <= m_max_x && tmp_y <= m_max_y)
           {
             al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
             m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
@@ -175,7 +178,9 @@ void Snake::move()
       else
       {
         Collision_Table::Type type = m_collision_table->check_collision(tmp_x, tmp_y);
-        if (type == Collision_Table::SNAKE && m_collision_table->get_snake(tmp_x, tmp_y) == this)
+        if (type == Collision_Table::SNAKE
+          && m_collision_table->get_snake(tmp_x, tmp_y) == this
+          && tmp_x <= m_max_x && tmp_y <= m_max_y)
         {
           al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
           m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
@@ -335,4 +340,8 @@ float Snake::get_eat_sound_speed()
   return m_eat_sound_speed;
 }
 
+int Snake::get_player_num()
+{
+  return m_player_num;
+}
 

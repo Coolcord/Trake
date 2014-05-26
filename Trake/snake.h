@@ -30,7 +30,9 @@ class Snake
     bool is_dead();
     void kill();
     float get_eat_sound_speed();
+    int get_player_num();
   private:
+    int m_player_num;
     float m_width; //width and height of each piece
     int m_size; //number of pieces
     ALLEGRO_COLOR m_color;
