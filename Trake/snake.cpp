@@ -121,8 +121,7 @@ void Snake::move()
   if (collision == Collision_Table::SNAKE)
   {
     m_dead = true;
-    assert(m_scoreboard);
-    m_scoreboard->draw();
+    if (m_scoreboard) m_scoreboard->draw();
     float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.8)) + 0.6;
     if (m_dead_sound) al_play_sample(m_dead_sound, 2.5*m_volume, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
     m_pieces->front()->set_x(prev_x);
@@ -205,9 +204,11 @@ void Snake::move()
   //Increment the score in tron mode
   if (m_tron && !m_dead)
   {
-    assert(m_scoreboard);
-    m_scoreboard->increment_score_by_one(this);
-    m_scoreboard->draw();
+    if (m_scoreboard)
+    {
+      m_scoreboard->increment_score_by_one(this);
+      m_scoreboard->draw();
+    }
   }
 }
 
@@ -344,8 +345,7 @@ bool Snake::is_dead()
 void Snake::kill()
 {
   m_dead = true;
-  assert(m_scoreboard);
-  m_scoreboard->draw();
+  if (m_scoreboard) m_scoreboard->draw();
 }
 
 float Snake::get_eat_sound_speed()

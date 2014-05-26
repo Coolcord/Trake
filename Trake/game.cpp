@@ -23,6 +23,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_music_level = music_level;
   m_sound_effects_level = sound_effects_level;
   m_rounds = rounds;
+  m_win_condition = win_condition;
   m_max_x = 0;
   m_max_y = 0;
   while (m_max_x < m_screen_width-(m_snake_width*2))
@@ -36,14 +37,16 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   assert(m_max_x > 0);
   assert(m_max_y > 0);
   m_scoreboard_y = m_max_y - (m_snake_width * 5);
-  m_game_height = m_scoreboard_y - m_snake_width;
+  if (m_win_condition == 0)
+    m_game_height = m_scoreboard_y - m_snake_width;
+  else
+    m_game_height = m_max_y;
   m_num_snakes = ai_players + human_players;
   m_num_ai = ai_players;
   if (gametype == 0)
     m_tron = false;
   else
     m_tron = true;
-  m_win_condition = win_condition;
   m_start_snake_length = 5;
   m_max_spawn_time = 100;
   m_player_1_start_x = m_max_x;
@@ -86,7 +89,12 @@ void Game::run()
     if (m_num_snakes >= 4) m_snakes[3] = new Snake(3, m_player_4_start_x, m_player_4_start_y, m_sound_effects_level, Input::UP, m_start_snake_length, al_color_name("yellow"), m_snake_width, m_max_x, m_game_height, true, m_collision_table, m_tron);
 
     //Prepare the Scoreboard
-    m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_snakes);
+    if (m_win_condition == 0)
+    {
+      m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_snakes);
+    }
+    else
+      m_scoreboard = NULL;
 
     //Send the Scoreboad to the snake objects
     for (int i = 0; i < m_num_snakes; i++)
@@ -128,7 +136,7 @@ void Game::run()
 
     //Clear the Screen
     al_clear_to_color(al_color_name("black"));
-    m_scoreboard->draw();
+    if (m_scoreboard) m_scoreboard->draw();
     al_flip_display();
 
     while (!quit)

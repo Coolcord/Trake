@@ -9,7 +9,6 @@
 
 Pellet::Pellet(float width, float max_x, float max_y, float volume, int spawn_countdown_max, Scoreboard *scoreboard, Collision_Table *collision_table, bool tron)
 {
-  assert(scoreboard);
   assert(collision_table);
   m_scoreboard = scoreboard;
   m_width = width;
@@ -103,7 +102,8 @@ void Pellet::eat(Snake *snake)
   assert(m_exists);
   if (m_eat_sound) al_play_sample(m_eat_sound, 1.3*m_volume, 0.0, snake->get_eat_sound_speed(), ALLEGRO_PLAYMODE_ONCE, NULL);
   snake->grow(m_value);
-  m_scoreboard->increment_score_by_one(snake);
+  if (m_scoreboard)
+    m_scoreboard->increment_score_by_one(snake);
   m_exists = false;
   m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());
   m_spawn_countdown = rand() % m_spawn_countdown_max;
