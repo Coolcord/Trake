@@ -24,13 +24,13 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_music_level = 10;
   m_sound_effects_level = 10;
-  m_music = new Music(m_music_level);
   m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", 42, 0);
   m_font_medium_incrementor = 40;
   m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   al_clear_to_color(al_color_name("black"));
   al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
   al_flip_display();
+  m_music = new Music(m_music_level);
   int i = 0;
   float title = 0.0;
   float x = 0.0;
