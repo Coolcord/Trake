@@ -11,11 +11,12 @@ class Rectangle;
 class Scoreboard
 {
   public:
-    Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, Snake *snakes[]);
+    Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, int player_scores[], Snake *snakes[]);
     ~Scoreboard();
     void draw();
     void draw_player_score(Snake *snake);
     void increment_score_by_one(Snake *snake);
+    int get_player_score(int player_num);
   private:
     float m_screen_width;
     float m_screen_height;
@@ -26,7 +27,7 @@ class Scoreboard
     float m_text_x[4];
     float m_text_y;
     int m_num_snakes;
-    int m_player_score[4];
+    int m_player_scores[4];
     Snake *m_snakes[4];
     ALLEGRO_FONT *m_font;
     Rectangle *m_backgrounds[4];

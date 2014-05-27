@@ -5,7 +5,7 @@
 #include <string>
 #include <assert.h>
 
-Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, Snake *snakes[])
+Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, int player_scores[], Snake *snakes[])
 {
   m_screen_width = screen_width;
   m_screen_height = screen_height;
@@ -14,9 +14,9 @@ Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_widt
   m_num_snakes = num_snakes;
   for (int i = 0; i < 4; i++)
   {
+    m_player_scores[i] = player_scores[i];
     m_snakes[i] = snakes[i];
     m_backgrounds[i] = NULL;
-    m_player_score[i] = 0;
     m_text_x[i] = 0;
   }
   m_font = al_load_font("./fonts/Sabo-Regular.ttf", 32, 0);
@@ -92,13 +92,18 @@ void Scoreboard::draw_player_score(Snake *snake)
   }
   std::string text_header = "Score: ";
   al_draw_text(m_font, text_color, m_text_x[player_num], m_y, ALLEGRO_ALIGN_CENTER, text_header.c_str());
-  al_draw_text(m_font, text_color, m_text_x[player_num], m_y + (m_height / 2), ALLEGRO_ALIGN_CENTER, (std::to_string(m_player_score[player_num])).c_str());
+  al_draw_text(m_font, text_color, m_text_x[player_num], m_y + (m_height / 2), ALLEGRO_ALIGN_CENTER, (std::to_string(m_player_scores[player_num])).c_str());
 }
 
 void Scoreboard::increment_score_by_one(Snake *snake)
 {
   assert(snake);
   int player_num = snake->get_player_num();
-  ++m_player_score[player_num];
+  ++m_player_scores[player_num];
+}
+
+int Scoreboard::get_player_score(int player_num)
+{
+  return m_player_scores[player_num];
 }
 

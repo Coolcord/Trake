@@ -47,6 +47,7 @@ class Game
     float m_player_3_start_y;
     float m_player_4_start_x;
     float m_player_4_start_y;
+    int m_player_scores[4];
     ALLEGRO_FONT *m_font;
     ALLEGRO_EVENT_QUEUE *m_event;
     AI *m_ai[4];

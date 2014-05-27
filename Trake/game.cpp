@@ -64,6 +64,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_music = NULL;
   for (int i = 0; i < 4; i++)
   {
+    m_player_scores[i] = 0;
     m_ai[i] = NULL;
     m_snakes[i] = NULL;
   }
@@ -93,7 +94,7 @@ void Game::run()
     //Prepare the Scoreboard
     if (m_win_condition == 0)
     {
-      m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_snakes);
+      m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_player_scores, m_snakes);
     }
     else
     {
@@ -198,6 +199,7 @@ void Game::run()
     //Deallocate Memory
     for (int i = 0; i < 4; i++)
     {
+      m_player_scores[i] = m_scoreboard->get_player_score(i);
       delete m_snakes[i];
       m_snakes[i] = NULL;
       delete m_ai[i];
