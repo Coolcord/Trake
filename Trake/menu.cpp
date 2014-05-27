@@ -68,7 +68,7 @@ void Menu::show()
 void Menu::show_title()
 {
   int selection = 0;
-  std::string items[3] = { "Start", "Options", "Exit" };
+  std::string items[4] = { "Start", "High Scores", "Options", "Exit" };
   while (true)
   {
     m_menu_screen = Menu::TITLE;
@@ -76,7 +76,7 @@ void Menu::show_title()
     this->draw_title_logo();
 
     //Draw Selections
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
       ALLEGRO_COLOR color;
       if (selection == i)
@@ -87,7 +87,7 @@ void Menu::show_title()
       {
         color = al_color_name("lightgray");
       }
-      al_draw_text(m_font_large, color, m_screen_width/2, ((m_screen_height/8)*5)+(i*80), ALLEGRO_ALIGN_CENTER, items[i].c_str());
+      al_draw_text(m_font_large, color, m_screen_width/2, ((m_screen_height/16)*9)+(i*80), ALLEGRO_ALIGN_CENTER, items[i].c_str());
     }
     al_flip_display();
     
@@ -99,12 +99,12 @@ void Menu::show_title()
       {
         case ALLEGRO_KEY_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-          selection = (selection + 1) % 3;
+          selection = (selection + 1) % 4;
           break;
         case ALLEGRO_KEY_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
-          if (selection < 0) selection = 2;
+          if (selection < 0) selection = 3;
           break;
         case ALLEGRO_KEY_ENTER:
           switch (selection)
@@ -113,11 +113,15 @@ void Menu::show_title()
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_game_setup();
               break;
-            case 1: //Options
+            case 1: //High Scores
+              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              this->show_high_scores();
+              break;
+            case 2: //Options
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_options();
               break;
-            case 2: //Exit
+            case 3: //Exit
               if (m_move_sound_down)
               {
                 al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -180,7 +184,7 @@ void Menu::show_game_setup()
         case 2: //Win Condition
           y += m_font_medium_incrementor;
           if (m_ai_players + m_human_players == 1)
-                text = win_condition_items[m_win_selection];
+                text = "High Score";
           else
               text = "<   " + win_condition_items[m_win_selection] + "   >";
           al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
@@ -361,6 +365,11 @@ void Menu::show_game_setup()
       }
     }
   }
+}
+
+void Menu::show_high_scores()
+{
+
 }
 
 void Menu::show_options()
