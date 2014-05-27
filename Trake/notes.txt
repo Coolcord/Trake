@@ -47,7 +47,6 @@ Exit
 
 To Do:
 Controls Menu
-Credits
 Sudden Death for Tie Breakers
 Display 1st - 4th Place THEN Game Over
 Player 3 and 4 Support

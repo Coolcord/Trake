@@ -13,7 +13,6 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   assert(event);
   assert(screen_width > 0);
   assert(screen_height > 0);
-  m_menu_screen = Menu::NONE;
   m_event = event;
   m_gametype_selection = 0;
   m_win_selection = 0;
@@ -71,7 +70,6 @@ void Menu::show_title()
   std::string items[4] = { "Start", "High Scores", "Options", "Exit" };
   while (true)
   {
-    m_menu_screen = Menu::TITLE;
     al_clear_to_color(al_color_name("black"));
     this->draw_title_logo();
 
@@ -152,7 +150,6 @@ void Menu::show_game_setup()
     std::string win_condition_items[2] = { "Score", "Survival" };
   while (true)
   {
-    m_menu_screen = Menu::GAME_SETUP;
     al_clear_to_color(al_color_name("black"));
     std::string text = "";
 
@@ -378,7 +375,6 @@ void Menu::show_options()
   std::string items[5] = { "Music:", "Sound Effects:", "Controls", "Credits", "Back" };
   while (true)
   {
-    m_menu_screen = Menu::OPTIONS;
     al_clear_to_color(al_color_name("black"));
 
     //Draw Selections
@@ -474,7 +470,7 @@ void Menu::show_options()
           {
             case 2: //Controls
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
-              this->show_control_setup();
+              this->show_controls();
               break;
             case 3: //Credits
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -493,14 +489,94 @@ void Menu::show_options()
   }
 }
 
-void Menu::show_control_setup()
+void Menu::show_controls()
 {
+  int selection = 0;
+  std::string items[5] = { "Player 1", "Player 2", "Player 3", "Player 4", "Back" };
+  while (true)
+  {
+    al_clear_to_color(al_color_name("black"));
 
+    //Draw Selections
+    float y = m_screen_height/50;
+    for (int i = 0; i < 5; i++)
+    {
+      ALLEGRO_COLOR color;
+      if (selection == i)
+      {
+        color = al_color_name("lawngreen");
+      }
+      else
+      {
+        color = al_color_name("lightgray");
+      }
+      al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
+      switch (i)
+      {
+        case 0:
+          color = al_color_name("lawngreen");
+          break;
+        case 1:
+          color = al_color_name("blue");
+          break;
+        case 2:
+          color = al_color_name("red");
+          break;
+        case 3:
+          color = al_color_name("yellow");
+          break;
+      }
+      if (i != 4)
+      {
+        al_draw_filled_rectangle(((m_screen_width/8)*3)-(m_font_medium_incrementor/2), y+5, ((m_screen_width/8)*3)+(m_font_medium_incrementor/2), y+5 + m_font_medium_incrementor, color);
+        al_draw_filled_rectangle(((m_screen_width/8)*5)-(m_font_medium_incrementor/2), y+5, ((m_screen_width/8)*5)+(m_font_medium_incrementor/2), y+5 + m_font_medium_incrementor, color);
+      }
+      y += m_font_medium_incrementor*2;
+    }
+    al_flip_display();
+
+    ALLEGRO_EVENT e;
+    al_wait_for_event(m_event, &e);
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      switch(e.keyboard.keycode)
+      {
+        case ALLEGRO_KEY_DOWN:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection = (selection + 1) % 5;
+          break;
+        case ALLEGRO_KEY_UP:
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection -= 1;
+          if (selection < 0) selection = 4;
+          break;
+        case ALLEGRO_KEY_ENTER:
+          if (selection == 4)
+          {
+            if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+            return;
+          }
+          else
+          {
+            if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+            this->show_control_setup(selection+1);
+          }
+          break;
+        case ALLEGRO_KEY_ESCAPE:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+          return;
+      }
+    }
+  }
+}
+
+void Menu::show_control_setup(int player_num)
+{
+  
 }
 
 void Menu::show_credits()
 {
-  m_menu_screen = Menu::CREDITS;
   al_clear_to_color(al_color_name("black"));
   al_draw_text(m_font_large, al_color_name("lawngreen"), m_screen_width/2, (m_screen_height/8)*5, ALLEGRO_ALIGN_CENTER, "Created by Coolcord");
   al_draw_text(m_font_large, al_color_name("blue"), m_screen_width/2, (m_screen_height/4)*3, ALLEGRO_ALIGN_CENTER, "Music by Daft Punk");

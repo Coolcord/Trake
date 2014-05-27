@@ -14,15 +14,6 @@ class Game;
 class Menu
 {
   public:
-    enum Screen
-    {
-      NONE,
-      TITLE,
-      GAME_SETUP,
-      OPTIONS,
-      CONTROL_SETUP,
-      CREDITS
-    };
     Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width);
     ~Menu();
     void show();
@@ -31,7 +22,8 @@ class Menu
     void show_game_setup();
     void show_high_scores();
     void show_options();
-    void show_control_setup();
+    void show_controls();
+    void show_control_setup(int player_num);
     void show_credits();
     void draw();
     void draw_title_logo();
@@ -55,7 +47,6 @@ class Menu
     float m_font_medium_incrementor;
     int m_music_level;
     int m_sound_effects_level;
-    Screen m_menu_screen;
     ALLEGRO_FONT *m_font_medium;
     ALLEGRO_FONT *m_font_large;
     ALLEGRO_SAMPLE *m_move_sound_down;
