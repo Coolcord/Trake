@@ -500,7 +500,28 @@ void Menu::show_control_setup()
 
 void Menu::show_credits()
 {
+  m_menu_screen = Menu::CREDITS;
+  al_clear_to_color(al_color_name("black"));
+  al_draw_text(m_font_large, al_color_name("lawngreen"), m_screen_width/2, (m_screen_height/8)*5, ALLEGRO_ALIGN_CENTER, "Created by Coolcord");
+  al_draw_text(m_font_large, al_color_name("blue"), m_screen_width/2, (m_screen_height/4)*3, ALLEGRO_ALIGN_CENTER, "Music by Daft Punk");
+  this->draw_title_logo();
+  al_flip_display();
 
+  while (true)
+  {
+    ALLEGRO_EVENT e;
+    al_wait_for_event(m_event, &e);
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      switch(e.keyboard.keycode)
+      {
+        case ALLEGRO_KEY_ENTER:
+        case ALLEGRO_KEY_ESCAPE:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+          return;
+      }
+    }
+  }
 }
 
 void Menu::draw_title_logo()

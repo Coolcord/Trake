@@ -46,7 +46,6 @@ Exit
 
 
 To Do:
-Pause menu opens another box asking to quit
 Controls Menu
 Credits
 Sudden Death for Tie Breakers
