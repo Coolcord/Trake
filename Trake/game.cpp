@@ -6,10 +6,11 @@
 #include "snake.h"
 #include "music.h"
 #include "scoreboard.h"
+#include "pause_menu.h"
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
   assert(event);
   assert(human_players + ai_players <= 4);
@@ -21,9 +22,11 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_snake_width = snake_width;
   m_music_level = music_level;
-  m_sound_effects_level = sound_effects_level;
   m_win_condition = win_condition;
   m_rounds = rounds;
+  m_move_sound_down = move_sound_down;
+  m_move_sound_up = move_sound_up;
+  m_sound_effects_level = sound_effects_level;
   m_max_x = 0;
   m_max_y = 0;
   while (m_max_x < m_screen_width-(m_snake_width*2))
@@ -62,6 +65,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_collision_table = NULL;
   m_pellet = NULL;
   m_music = NULL;
+  m_pause_menu = NULL;
   for (int i = 0; i < 4; i++)
   {
     m_player_scores[i] = 0;
@@ -107,6 +111,11 @@ void Game::run()
       m_snakes[i]->set_scoreboard(m_scoreboard);
     }
 
+    //Initialize the Pause Menu
+    bool paused = false;
+    bool quit = false;
+    m_pause_menu = new Pause_Menu(m_event, m_screen_width, m_screen_height, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &rounds, m_rounds);
+
     //Initialize Pellet
     m_pellet = new Pellet(m_snake_width, m_max_x, m_game_height, m_sound_effects_level, m_max_spawn_time, m_scoreboard, m_collision_table, m_tron);
 
@@ -119,8 +128,6 @@ void Game::run()
 
     //Prepare Input Thread
     m_music = new Music(m_music_level, m_tron);
-    bool paused = false;
-    bool quit = false;
     float wait_time = 0.05;
     Input::Input_Thread_Data data;
     for (int i = 0; i < 4; i++)
@@ -128,9 +135,6 @@ void Game::run()
       data.ai[i] = m_ai[i];
       data.snakes[i] = m_snakes[i];
     }
-    data.music = m_music;
-    data.total_rounds = &m_rounds;
-    data.rounds = &rounds;
     data.event = m_event;
     data.paused = &paused;
     data.quit = &quit;
@@ -150,7 +154,19 @@ void Game::run()
     {
       if (paused)
       {
-        al_rest(0.1);
+        m_music->pause();
+        m_pause_menu->show();
+        paused = false;
+        m_music->resume();
+        //Redraw Everything
+        al_clear_to_color(al_color_name("black"));
+        for (int i = 0; i < m_num_snakes; i++)
+        {
+          m_snakes[i]->draw();
+        }
+        m_pellet->draw();
+        m_scoreboard->draw();
+        al_flip_display();
         continue;
       }
 

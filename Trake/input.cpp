@@ -2,6 +2,7 @@
 #include "ai.h"
 #include "snake.h"
 #include "music.h"
+#include "pause_menu.h"
 
 namespace Input
 {
@@ -11,13 +12,18 @@ namespace Input
 
     while (!(*(data->quit)))
     {
-      Input::read_input(data->ai, data->snakes, data->event, data->music, data->total_rounds, data->rounds, data->paused, data->quit);
+      Input::read_input(data->ai, data->snakes, data->event, data->paused);
     }
     return NULL;
   }
 
-  void read_input(AI *ai[], Snake *snakes[], ALLEGRO_EVENT_QUEUE *event, Music *music, int *total_rounds, int *rounds, bool *paused, bool *quit)
+  void read_input(AI *ai[], Snake *snakes[], ALLEGRO_EVENT_QUEUE *event, bool *paused)
   {
+    if (*paused)
+    {
+      al_rest(0.1);
+      return;
+    }
     ALLEGRO_EVENT e;
     al_wait_for_event_timed(event, &e, 3);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
@@ -25,19 +31,7 @@ namespace Input
       switch(e.keyboard.keycode)
       {
         case ALLEGRO_KEY_ESCAPE:
-          *rounds = *total_rounds;
-          *quit = true;
-          break;
-        case ALLEGRO_KEY_ENTER:
           *paused = !(*paused);
-          if (*paused)
-          {
-            music->pause();
-          }
-          else
-          {
-            music->resume();
-          }
           break;
         case ALLEGRO_KEY_LEFT:
           if (snakes[0] && !ai[0]) snakes[0]->change_direction(Direction::LEFT);

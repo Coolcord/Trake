@@ -162,6 +162,7 @@ void Snake::move()
         (*iter)->set_type(Snake_Piece::BODY);
         Rectangle *rectangle = this->create_rectangle(tmp_direction, prev_x, prev_y, m_size-1);
         Snake_Piece *snake_piece = new Snake_Piece(tmp_direction, Snake_Piece::TAIL, rectangle);
+        Snake_Piece *tmp_snake_piece = m_pieces->back();
         assert(snake_piece);
         ++m_size;
         m_pieces->push_back(snake_piece);
@@ -170,7 +171,8 @@ void Snake::move()
           Collision_Table::Type type = m_collision_table->check_collision(tmp_x, tmp_y);
           if (type == Collision_Table::SNAKE 
             && m_collision_table->get_snake(tmp_x, tmp_y) == this
-            && tmp_x <= m_max_x && tmp_y <= m_max_y)
+            && tmp_x <= m_max_x && tmp_y <= m_max_y
+            && tmp_snake_piece == (*iter))
           {
             al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
             m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table
@@ -181,9 +183,11 @@ void Snake::move()
       else
       {
         Collision_Table::Type type = m_collision_table->check_collision(tmp_x, tmp_y);
+        Snake_Piece *tmp_snake_piece = m_pieces->back();
         if (type == Collision_Table::SNAKE
           && m_collision_table->get_snake(tmp_x, tmp_y) == this
-          && tmp_x <= m_max_x && tmp_y <= m_max_y)
+          && tmp_x <= m_max_x && tmp_y <= m_max_y
+          && tmp_snake_piece == (*iter))
         {
           al_draw_filled_rectangle(tmp_x, tmp_y, tmp_x + m_width, tmp_y + m_width, al_color_name("black")); //remove the square
           m_collision_table->remove(tmp_x, tmp_y); //remove from the collision table

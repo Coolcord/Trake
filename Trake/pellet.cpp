@@ -89,11 +89,14 @@ void Pellet::remove()
   assert(m_respawn_time == 0);
   m_exists = false;
   m_respawn_time = m_respawn_time_max;
-  m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());
-  ALLEGRO_COLOR tmp_color = m_rectangle->get_color();
-  m_rectangle->set_color(al_color_name("black"));
-  m_rectangle->draw();
-  m_rectangle->set_color(tmp_color);
+  if (m_collision_table->check_collision(m_rectangle->get_x(), m_rectangle->get_y()) == Collision_Table::PELLET)
+  {
+    m_collision_table->remove(m_rectangle->get_x(), m_rectangle->get_y());
+    ALLEGRO_COLOR tmp_color = m_rectangle->get_color();
+    m_rectangle->set_color(al_color_name("black"));
+    m_rectangle->draw();
+    m_rectangle->set_color(tmp_color);
+  }
   m_spawn_countdown = rand() % m_spawn_countdown_max;
 }
 
@@ -129,6 +132,6 @@ float Pellet::get_y()
 
 void Pellet::draw()
 {
-  m_rectangle->draw();
+  if (m_exists) m_rectangle->draw();
 }
 
