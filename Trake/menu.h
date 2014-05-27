@@ -12,6 +12,15 @@ class Rectangle;
 class Game;
 class Music;
 
+namespace Music_Fade_Thread
+{
+  struct Music_Fade_Thread_Data
+  {
+    Music *music;
+  };
+  void *Music_Fade_Thread(ALLEGRO_THREAD *thread, void *arg);
+};
+
 class Menu
 {
   public:
@@ -34,6 +43,8 @@ class Menu
     void create_k(float x, float y);
     void create_e(float x, float y);
     void create_title(float x, float y);
+    ALLEGRO_THREAD *m_music_fade_thread;
+    Music_Fade_Thread::Music_Fade_Thread_Data *m_music_fade_thread_data;
     ALLEGRO_EVENT_QUEUE *m_event;
     int m_gametype_selection;
     int m_win_selection;

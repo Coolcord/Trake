@@ -49,6 +49,8 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_title = new std::vector<Rectangle*>();
   x = (m_screen_width - x)/2;
   this->create_title(x, m_title_snake_width);
+  m_music_fade_thread_data = NULL;
+  m_music_fade_thread = NULL;
 }
 
 Menu::~Menu()
@@ -356,9 +358,16 @@ void Menu::show_game_setup()
               al_clear_to_color(al_color_name("black"));
               al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
               al_flip_display();
-              m_music->fade_to_stop();
-              m_game = new Game(m_event, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
+              m_music_fade_thread_data = new Music_Fade_Thread::Music_Fade_Thread_Data();
+              m_music_fade_thread_data->music = m_music;
+              m_music_fade_thread = al_create_thread(Music_Fade_Thread::Music_Fade_Thread, m_music_fade_thread_data);
+              al_start_thread(m_music_fade_thread);
+              m_game = new Game(m_event, m_music_fade_thread, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
               m_game->run();
+              al_destroy_thread(m_music_fade_thread);
+              m_music_fade_thread = NULL;
+              delete m_music_fade_thread_data;
+              m_music_fade_thread_data = NULL;
               delete m_game;
               m_game = NULL;
               m_music->set_volume(m_music_level);
@@ -718,5 +727,12 @@ void Menu::create_title(float x, float y)
   this->create_a(x+(11*m_title_snake_width), y);
   this->create_k(x+(16*m_title_snake_width), y);
   this->create_e(x+(21*m_title_snake_width), y);
+}
+
+void *Music_Fade_Thread::Music_Fade_Thread(ALLEGRO_THREAD *thread, void *arg)
+{
+  Music_Fade_Thread_Data *data = (Music_Fade_Thread_Data*)arg;
+  data->music->fade_to_stop();
+  return NULL;
 }
 

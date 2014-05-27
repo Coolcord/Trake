@@ -10,7 +10,7 @@
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
   assert(event);
   assert(human_players + ai_players <= 4);
@@ -18,6 +18,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   assert(screen_width > 0);
   assert(screen_height > 0);
   m_event = event;
+  m_music_fade_thread = music_fade_thread;
   m_screen_width = screen_width;
   m_screen_height = screen_height;
   m_snake_width = snake_width;
@@ -142,6 +143,11 @@ void Game::run()
     al_start_thread(input_thread);
 
     //Start Music
+    if (m_music_fade_thread)
+    { //Stop music from menu if playing
+      al_join_thread(m_music_fade_thread, NULL);
+      m_music_fade_thread = NULL;
+    }
     m_music->play();
 
     //Clear the Screen
@@ -211,6 +217,7 @@ void Game::run()
 
     al_flush_event_queue(m_event);
     al_join_thread(input_thread, NULL);
+    al_destroy_thread(input_thread);
 
     //Deallocate Memory
     for (int i = 0; i < 4; i++)
