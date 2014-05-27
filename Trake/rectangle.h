@@ -12,6 +12,8 @@ class Rectangle
     void draw();
     float get_x();
     float get_y();
+    float get_width();
+    float get_height();
     ALLEGRO_COLOR get_color();
     void set_x(float x);
     void set_y(float y);

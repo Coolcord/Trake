@@ -45,6 +45,16 @@ float Rectangle::get_y()
   return m_y;
 }
 
+float Rectangle::get_width()
+{
+  return m_width;
+}
+
+float Rectangle::get_height()
+{
+  return m_height;
+}
+
 ALLEGRO_COLOR Rectangle::get_color()
 {
   return m_color;

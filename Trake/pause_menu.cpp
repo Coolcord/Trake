@@ -2,6 +2,7 @@
 #include "rectangle.h"
 #include <allegro5/allegro_color.h>
 #include <assert.h>
+#include <string>
 
 Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, int *rounds, int total_rounds)
 {
@@ -16,7 +17,7 @@ Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float scr
   m_move_sound_down = move_sound_down;
   m_move_sound_up = move_sound_up;
   m_sound_effects_level = sound_effects_level;
-  m_rectangle = new Rectangle(m_screen_width/4, m_screen_height/4, m_screen_width/2, m_screen_height/2, true, al_color_name("lightgray"));
+  m_rectangle = new Rectangle(m_screen_width/4, m_screen_height/4, m_screen_width/2, m_screen_height/2, true, al_color_name("darkgray"));
   m_quit = quit;
   m_rounds = rounds;
   m_total_rounds = total_rounds;
@@ -31,6 +32,24 @@ Pause_Menu::~Pause_Menu()
 void Pause_Menu::draw()
 {
   m_rectangle->draw();
+  ALLEGRO_COLOR color;
+  float x = m_screen_width / 2;
+  float y = m_rectangle->get_y() + (m_rectangle->get_height()/4);
+  al_draw_text(m_font, al_color_name("black"), x, y, ALLEGRO_ALIGN_CENTER, "Quit?");
+  std::string items[2] = { "No", "Yes" };
+  y = m_rectangle->get_y() + (m_rectangle->get_height()/2);
+  for (int i = 0; i < 2; i++)
+  {
+    if (m_selection == i)
+      color = al_color_name("lawngreen");
+    else
+      color = al_color_name("black");
+    if (i == 0)
+      x = m_rectangle->get_x() + (m_rectangle->get_width()/4);
+    else
+      x = m_rectangle->get_x() + ((m_rectangle->get_width()/4)*3);
+    al_draw_text(m_font, color, x, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
+  }
 }
 
 void Pause_Menu::show()
