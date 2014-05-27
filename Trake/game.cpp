@@ -199,7 +199,8 @@ void Game::run()
     //Deallocate Memory
     for (int i = 0; i < 4; i++)
     {
-      m_player_scores[i] = m_scoreboard->get_player_score(i);
+      if (m_scoreboard)
+        m_player_scores[i] = m_scoreboard->get_player_score(i);
       delete m_snakes[i];
       m_snakes[i] = NULL;
       delete m_ai[i];
