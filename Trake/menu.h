@@ -10,6 +10,7 @@
 
 class Rectangle;
 class Game;
+class Music;
 
 class Menu
 {
@@ -52,6 +53,7 @@ class Menu
     ALLEGRO_SAMPLE *m_move_sound_down;
     ALLEGRO_SAMPLE *m_move_sound_up;
     Game *m_game;
+    Music *m_music;
     std::vector<Rectangle*> *m_title;
 };
 

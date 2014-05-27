@@ -22,6 +22,7 @@ class Game
     Game(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condtion, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up);
     ~Game();
     void run();
+    void draw_loading();
   private:
     bool is_anyone_alive();
     int how_many_are_alive();

@@ -254,6 +254,11 @@ int Game::how_many_are_alive()
   return alive;
 }
 
+void Game::draw_loading()
+{
+  this->draw_loading(1);
+}
+
 void Game::draw_loading(int round)
 {
   al_clear_to_color(al_color_name("black"));

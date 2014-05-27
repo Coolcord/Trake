@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "rectangle.h"
 #include "game.h"
+#include "music.h"
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 #include <assert.h>
@@ -23,6 +24,13 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_music_level = 10;
   m_sound_effects_level = 10;
+  m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", 42, 0);
+  m_font_medium_incrementor = 40;
+  m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
+  al_clear_to_color(al_color_name("black"));
+  al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
+  al_flip_display();
+  m_music = new Music(m_music_level);
   int i = 0;
   float title = 0.0;
   float x = 0.0;
@@ -35,9 +43,6 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_thickness = (float)i-1;
   m_snake_width = snake_width;
   m_title_snake_width = snake_width * m_thickness;
-  m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", 42, 0);
-  m_font_medium_incrementor = 40;
-  m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   m_move_sound_up = al_load_sample("./sounds/pop2.wav");
   m_move_sound_down = al_load_sample("./sounds/pop1.wav");
   m_game = NULL;
@@ -53,6 +58,7 @@ Menu::~Menu()
     delete (*iter);
   }
   m_title->clear();
+  delete m_music;
   al_destroy_sample(m_move_sound_down);
   al_destroy_sample(m_move_sound_up);
   al_destroy_font(m_font_medium);
@@ -61,6 +67,7 @@ Menu::~Menu()
 
 void Menu::show()
 {
+  m_music->play();
   this->show_title();
 }
 
@@ -123,7 +130,7 @@ void Menu::show_title()
               if (m_move_sound_down)
               {
                 al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
-                al_rest(2);
+                m_music->fade_to_stop();
               }
               return;
             default:
@@ -134,7 +141,7 @@ void Menu::show_title()
           if (m_move_sound_down)
           {
             al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
-            al_rest(2);
+            m_music->fade_to_stop();
           }
           return;
       }
@@ -346,10 +353,16 @@ void Menu::show_game_setup()
           {
             case 0: //Play!
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+              al_clear_to_color(al_color_name("black"));
+              al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
+              al_flip_display();
+              m_music->fade_to_stop();
               m_game = new Game(m_event, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
               m_game->run();
               delete m_game;
               m_game = NULL;
+              m_music->set_volume(m_music_level);
+              m_music->play();
               return;
             case 6: //Back
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -429,6 +442,7 @@ void Menu::show_options()
               --m_music_level;
               if (m_music_level < 0)
                 m_music_level = 0;
+              m_music->set_volume(m_music_level);
               break;
             case 1: //Sound effects level
               --m_sound_effects_level;
@@ -446,6 +460,7 @@ void Menu::show_options()
               ++m_music_level;
               if (m_music_level > 10)
                 m_music_level = 10;
+              m_music->set_volume(m_music_level);
               break;
             case 1: //Sound effects level
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);

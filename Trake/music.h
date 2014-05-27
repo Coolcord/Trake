@@ -7,13 +7,16 @@
 class Music
 {
   public:
+    Music(float volume); //plays menu music
     Music(float volume, bool tron);
     ~Music();
     void play();
     void speed_up();
     void slow_to_stop();
+    void fade_to_stop();
     void pause();
     void resume();
+    void set_volume(float volume);
   private:
     bool m_tron;
     unsigned int m_position;
