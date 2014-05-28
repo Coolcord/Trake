@@ -15,8 +15,10 @@ class Music
     void slow_to_stop();
     void fade_to_stop();
     void pause();
+    void stop();
     void resume();
     void set_volume(float volume);
+    bool is_playing();
   private:
     bool m_tron;
     unsigned int m_position;

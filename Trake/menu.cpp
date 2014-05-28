@@ -512,7 +512,10 @@ void Menu::show_options()
               if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);
               --m_music_level;
               if (m_music_level < 0)
+              {
                 m_music_level = 0;
+                m_music->stop();
+              }
               m_music->set_volume(m_music_level);
               break;
             case 1: //Sound effects level
@@ -535,6 +538,8 @@ void Menu::show_options()
               if (m_music_level > 10)
                 m_music_level = 10;
               m_music->set_volume(m_music_level);
+              if (!m_music->is_playing())
+                m_music->play();
               break;
             case 1: //Sound effects level
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.2, ALLEGRO_PLAYMODE_ONCE, NULL);

@@ -105,6 +105,14 @@ void Music::pause()
   }
 }
 
+void Music::stop()
+{
+  if (m_song_instance)
+  {
+    al_stop_sample_instance(m_song_instance);
+  }
+}
+
 void Music::resume()
 {
   if (m_song_instance && m_volume > 0)
@@ -122,5 +130,13 @@ void Music::set_volume(float volume)
     al_set_sample_instance_gain(m_song_instance, m_volume);
   else
     al_rest(2);
+}
+
+bool Music::is_playing()
+{
+  if (m_song_instance && al_get_sample_instance_playing(m_song_instance))
+    return true;
+  else
+    return false;
 }
 
