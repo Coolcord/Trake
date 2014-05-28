@@ -25,9 +25,9 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_music_level = 10;
   m_sound_effects_level = 10;
-  m_font_small_incrementor = 32;
-  m_font_medium_incrementor = 42;
-  m_font_large_incrementor = 72;
+  m_font_small_incrementor = (m_screen_height/24);
+  m_font_medium_incrementor = (m_screen_height/(128/7));
+  m_font_large_incrementor = (m_screen_height/(32/3));
   m_font_small = al_load_font("./fonts/Sabo-Regular.ttf", (int)m_font_small_incrementor, 0);
   m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", (int)m_font_medium_incrementor, 0);
   m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", (int)m_font_large_incrementor, 0);
