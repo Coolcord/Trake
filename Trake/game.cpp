@@ -11,7 +11,7 @@
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
   assert(event);
   assert(controls);
@@ -24,6 +24,12 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
   m_screen_width = screen_width;
   m_screen_height = screen_height;
   m_snake_width = snake_width;
+  m_font_small_incrementor = font_small_incrementor;
+  m_font_medium_incrementor = font_medium_incrementor;
+  m_font_large_incrementor = font_large_incrementor;
+  m_font_small = font_small;
+  m_font_medium = font_medium;
+  m_font_large = font_large;
   m_music_level = music_level;
   m_win_condition = win_condition;
   m_rounds = rounds;
@@ -64,7 +70,6 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
   m_player_2_start_y = 0;
   m_player_3_start_y = m_game_height;
   m_player_4_start_y = m_game_height;
-  m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
   m_scoreboard = NULL;
   m_collision_table = NULL;
   m_pellet = NULL;
@@ -80,7 +85,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
 
 Game::~Game()
 {
-  al_destroy_font(m_font);
+  
 }
 
 void Game::run()
@@ -102,7 +107,7 @@ void Game::run()
     //Prepare the Scoreboard
     if (m_win_condition == 0)
     {
-      m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_scoreboard_y, m_num_snakes, m_player_scores, m_snakes);
+      m_scoreboard = new Scoreboard(m_screen_width, m_screen_height, m_snake_width, m_font_small_incrementor, m_font_small, m_scoreboard_y, m_num_snakes, m_player_scores, m_snakes);
     }
     else
     {
@@ -118,7 +123,7 @@ void Game::run()
     //Initialize the Pause Menu
     bool paused = false;
     bool quit = false;
-    m_pause_menu = new Pause_Menu(m_event, m_controls, m_screen_width, m_screen_height, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &rounds, m_rounds);
+    m_pause_menu = new Pause_Menu(m_event, m_controls, m_screen_width, m_screen_height, m_font_large_incrementor, m_font_large, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &rounds, m_rounds);
 
     //Initialize Pellet
     m_pellet = new Pellet(m_snake_width, m_max_x, m_game_height, m_sound_effects_level, m_max_spawn_time, m_scoreboard, m_collision_table, m_tron);
@@ -209,7 +214,7 @@ void Game::run()
     if (rounds == m_rounds)
     {
       al_clear_to_color(al_color_name("black"));
-      al_draw_text(m_font, al_color_name("lawngreen"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Game Over");
+      al_draw_text(m_font_large, al_color_name("lawngreen"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Game Over");
       al_flip_display();
       al_rest(3);
     }
@@ -278,6 +283,6 @@ void Game::draw_loading(int round)
     text = "Round " + std::to_string(round) + " of " + std::to_string(m_rounds);
   else //only show a loading screen when playing one round
     text = "Loading...";
-  al_draw_text(m_font, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, text.c_str());
+  al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, text.c_str());
 }
 

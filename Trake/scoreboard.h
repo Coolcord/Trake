@@ -11,7 +11,7 @@ class Rectangle;
 class Scoreboard
 {
   public:
-    Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, int player_scores[], Snake *snakes[]);
+    Scoreboard(float screen_width, float screen_height, float snake_width, float font_small_incrementor, ALLEGRO_FONT *font_small, float y, int num_snakes, int player_scores[], Snake *snakes[]);
     ~Scoreboard();
     void draw();
     void draw_player_score(Snake *snake);
@@ -21,6 +21,7 @@ class Scoreboard
     float m_screen_width;
     float m_screen_height;
     float m_snake_width;
+    float m_font_small_incrementor;
     float m_y;
     float m_width;
     float m_height;

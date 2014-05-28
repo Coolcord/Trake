@@ -55,4 +55,5 @@ High Scores (top 10 for single match)
 Beta:
 Reset all to default button
 Add a way to unassign keys
+Add a way to clear high scores
 

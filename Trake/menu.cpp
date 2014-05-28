@@ -25,9 +25,12 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_music_level = 10;
   m_sound_effects_level = 10;
-  m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", 42, 0);
-  m_font_medium_incrementor = 40;
-  m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
+  m_font_small_incrementor = 32;
+  m_font_medium_incrementor = 42;
+  m_font_large_incrementor = 72;
+  m_font_small = al_load_font("./fonts/Sabo-Regular.ttf", (int)m_font_small_incrementor, 0);
+  m_font_medium = al_load_font("./fonts/Sabo-Regular.ttf", (int)m_font_medium_incrementor, 0);
+  m_font_large = al_load_font("./fonts/Sabo-Regular.ttf", (int)m_font_large_incrementor, 0);
   al_clear_to_color(al_color_name("black"));
   al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Loading...");
   al_flip_display();
@@ -85,6 +88,7 @@ Menu::~Menu()
   delete m_controls;
   al_destroy_sample(m_move_sound_down);
   al_destroy_sample(m_move_sound_up);
+  al_destroy_font(m_font_small);
   al_destroy_font(m_font_medium);
   al_destroy_font(m_font_large);
 }
@@ -116,7 +120,7 @@ void Menu::show_title()
       {
         color = al_color_name("lightgray");
       }
-      al_draw_text(m_font_large, color, m_screen_width/2, ((m_screen_height/16)*9)+(i*80), ALLEGRO_ALIGN_CENTER, items[i].c_str());
+      al_draw_text(m_font_large, color, m_screen_width/2, ((m_screen_height/16)*9)+(i*m_font_large_incrementor), ALLEGRO_ALIGN_CENTER, items[i].c_str());
     }
     al_flip_display();
     
@@ -412,7 +416,7 @@ void Menu::show_game_setup()
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               m_music_fade_thread = al_create_thread(Music_Thread::Music_Fade_Thread, m_music);
               al_start_thread(m_music_fade_thread);
-              m_game = new Game(m_event, m_controls, m_music_fade_thread, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
+              m_game = new Game(m_event, m_controls, m_music_fade_thread, m_screen_width, m_screen_height, m_snake_width, m_font_small_incrementor, m_font_medium_incrementor, m_font_large_incrementor, m_font_small, m_font_medium, m_font_large, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
               m_game->run();
               al_destroy_thread(m_music_fade_thread);
               m_music_fade_thread = NULL;

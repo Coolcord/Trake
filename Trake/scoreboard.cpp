@@ -5,11 +5,12 @@
 #include <string>
 #include <assert.h>
 
-Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_width, float y, int num_snakes, int player_scores[], Snake *snakes[])
+Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_width, float font_small_incrementor, ALLEGRO_FONT *font_small, float y, int num_snakes, int player_scores[], Snake *snakes[])
 {
   m_screen_width = screen_width;
   m_screen_height = screen_height;
   m_snake_width = snake_width;
+  m_font_small_incrementor = font_small_incrementor;
   m_y = y;
   m_num_snakes = num_snakes;
   for (int i = 0; i < 4; i++)
@@ -19,7 +20,7 @@ Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_widt
     m_backgrounds[i] = NULL;
     m_text_x[i] = 0;
   }
-  m_font = al_load_font("./fonts/Sabo-Regular.ttf", 32, 0);
+  m_font = font_small;
   m_width = m_screen_width;
   m_height = m_screen_height - m_y;
   m_text_y = m_screen_height - (m_height / 2);
@@ -56,7 +57,6 @@ Scoreboard::~Scoreboard()
   {
     delete m_backgrounds[i];
   }
-  al_destroy_font(m_font);
 }
 
 void Scoreboard::draw()

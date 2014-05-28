@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <string>
 
-Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float screen_width, float screen_height, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, int *rounds, int total_rounds)
+Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float screen_width, float screen_height, float font_large_incrementor, ALLEGRO_FONT *font_large, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, int *rounds, int total_rounds)
 {
   assert(event);
   assert(controls);
@@ -16,7 +16,8 @@ Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float scr
   m_screen_width = screen_width;
   m_screen_height = screen_height;
   m_selection = 0;
-  m_font = al_load_font("./fonts/Sabo-Regular.ttf", 72, 0);
+  m_font_large_incrementor = font_large_incrementor;
+  m_font = font_large;
   m_move_sound_down = move_sound_down;
   m_move_sound_up = move_sound_up;
   m_sound_effects_level = sound_effects_level;
@@ -28,7 +29,6 @@ Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float scr
 
 Pause_Menu::~Pause_Menu()
 {
-  al_destroy_font(m_font);
   delete m_rectangle;
 }
 
