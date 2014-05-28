@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "controls.h"
 #include "rectangle.h"
 #include "game.h"
 #include "music.h"
@@ -50,6 +51,27 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   x = (m_screen_width - x)/2;
   this->create_title(x, m_title_snake_width);
   m_music_fade_thread = NULL;
+
+  //Assign controls
+  m_controls = new Controls();
+  m_controls->set_control(ALLEGRO_KEY_ENTER, Controls::PLAYER_1_CONFIRM);
+  m_controls->set_control(ALLEGRO_KEY_ESCAPE, Controls::PLAYER_1_CANCEL);
+  m_controls->set_control(ALLEGRO_KEY_LEFT, Controls::PLAYER_1_LEFT);
+  m_controls->set_control(ALLEGRO_KEY_RIGHT, Controls::PLAYER_1_RIGHT);
+  m_controls->set_control(ALLEGRO_KEY_DOWN, Controls::PLAYER_1_DOWN);
+  m_controls->set_control(ALLEGRO_KEY_UP, Controls::PLAYER_1_UP);
+  m_controls->set_control(ALLEGRO_KEY_A, Controls::PLAYER_2_LEFT);
+  m_controls->set_control(ALLEGRO_KEY_D, Controls::PLAYER_2_RIGHT);
+  m_controls->set_control(ALLEGRO_KEY_S, Controls::PLAYER_2_DOWN);
+  m_controls->set_control(ALLEGRO_KEY_W, Controls::PLAYER_2_UP);
+  m_controls->set_control(ALLEGRO_KEY_J, Controls::PLAYER_3_LEFT);
+  m_controls->set_control(ALLEGRO_KEY_L, Controls::PLAYER_3_RIGHT);
+  m_controls->set_control(ALLEGRO_KEY_K, Controls::PLAYER_3_DOWN);
+  m_controls->set_control(ALLEGRO_KEY_I, Controls::PLAYER_3_UP);
+  m_controls->set_control(ALLEGRO_KEY_PAD_4, Controls::PLAYER_4_LEFT);
+  m_controls->set_control(ALLEGRO_KEY_PAD_6, Controls::PLAYER_4_RIGHT);
+  m_controls->set_control(ALLEGRO_KEY_PAD_5, Controls::PLAYER_4_DOWN);
+  m_controls->set_control(ALLEGRO_KEY_PAD_8, Controls::PLAYER_4_UP);
 }
 
 Menu::~Menu()
@@ -60,6 +82,7 @@ Menu::~Menu()
   }
   m_title->clear();
   delete m_music;
+  delete m_controls;
   al_destroy_sample(m_move_sound_down);
   al_destroy_sample(m_move_sound_up);
   al_destroy_font(m_font_medium);
@@ -101,18 +124,29 @@ void Menu::show_title()
     al_wait_for_event(m_event, &e);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
-      switch(e.keyboard.keycode)
+      switch(m_controls->get_control(e.keyboard.keycode))
       {
-        case ALLEGRO_KEY_DOWN:
+        case Controls::NONE:
+          break;
+        case Controls::PLAYER_1_DOWN:
+        case Controls::PLAYER_2_DOWN:
+        case Controls::PLAYER_3_DOWN:
+        case Controls::PLAYER_4_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 4;
           break;
-        case ALLEGRO_KEY_UP:
+        case Controls::PLAYER_1_UP:
+        case Controls::PLAYER_2_UP:
+        case Controls::PLAYER_3_UP:
+        case Controls::PLAYER_4_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
           if (selection < 0) selection = 3;
           break;
-        case ALLEGRO_KEY_ENTER:
+        case Controls::PLAYER_1_CONFIRM:
+        case Controls::PLAYER_2_CONFIRM:
+        case Controls::PLAYER_3_CONFIRM:
+        case Controls::PLAYER_4_CONFIRM:
           switch (selection)
           {
             case 0: //Start
@@ -138,13 +172,18 @@ void Menu::show_title()
               assert(false);
           }
           break;
-        case ALLEGRO_KEY_ESCAPE:
+        case Controls::PLAYER_1_CANCEL:
+        case Controls::PLAYER_2_CANCEL:
+        case Controls::PLAYER_3_CANCEL:
+        case Controls::PLAYER_4_CANCEL:
           if (m_move_sound_down)
           {
             al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
             m_music->fade_to_stop();
           }
           return;
+        default:
+          break;
       }
     }
   }
@@ -224,9 +263,14 @@ void Menu::show_game_setup()
     al_wait_for_event(m_event, &e);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
-      switch(e.keyboard.keycode)
+      switch(m_controls->get_control(e.keyboard.keycode))
       {
-        case ALLEGRO_KEY_LEFT:
+        case Controls::NONE:
+          break;
+        case Controls::PLAYER_1_LEFT:
+        case Controls::PLAYER_2_LEFT:
+        case Controls::PLAYER_3_LEFT:
+        case Controls::PLAYER_4_LEFT:
           switch (selection)
           {
             case 1: //GameType
@@ -285,7 +329,10 @@ void Menu::show_game_setup()
               break;
           }
           break;
-        case ALLEGRO_KEY_RIGHT:
+        case Controls::PLAYER_1_RIGHT:
+        case Controls::PLAYER_2_RIGHT:
+        case Controls::PLAYER_3_RIGHT:
+        case Controls::PLAYER_4_RIGHT:
           switch (selection)
           {
             case 1: //GameType
@@ -340,23 +387,32 @@ void Menu::show_game_setup()
               break;
           }
           break;
-        case ALLEGRO_KEY_DOWN:
+        case Controls::PLAYER_1_DOWN:
+        case Controls::PLAYER_2_DOWN:
+        case Controls::PLAYER_3_DOWN:
+        case Controls::PLAYER_4_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 7;
           break;
-        case ALLEGRO_KEY_UP:
+        case Controls::PLAYER_1_UP:
+        case Controls::PLAYER_2_UP:
+        case Controls::PLAYER_3_UP:
+        case Controls::PLAYER_4_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
           if (selection < 0) selection = 6;
           break;
-        case ALLEGRO_KEY_ENTER:
+        case Controls::PLAYER_1_CONFIRM:
+        case Controls::PLAYER_2_CONFIRM:
+        case Controls::PLAYER_3_CONFIRM:
+        case Controls::PLAYER_4_CONFIRM:
           switch (selection)
           {
             case 0: //Play!
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               m_music_fade_thread = al_create_thread(Music_Thread::Music_Fade_Thread, m_music);
               al_start_thread(m_music_fade_thread);
-              m_game = new Game(m_event, m_music_fade_thread, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
+              m_game = new Game(m_event, m_controls, m_music_fade_thread, m_screen_width, m_screen_height, m_snake_width, m_music_level, m_sound_effects_level, m_human_players, m_ai_players, m_gametype_selection, m_win_selection, m_rounds, m_move_sound_down, m_move_sound_up);
               m_game->run();
               al_destroy_thread(m_music_fade_thread);
               m_music_fade_thread = NULL;
@@ -370,9 +426,14 @@ void Menu::show_game_setup()
               return;
           }
           break;
-        case ALLEGRO_KEY_ESCAPE:
+        case Controls::PLAYER_1_CANCEL:
+        case Controls::PLAYER_2_CANCEL:
+        case Controls::PLAYER_3_CANCEL:
+        case Controls::PLAYER_4_CANCEL:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
           return;
+        default:
+          break;
       }
     }
   }
@@ -433,9 +494,14 @@ void Menu::show_options()
     al_wait_for_event(m_event, &e);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
-      switch(e.keyboard.keycode)
+      switch(m_controls->get_control(e.keyboard.keycode))
       {
-        case ALLEGRO_KEY_LEFT:
+        case Controls::NONE:
+          break;
+        case Controls::PLAYER_1_LEFT:
+        case Controls::PLAYER_2_LEFT:
+        case Controls::PLAYER_3_LEFT:
+        case Controls::PLAYER_4_LEFT:
           switch (selection)
           {
             case 0: //Music level
@@ -453,7 +519,10 @@ void Menu::show_options()
               break;
           }
           break;
-        case ALLEGRO_KEY_RIGHT:
+        case Controls::PLAYER_1_RIGHT:
+        case Controls::PLAYER_2_RIGHT:
+        case Controls::PLAYER_3_RIGHT:
+        case Controls::PLAYER_4_RIGHT:
           switch (selection)
           {
             case 0: //Music level
@@ -471,17 +540,26 @@ void Menu::show_options()
               break;
           }
           break;
-        case ALLEGRO_KEY_DOWN:
+        case Controls::PLAYER_1_DOWN:
+        case Controls::PLAYER_2_DOWN:
+        case Controls::PLAYER_3_DOWN:
+        case Controls::PLAYER_4_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 5;
           break;
-        case ALLEGRO_KEY_UP:
+        case Controls::PLAYER_1_UP:
+        case Controls::PLAYER_2_UP:
+        case Controls::PLAYER_3_UP:
+        case Controls::PLAYER_4_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           --selection;
           if (selection < 0)
             selection = 4;
           break;
-        case ALLEGRO_KEY_ENTER:
+        case Controls::PLAYER_1_CONFIRM:
+        case Controls::PLAYER_2_CONFIRM:
+        case Controls::PLAYER_3_CONFIRM:
+        case Controls::PLAYER_4_CONFIRM:
           switch (selection)
           {
             case 2: //Controls
@@ -497,9 +575,14 @@ void Menu::show_options()
               return;
           }
           break;
-        case ALLEGRO_KEY_ESCAPE:
+        case Controls::PLAYER_1_CANCEL:
+        case Controls::PLAYER_2_CANCEL:
+        case Controls::PLAYER_3_CANCEL:
+        case Controls::PLAYER_4_CANCEL:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
           return;
+        default:
+          break;
       }
     }
   }
@@ -555,18 +638,29 @@ void Menu::show_controls()
     al_wait_for_event(m_event, &e);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
-      switch(e.keyboard.keycode)
+      switch(m_controls->get_control(e.keyboard.keycode))
       {
-        case ALLEGRO_KEY_DOWN:
+        case Controls::NONE:
+          break;
+        case Controls::PLAYER_1_DOWN:
+        case Controls::PLAYER_2_DOWN:
+        case Controls::PLAYER_3_DOWN:
+        case Controls::PLAYER_4_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection = (selection + 1) % 5;
           break;
-        case ALLEGRO_KEY_UP:
+        case Controls::PLAYER_1_UP:
+        case Controls::PLAYER_2_UP:
+        case Controls::PLAYER_3_UP:
+        case Controls::PLAYER_4_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
           if (selection < 0) selection = 4;
           break;
-        case ALLEGRO_KEY_ENTER:
+        case Controls::PLAYER_1_CONFIRM:
+        case Controls::PLAYER_2_CONFIRM:
+        case Controls::PLAYER_3_CONFIRM:
+        case Controls::PLAYER_4_CONFIRM:
           if (selection == 4)
           {
             if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -578,9 +672,14 @@ void Menu::show_controls()
             this->show_control_setup(selection+1);
           }
           break;
-        case ALLEGRO_KEY_ESCAPE:
+        case Controls::PLAYER_1_CANCEL:
+        case Controls::PLAYER_2_CANCEL:
+        case Controls::PLAYER_3_CANCEL:
+        case Controls::PLAYER_4_CANCEL:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
           return;
+        default:
+          break;
       }
     }
   }
@@ -605,12 +704,22 @@ void Menu::show_credits()
     al_wait_for_event(m_event, &e);
     if (e.type == ALLEGRO_EVENT_KEY_DOWN)
     {
-      switch(e.keyboard.keycode)
+      switch(m_controls->get_control(e.keyboard.keycode))
       {
-        case ALLEGRO_KEY_ENTER:
-        case ALLEGRO_KEY_ESCAPE:
+        case Controls::NONE:
+          break;
+        case Controls::PLAYER_1_CONFIRM:
+        case Controls::PLAYER_2_CONFIRM:
+        case Controls::PLAYER_3_CONFIRM:
+        case Controls::PLAYER_4_CONFIRM:
+        case Controls::PLAYER_1_CANCEL:
+        case Controls::PLAYER_2_CANCEL:
+        case Controls::PLAYER_3_CANCEL:
+        case Controls::PLAYER_4_CANCEL:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
           return;
+        default:
+          break;
       }
     }
   }

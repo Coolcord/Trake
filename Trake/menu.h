@@ -8,6 +8,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <vector>
 
+class Controls;
 class Rectangle;
 class Game;
 class Music;
@@ -59,6 +60,7 @@ class Menu
     ALLEGRO_FONT *m_font_large;
     ALLEGRO_SAMPLE *m_move_sound_down;
     ALLEGRO_SAMPLE *m_move_sound_up;
+    Controls *m_controls;
     Game *m_game;
     Music *m_music;
     std::vector<Rectangle*> *m_title;

@@ -1,6 +1,7 @@
 #include "game.h"
 #include "input.h"
 #include "ai.h"
+#include "controls.h"
 #include "collision_table.h"
 #include "pellet.h"
 #include "snake.h"
@@ -10,9 +11,10 @@
 #include <allegro5/allegro_color.h>
 #include <assert.h>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
   assert(event);
+  assert(controls);
   assert(human_players + ai_players <= 4);
   assert(human_players + ai_players > 0);
   assert(screen_width > 0);
@@ -25,6 +27,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, ALLEGRO_THREAD *music_fade_thread, float 
   m_music_level = music_level;
   m_win_condition = win_condition;
   m_rounds = rounds;
+  m_controls = controls;
   m_move_sound_down = move_sound_down;
   m_move_sound_up = move_sound_up;
   m_sound_effects_level = sound_effects_level;
@@ -115,7 +118,7 @@ void Game::run()
     //Initialize the Pause Menu
     bool paused = false;
     bool quit = false;
-    m_pause_menu = new Pause_Menu(m_event, m_screen_width, m_screen_height, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &rounds, m_rounds);
+    m_pause_menu = new Pause_Menu(m_event, m_controls, m_screen_width, m_screen_height, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &rounds, m_rounds);
 
     //Initialize Pellet
     m_pellet = new Pellet(m_snake_width, m_max_x, m_game_height, m_sound_effects_level, m_max_spawn_time, m_scoreboard, m_collision_table, m_tron);
@@ -136,6 +139,7 @@ void Game::run()
       data.ai[i] = m_ai[i];
       data.snakes[i] = m_snakes[i];
     }
+    data.controls = m_controls;
     data.event = m_event;
     data.paused = &paused;
     data.quit = &quit;
