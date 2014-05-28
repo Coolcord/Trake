@@ -455,9 +455,11 @@ void Menu::show_options()
   while (true)
   {
     al_clear_to_color(al_color_name("black"));
+    float y = m_screen_height/50;
+    al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, "Options");
+    y += m_font_medium_incrementor*2;
 
     //Draw Selections
-    float y = m_screen_height/50;
     for (int i = 0; i < 5; i++)
     {
       ALLEGRO_COLOR color;
@@ -604,9 +606,11 @@ void Menu::show_controls()
   while (true)
   {
     al_clear_to_color(al_color_name("black"));
+    float y = m_screen_height/50;
+    al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, "Controls");
+    y += m_font_medium_incrementor*2;
 
     //Draw Selections
-    float y = m_screen_height/50;
     for (int i = 0; i < 5; i++)
     {
       ALLEGRO_COLOR color;
