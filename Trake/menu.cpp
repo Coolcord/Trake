@@ -687,7 +687,246 @@ void Menu::show_controls()
 
 void Menu::show_control_setup(int player_num)
 {
-  
+  int selection = 0;
+  bool setting_key = false;
+  int setting_key_selection = 0;
+  std::string items[7] = { "Up:", "Down:", "Left:", "Right:", "Confirm:", "Cancel:", "Back" };
+  while (true)
+  {
+    al_clear_to_color(al_color_name("black"));
+    float y = m_screen_height/50;
+    std::string text = "Player " + std::to_string(player_num) + " Controls";
+    ALLEGRO_COLOR color;
+    switch (player_num)
+    {
+      case 1:
+        color = al_color_name("lawngreen");
+        break;
+      case 2:
+        color = al_color_name("blue");
+        break;
+      case 3:
+        color = al_color_name("red");
+        break;
+      case 4:
+        color = al_color_name("yellow");
+        break;
+      default:
+        assert(false);
+    }
+    al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
+    al_draw_filled_rectangle((m_screen_width/4)-(m_font_medium_incrementor/2), y+5, (m_screen_width/4)+(m_font_medium_incrementor/2), y+5 + m_font_medium_incrementor, color);
+    al_draw_filled_rectangle(((m_screen_width/4)*3)-(m_font_medium_incrementor/2), y+5, ((m_screen_width/4)*3)+(m_font_medium_incrementor/2), y+5 + m_font_medium_incrementor, color);
+    y += m_font_medium_incrementor*2;
+
+    //Draw Selections
+    for (int i = 0; i < 7; i++)
+    {
+      if (selection == i)
+      {
+        color = al_color_name("lawngreen");
+      }
+      else
+      {
+        color = al_color_name("lightgray");
+      }
+      if (i == 6)
+      {
+        al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, items[i].c_str());
+        continue;
+      }
+      al_draw_text(m_font_medium, color, (m_screen_width/4)-(m_font_medium_incrementor/2), y, ALLEGRO_ALIGN_LEFT, items[i].c_str());
+      if (setting_key && setting_key_selection == i)
+      {
+        al_draw_text(m_font_medium, color, ((m_screen_width/4)*3)+(m_font_medium_incrementor/2), y, ALLEGRO_ALIGN_RIGHT, "Waiting...");
+      y += m_font_medium_incrementor*2;
+        continue;
+      }
+      int key = -1;
+      switch (i)
+      {
+        case 0: //Up
+          switch (player_num)
+          {
+            case 1:
+              key = m_controls->get_key(Controls::PLAYER_1_UP);
+              break;
+            case 2:
+              key = m_controls->get_key(Controls::PLAYER_2_UP);
+              break;
+            case 3:
+              key = m_controls->get_key(Controls::PLAYER_3_UP);
+              break;
+            case 4:
+              key = m_controls->get_key(Controls::PLAYER_4_UP);
+              break;
+            default:
+              assert(false);
+          }
+          break;
+        case 1: //Down
+          switch (player_num)
+          {
+            case 1:
+              key = m_controls->get_key(Controls::PLAYER_1_DOWN);
+              break;
+            case 2:
+              key = m_controls->get_key(Controls::PLAYER_2_DOWN);
+              break;
+            case 3:
+              key = m_controls->get_key(Controls::PLAYER_3_DOWN);
+              break;
+            case 4:
+              key = m_controls->get_key(Controls::PLAYER_4_DOWN);
+              break;
+            default:
+              assert(false);
+          }
+          break;
+        case 2: //Left
+          switch (player_num)
+          {
+            case 1:
+              key = m_controls->get_key(Controls::PLAYER_1_LEFT);
+              break;
+            case 2:
+              key = m_controls->get_key(Controls::PLAYER_2_LEFT);
+              break;
+            case 3:
+              key = m_controls->get_key(Controls::PLAYER_3_LEFT);
+              break;
+            case 4:
+              key = m_controls->get_key(Controls::PLAYER_4_LEFT);
+              break;
+            default:
+              assert(false);
+          }
+          break;
+        case 3: //Right
+          switch (player_num)
+          {
+            case 1:
+              key = m_controls->get_key(Controls::PLAYER_1_RIGHT);
+              break;
+            case 2:
+              key = m_controls->get_key(Controls::PLAYER_2_RIGHT);
+              break;
+            case 3:
+              key = m_controls->get_key(Controls::PLAYER_3_RIGHT);
+              break;
+            case 4:
+              key = m_controls->get_key(Controls::PLAYER_4_RIGHT);
+              break;
+            default:
+              assert(false);
+          }
+          break;
+        case 4: //Confirm
+          switch (player_num)
+          {
+            case 1:
+              key = m_controls->get_key(Controls::PLAYER_1_CONFIRM);
+              break;
+            case 2:
+              key = m_controls->get_key(Controls::PLAYER_2_CONFIRM);
+              break;
+            case 3:
+              key = m_controls->get_key(Controls::PLAYER_3_CONFIRM);
+              break;
+            case 4:
+              key = m_controls->get_key(Controls::PLAYER_4_CONFIRM);
+              break;
+            default:
+              assert(false);
+          }
+          break;
+        case 5: //Cancel
+          switch (player_num)
+          {
+            case 1:
+              key = m_controls->get_key(Controls::PLAYER_1_CANCEL);
+              break;
+            case 2:
+              key = m_controls->get_key(Controls::PLAYER_2_CANCEL);
+              break;
+            case 3:
+              key = m_controls->get_key(Controls::PLAYER_3_CANCEL);
+              break;
+            case 4:
+              key = m_controls->get_key(Controls::PLAYER_4_CANCEL);
+              break;
+            default:
+              assert(false);
+          }
+          break;
+        default:
+          break;
+      }
+      if (key == -1)
+        text = "None";
+      else
+        text = al_keycode_to_name(key);
+      al_draw_text(m_font_medium, color, ((m_screen_width/4)*3)+(m_font_medium_incrementor/2), y, ALLEGRO_ALIGN_RIGHT, text.c_str());
+      y += m_font_medium_incrementor*2;
+    }
+    al_flip_display();
+    if (setting_key)
+    {
+      this->assign_key(player_num, setting_key_selection);
+      setting_key = false;
+      continue;
+    }
+
+    ALLEGRO_EVENT e;
+    al_wait_for_event(m_event, &e);
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      switch(m_controls->get_control(e.keyboard.keycode))
+      {
+        case Controls::NONE:
+          break;
+        case Controls::PLAYER_1_DOWN:
+        case Controls::PLAYER_2_DOWN:
+        case Controls::PLAYER_3_DOWN:
+        case Controls::PLAYER_4_DOWN:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection = (selection + 1) % 7;
+          break;
+        case Controls::PLAYER_1_UP:
+        case Controls::PLAYER_2_UP:
+        case Controls::PLAYER_3_UP:
+        case Controls::PLAYER_4_UP:
+          if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+          selection -= 1;
+          if (selection < 0) selection = 6;
+          break;
+        case Controls::PLAYER_1_CONFIRM:
+        case Controls::PLAYER_2_CONFIRM:
+        case Controls::PLAYER_3_CONFIRM:
+        case Controls::PLAYER_4_CONFIRM:
+          if (selection == 6)
+          {
+            if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+            return;
+          }
+          else
+          {
+            if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+            setting_key = true;
+            setting_key_selection = selection;
+          }
+          break;
+        case Controls::PLAYER_1_CANCEL:
+        case Controls::PLAYER_2_CANCEL:
+        case Controls::PLAYER_3_CANCEL:
+        case Controls::PLAYER_4_CANCEL:
+          if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+          return;
+        default:
+          break;
+      }
+    }
+  }
 }
 
 void Menu::show_credits()
@@ -723,6 +962,135 @@ void Menu::show_credits()
       }
     }
   }
+}
+
+void Menu::assign_key(int player_num, int selection)
+{
+  al_flush_event_queue(m_event);
+  bool assigned = false;
+  for (int i = 0; i < 5; i++)
+  {
+    if (assigned)
+      break;
+    ALLEGRO_EVENT e;
+    al_wait_for_event_timed(m_event, &e, 1);
+    int key = 0;
+    if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+      key = e.keyboard.keycode;
+    }
+    else
+      continue; //invalid event
+
+    //Assign the new key
+    switch (player_num)
+    {
+      case 1:
+        switch (selection)
+        {
+          case 0: //Up
+            m_controls->set_control(key, Controls::PLAYER_1_UP);
+            break;
+          case 1: //Down
+            m_controls->set_control(key, Controls::PLAYER_1_DOWN);
+            break;
+          case 2: //Left
+            m_controls->set_control(key, Controls::PLAYER_1_LEFT);
+            break;
+          case 3: //Right
+            m_controls->set_control(key, Controls::PLAYER_1_RIGHT);
+            break;
+          case 4: //Confirm
+            m_controls->set_control(key, Controls::PLAYER_1_CONFIRM);
+            break;
+          case 5: //Cancel
+            m_controls->set_control(key, Controls::PLAYER_1_CANCEL);
+            break;
+          default:
+            assert(false);
+        }
+        break;
+      case 2:
+        switch (selection)
+        {
+          case 0: //Up
+            m_controls->set_control(key, Controls::PLAYER_2_UP);
+            break;
+          case 1: //Down
+            m_controls->set_control(key, Controls::PLAYER_2_DOWN);
+            break;
+          case 2: //Left
+            m_controls->set_control(key, Controls::PLAYER_2_LEFT);
+            break;
+          case 3: //Right
+            m_controls->set_control(key, Controls::PLAYER_2_RIGHT);
+            break;
+          case 4: //Confirm
+            m_controls->set_control(key, Controls::PLAYER_2_CONFIRM);
+            break;
+          case 5: //Cancel
+            m_controls->set_control(key, Controls::PLAYER_2_CANCEL);
+            break;
+          default:
+            assert(false);
+        }
+        break;
+      case 3:
+        switch (selection)
+        {
+          case 0: //Up
+            m_controls->set_control(key, Controls::PLAYER_3_UP);
+            break;
+          case 1: //Down
+            m_controls->set_control(key, Controls::PLAYER_3_DOWN);
+            break;
+          case 2: //Left
+            m_controls->set_control(key, Controls::PLAYER_3_LEFT);
+            break;
+          case 3: //Right
+            m_controls->set_control(key, Controls::PLAYER_3_RIGHT);
+            break;
+          case 4: //Confirm
+            m_controls->set_control(key, Controls::PLAYER_3_CONFIRM);
+            break;
+          case 5: //Cancel
+            m_controls->set_control(key, Controls::PLAYER_3_CANCEL);
+            break;
+          default:
+            assert(false);
+        }
+        break;
+      case 4:
+        switch (selection)
+        {
+          case 0: //Up
+            m_controls->set_control(key, Controls::PLAYER_4_UP);
+            break;
+          case 1: //Down
+            m_controls->set_control(key, Controls::PLAYER_4_DOWN);
+            break;
+          case 2: //Left
+            m_controls->set_control(key, Controls::PLAYER_4_LEFT);
+            break;
+          case 3: //Right
+            m_controls->set_control(key, Controls::PLAYER_4_RIGHT);
+            break;
+          case 4: //Confirm
+            m_controls->set_control(key, Controls::PLAYER_4_CONFIRM);
+            break;
+          case 5: //Cancel
+            m_controls->set_control(key, Controls::PLAYER_4_CANCEL);
+            break;
+          default:
+            assert(false);
+        }
+        break;
+      default:
+        assert(false);
+    }
+    assigned = true;
+  }
+  al_flush_event_queue(m_event);
 }
 
 void Menu::draw_title_logo()

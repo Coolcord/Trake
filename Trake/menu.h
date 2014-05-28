@@ -33,7 +33,7 @@ class Menu
     void show_controls();
     void show_control_setup(int player_num);
     void show_credits();
-    void draw();
+    void assign_key(int player_num, int selection);
     void draw_title_logo();
     void create_t(float x, float y);
     void create_r(float x, float y);
