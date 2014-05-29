@@ -98,6 +98,7 @@ void Game::run()
 
   for (int rounds = 1; rounds <= m_rounds; rounds++)
   {
+    al_clear_to_color(al_color_name("black"));
     //Initialize Collision Table
     m_collision_table = new Collision_Table();
 
@@ -164,13 +165,8 @@ void Game::run()
     }
     m_music->play();
 
-    //Clear the Screen
-    al_clear_to_color(al_color_name("black"));
     if (m_scoreboard)
       m_scoreboard->draw();
-    for (int i = 0; i < m_num_snakes; i++)
-      m_snakes[i]->draw();
-    m_pellet->draw();
     al_flip_display();
 
     while (!quit)

@@ -251,7 +251,10 @@ void Snake::draw()
   {
     for (std::vector<Snake_Piece*>::iterator iter = m_pieces->begin(); iter != m_pieces->end(); ++iter)
     {
-      (*iter)->draw();
+      //Only draw within the boundaries
+      if ((*iter)->get_x() <= m_max_x
+          && (*iter)->get_y() <= m_max_y)
+        (*iter)->draw();
     }
   }
   else //display differently on death
