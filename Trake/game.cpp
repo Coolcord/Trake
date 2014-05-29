@@ -81,7 +81,6 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
   for (int i = 0; i < 4; i++)
   {
     m_player_scores[i] = 0;
-    m_player_wins[i] = 0;
     m_ai[i] = NULL;
     m_snakes[i] = NULL;
   }
@@ -123,6 +122,7 @@ void Game::run()
     {
       m_snakes[i]->set_scoreboard(m_scoreboard);
     }
+    int num_alive = m_num_snakes;
 
     //Initialize the Pause Menu
     bool hide_standing = false;
@@ -212,17 +212,21 @@ void Game::run()
       }
       else
       {
-        if (how_many_are_alive() <= 1)
+        int current_living = how_many_are_alive();
+        if (current_living <= 1)
           quit = true;
+        if (current_living < num_alive)
+        {
+          //Add 5 points to those still alive
+          for (int i = 0; i < m_num_snakes; i++)
+          {
+            if (m_snakes[i] && !m_snakes[i]->is_dead())
+              m_player_scores[i] += 5;
+          }
+          num_alive = current_living;
+        }
       }
       al_flip_display();
-    }
-    //Get Score
-    if (m_win_condition == 1)
-    {
-      int winner = this->get_survivor();
-      if (winner >= 0)
-        ++m_player_wins[winner];
     }
     if (m_scoreboard)
     {
@@ -329,10 +333,7 @@ std::vector<int> *Game::get_player_rankings()
   std::vector<int> *player_rankings = new std::vector<int>();
   for (int i = 0; i < m_num_snakes; i++)
   {
-    if (m_win_condition == 0)
-      player_scores.push_back(m_player_scores[i]);
-    else
-      player_scores.push_back(m_player_wins[i]);
+    player_scores.push_back(m_player_scores[i]);
   }
   for (int i = 0; i < m_num_snakes; i++)
   {
@@ -406,11 +407,8 @@ void Game::show_current_standing(bool hide_standing, bool game_over)
         default:
           assert(false);
       }
-      if (m_win_condition == 0)
-        text += std::to_string(m_player_scores[player_rankings->at(i)]);
-      else
-        text += std::to_string(m_player_wins[player_rankings->at(i)]);
-      if (m_player_wins[player_rankings->at(i)] == 1)
+      text += std::to_string(m_player_scores[player_rankings->at(i)]);
+      if (m_player_scores[player_rankings->at(i)] == 1)
         text += " point";
       else
         text += " points";

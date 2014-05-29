@@ -60,7 +60,6 @@ class Game
     float m_player_4_start_x;
     float m_player_4_start_y;
     int m_player_scores[4];
-    int m_player_wins[4];
     ALLEGRO_FONT *m_font_small;
     ALLEGRO_FONT *m_font_medium;
     ALLEGRO_FONT *m_font_large;
