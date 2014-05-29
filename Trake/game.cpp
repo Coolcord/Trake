@@ -49,7 +49,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
   }
   assert(m_max_x > 0);
   assert(m_max_y > 0);
-  m_scoreboard_y = m_max_y - (m_snake_width * 5);
+  m_scoreboard_y = m_max_y - (m_snake_width * 4);
   if (m_win_condition == 0)
     m_game_height = m_scoreboard_y - (m_snake_width*2);
   else

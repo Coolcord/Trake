@@ -195,6 +195,7 @@ void Menu::show_title()
 
 void Menu::show_game_setup()
 {
+  float menu_size = m_font_medium_incrementor * 16;
   int selection = 0;
   std::string items[7] = { "Play!", "Game Type:", "Win Condition:", "Rounds:", "Human Players:", "AI Players:", "Back" };
     std::string gametype_items[2] = { "<   Snake   >", "<   Tron   >" };
@@ -203,9 +204,9 @@ void Menu::show_game_setup()
   {
     al_clear_to_color(al_color_name("black"));
     std::string text = "";
-
+    
     //Draw Selections
-    float y = m_screen_height/50;
+    float y = (m_screen_height/2)-(menu_size/2);
     for (int i = 0; i < 7; i++)
     {
       ALLEGRO_COLOR color;
@@ -450,6 +451,7 @@ void Menu::show_high_scores()
 
 void Menu::show_options()
 {
+  float menu_size = m_font_medium_incrementor*8;
   int selection = 0;
   std::string items[5] = { "Music:", "Sound Effects:", "Controls", "Credits", "Back" };
   while (true)
@@ -457,7 +459,7 @@ void Menu::show_options()
     al_clear_to_color(al_color_name("black"));
     float y = m_screen_height/50;
     al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, "Options");
-    y += m_font_medium_incrementor*2;
+    y = (m_screen_height/2)-(menu_size/2);
 
     //Draw Selections
     for (int i = 0; i < 5; i++)
@@ -601,6 +603,7 @@ void Menu::show_options()
 
 void Menu::show_controls()
 {
+  float menu_size = m_font_medium_incrementor*10;
   int selection = 0;
   std::string items[5] = { "Player 1", "Player 2", "Player 3", "Player 4", "Back" };
   while (true)
@@ -608,7 +611,7 @@ void Menu::show_controls()
     al_clear_to_color(al_color_name("black"));
     float y = m_screen_height/50;
     al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, "Controls");
-    y += m_font_medium_incrementor*2;
+    y += (m_screen_height/2)-(menu_size/2);
 
     //Draw Selections
     for (int i = 0; i < 5; i++)
@@ -700,6 +703,7 @@ void Menu::show_controls()
 
 void Menu::show_control_setup(int player_num)
 {
+  float menu_size = m_font_medium_incrementor * 12;
   int selection = 0;
   bool setting_key = false;
   int setting_key_selection = 0;
@@ -730,7 +734,7 @@ void Menu::show_control_setup(int player_num)
     al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
     al_draw_filled_rectangle((m_screen_width/4)-(m_font_medium_incrementor/2), y+5, (m_screen_width/4)+(m_font_medium_incrementor/2), y+5 + m_font_medium_incrementor, color);
     al_draw_filled_rectangle(((m_screen_width/4)*3)-(m_font_medium_incrementor/2), y+5, ((m_screen_width/4)*3)+(m_font_medium_incrementor/2), y+5 + m_font_medium_incrementor, color);
-    y += m_font_medium_incrementor*2;
+    y = (m_screen_height/2)-(menu_size/2);
 
     //Draw Selections
     for (int i = 0; i < 7; i++)
