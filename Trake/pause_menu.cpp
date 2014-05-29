@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <string>
 
-Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float screen_width, float screen_height, float font_large_incrementor, ALLEGRO_FONT *font_large, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, int *rounds, int total_rounds)
+Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float screen_width, float screen_height, float font_large_incrementor, ALLEGRO_FONT *font_large, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, bool *hide_standing, int *rounds, int total_rounds)
 {
   assert(event);
   assert(controls);
@@ -23,6 +23,7 @@ Pause_Menu::Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float scr
   m_sound_effects_level = sound_effects_level;
   m_rectangle = new Rectangle(m_screen_width/4, m_screen_height/4, m_screen_width/2, m_screen_height/2, true, al_color_name("darkgray"));
   m_quit = quit;
+  m_hide_standing = hide_standing;
   m_rounds = rounds;
   m_total_rounds = total_rounds;
 }
@@ -102,6 +103,7 @@ void Pause_Menu::show()
           {
             paused = false;
             *m_quit = true;
+            *m_hide_standing = true;
             *m_rounds = m_total_rounds;
           }
           break;

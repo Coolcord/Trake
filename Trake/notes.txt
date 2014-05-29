@@ -48,7 +48,6 @@ Exit
 To Do:
 Sudden Death for Tie Breakers
 Display 1st - 4th Place THEN Game Over
-Make menus scale with resolution
 Save all settings to disk
 High Scores (top 10 for single match)
 

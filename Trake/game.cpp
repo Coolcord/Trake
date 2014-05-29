@@ -114,16 +114,17 @@ void Game::run()
       m_scoreboard = NULL;
     }
 
-    //Send the Scoreboad to the snake objects
+    //Send the Scoreboard to the snake objects
     for (int i = 0; i < m_num_snakes; i++)
     {
       m_snakes[i]->set_scoreboard(m_scoreboard);
     }
 
     //Initialize the Pause Menu
+    bool hide_standing = false;
     bool paused = false;
     bool quit = false;
-    m_pause_menu = new Pause_Menu(m_event, m_controls, m_screen_width, m_screen_height, m_font_large_incrementor, m_font_large, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &rounds, m_rounds);
+    m_pause_menu = new Pause_Menu(m_event, m_controls, m_screen_width, m_screen_height, m_font_large_incrementor, m_font_large, m_move_sound_down, m_move_sound_up, m_sound_effects_level, &quit, &hide_standing, &rounds, m_rounds);
 
     //Initialize Pellet
     m_pellet = new Pellet(m_snake_width, m_max_x, m_game_height, m_sound_effects_level, m_max_spawn_time, m_scoreboard, m_collision_table, m_tron);
@@ -210,16 +211,14 @@ void Game::run()
     }
     m_music->slow_to_stop();
 
-    //Show the Game Over Screen
+    //Show the Current Standing of Each Player
     if (rounds == m_rounds)
     {
-      al_clear_to_color(al_color_name("black"));
-      al_draw_text(m_font_large, al_color_name("lawngreen"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Game Over");
-      al_flip_display();
-      al_rest(3);
+      this->show_current_standing(hide_standing, true);
     }
     else
     {
+      this->show_current_standing(hide_standing, false);
       this->draw_loading(rounds+1);
       al_flip_display();
     }
@@ -284,5 +283,55 @@ void Game::draw_loading(int round)
   else //only show a loading screen when playing one round
     text = "Loading...";
   al_draw_text(m_font_large, al_color_name("yellow"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, text.c_str());
+}
+
+void Game::show_current_standing(bool hide_standing, bool game_over)
+{
+  al_flush_event_queue(m_event);
+
+  if (!hide_standing)
+  {
+    al_clear_to_color(al_color_name("black"));
+    std::string text = "Current Standing";
+    float y = m_screen_height/50;
+    al_draw_text(m_font_large, al_color_name("white"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
+    y += m_font_large_incrementor;
+    al_flip_display();
+
+    //Wait for one of the users to press a key
+    for (int i = 0; i < 10; i++)
+    {
+      ALLEGRO_EVENT e;
+      al_wait_for_event_timed(m_event, &e, 1);
+      if (e.type == ALLEGRO_EVENT_KEY_DOWN)
+      {
+        switch(m_controls->get_control(e.keyboard.keycode))
+        {
+          case Controls::PLAYER_1_CONFIRM:
+          case Controls::PLAYER_2_CONFIRM:
+          case Controls::PLAYER_3_CONFIRM:
+          case Controls::PLAYER_4_CONFIRM:
+          case Controls::PLAYER_1_CANCEL:
+          case Controls::PLAYER_2_CANCEL:
+          case Controls::PLAYER_3_CANCEL:
+          case Controls::PLAYER_4_CANCEL:
+            i = 10;
+            break;
+          default:
+            i = 0;
+            continue;
+        }
+      }
+    }
+  }
+
+  //Show the Game Over Screen
+  if (game_over)
+  {
+    al_clear_to_color(al_color_name("black"));
+    al_draw_text(m_font_large, al_color_name("lawngreen"), m_screen_width/2, m_screen_height/2, ALLEGRO_ALIGN_CENTER, "Game Over");
+    al_flip_display();
+    al_rest(3);
+  }
 }
 

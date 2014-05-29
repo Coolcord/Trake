@@ -6,8 +6,6 @@ SOURCES=ai.cpp controls.cpp music.cpp collision_table.cpp pellet.cpp input.cpp r
 OBJS=$(SOURCES:.cpp=.o)
 OUT=trake
 
-all: clean make
-
 make: $(OBJS)
 	$(CXX) $(CFLAGS) -o $(OUT) $(OBJS) $(INCLUDE)
 

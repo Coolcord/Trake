@@ -92,7 +92,7 @@ void Scoreboard::draw_player_score(Snake *snake)
   }
   std::string text_header = "Score: ";
   al_draw_text(m_font, text_color, m_text_x[player_num], m_y, ALLEGRO_ALIGN_CENTER, text_header.c_str());
-  al_draw_text(m_font, text_color, m_text_x[player_num], m_y + (m_height / 2), ALLEGRO_ALIGN_CENTER, (std::to_string(m_player_scores[player_num])).c_str());
+  al_draw_text(m_font, text_color, m_text_x[player_num], m_y + m_font_small_incrementor, ALLEGRO_ALIGN_CENTER, (std::to_string(m_player_scores[player_num])).c_str());
 }
 
 void Scoreboard::increment_score_by_one(Snake *snake)

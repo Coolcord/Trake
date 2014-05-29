@@ -13,7 +13,7 @@ class Rectangle;
 class Pause_Menu
 {
   public:
-    Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float screen_width, float screen_height, float font_large_incrementor, ALLEGRO_FONT *font_large, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, int *rounds, int total_rounds);
+    Pause_Menu(ALLEGRO_EVENT_QUEUE *event, Controls *controls, float screen_width, float screen_height, float font_large_incrementor, ALLEGRO_FONT *font_large, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up, float sound_effects_level, bool *quit, bool *hide_standing, int *rounds, int total_rounds);
     ~Pause_Menu();
     void draw();
     void show();
@@ -29,6 +29,7 @@ class Pause_Menu
     ALLEGRO_SAMPLE *m_move_sound_up;
     float m_sound_effects_level;
     bool *m_quit;
+    bool *m_hide_standing;
     int *m_rounds;
     int m_total_rounds;
     Controls *m_controls;

@@ -28,6 +28,7 @@ class Game
     bool is_anyone_alive();
     int how_many_are_alive();
     void draw_loading(int round);
+    void show_current_standing(bool hide_standing, bool game_over);
     float m_screen_width;
     float m_screen_height;
     float m_snake_width;
