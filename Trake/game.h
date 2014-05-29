@@ -6,7 +6,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-
+#include <vector>
 
 class AI;
 class Controls;
@@ -27,6 +27,9 @@ class Game
   private:
     bool is_anyone_alive();
     int how_many_are_alive();
+    int get_survivor();
+    ALLEGRO_COLOR get_player_color(int player_num);
+    std::vector<int> *get_player_rankings();
     void draw_loading(int round);
     void show_current_standing(bool hide_standing, bool game_over);
     float m_screen_width;
@@ -57,6 +60,7 @@ class Game
     float m_player_4_start_x;
     float m_player_4_start_y;
     int m_player_scores[4];
+    int m_player_wins[4];
     ALLEGRO_FONT *m_font_small;
     ALLEGRO_FONT *m_font_medium;
     ALLEGRO_FONT *m_font_large;

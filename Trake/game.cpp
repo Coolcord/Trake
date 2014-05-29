@@ -10,6 +10,9 @@
 #include "pause_menu.h"
 #include <allegro5/allegro_color.h>
 #include <assert.h>
+#include <algorithm>
+#include <unordered_map>
+#include <iterator>
 
 Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
@@ -78,6 +81,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
   for (int i = 0; i < 4; i++)
   {
     m_player_scores[i] = 0;
+    m_player_wins[i] = 0;
     m_ai[i] = NULL;
     m_snakes[i] = NULL;
   }
@@ -181,7 +185,8 @@ void Game::run()
           m_snakes[i]->draw();
         }
         m_pellet->draw();
-        m_scoreboard->draw();
+        if (m_scoreboard)
+          m_scoreboard->draw();
         al_flip_display();
         continue;
       }
@@ -209,19 +214,20 @@ void Game::run()
       }
       al_flip_display();
     }
+    if (m_win_condition == 1)
+    {
+      int winner = this->get_survivor();
+      if (winner >= 0)
+        ++m_player_wins[winner];
+    }
+    if (m_scoreboard)
+    {
+      for (int i = 0; i < 4; i++)
+      {
+        m_player_scores[i] = m_scoreboard->get_player_score(i);
+      }
+    }
     m_music->slow_to_stop();
-
-    //Show the Current Standing of Each Player
-    if (rounds == m_rounds)
-    {
-      this->show_current_standing(hide_standing, true);
-    }
-    else
-    {
-      this->show_current_standing(hide_standing, false);
-      this->draw_loading(rounds+1);
-      al_flip_display();
-    }
 
     al_flush_event_queue(m_event);
     al_join_thread(input_thread, NULL);
@@ -230,8 +236,6 @@ void Game::run()
     //Deallocate Memory
     for (int i = 0; i < 4; i++)
     {
-      if (m_scoreboard)
-        m_player_scores[i] = m_scoreboard->get_player_score(i);
       delete m_snakes[i];
       m_snakes[i] = NULL;
       delete m_ai[i];
@@ -245,6 +249,18 @@ void Game::run()
     m_collision_table = NULL;
     delete m_music;
     m_music = NULL;
+
+    //Show the Current Standing of Each Player
+    if (rounds == m_rounds)
+    {
+      this->show_current_standing(hide_standing, true);
+    }
+    else
+    {
+      this->show_current_standing(hide_standing, false);
+      this->draw_loading(rounds+1);
+      al_flip_display();
+    }
   }
 }
 
@@ -269,6 +285,63 @@ int Game::how_many_are_alive()
   return alive;
 }
 
+int Game::get_survivor()
+{
+  for (int i = 0; i < 4; i++)
+  {
+    if (m_snakes[i] && !m_snakes[i]->is_dead())
+      return i;
+  }
+  return -1; //no survivors
+}
+
+ALLEGRO_COLOR Game::get_player_color(int player_num)
+{
+  ALLEGRO_COLOR color;
+  switch (player_num)
+  {
+    case 0:
+      color = al_color_name("lawngreen");
+      break;
+    case 1:
+      color = al_color_name("blue");
+      break;
+    case 2:
+      color = al_color_name("red");
+      break;
+    case 3:
+      color = al_color_name("yellow");
+      break;
+    default:
+      assert(false);
+  }
+  return color;
+}
+
+std::vector<int> *Game::get_player_rankings()
+{
+  assert(m_num_snakes > 1);
+  std::vector<int> player_scores;
+  std::vector<int> *player_rankings = new std::vector<int>();
+  for (int i = 0; i < m_num_snakes; i++)
+  {
+    if (m_win_condition == 0)
+      player_scores.push_back(m_player_scores[i]);
+    else
+      player_scores.push_back(m_player_wins[i]);
+  }
+  for (int i = 0; i < m_num_snakes; i++)
+  {
+    std::vector<int>::iterator iter = max_element(player_scores.begin(), player_scores.end());
+    int distance = std::distance(player_scores.begin(), iter);
+    assert(distance < 4);
+    player_rankings->push_back(distance);
+    player_scores.at(distance) = -1;
+  }
+
+  return player_rankings;
+}
+
 void Game::draw_loading()
 {
   this->draw_loading(1);
@@ -289,14 +362,60 @@ void Game::show_current_standing(bool hide_standing, bool game_over)
 {
   al_flush_event_queue(m_event);
 
-  if (!hide_standing)
+  if (!hide_standing && m_num_snakes > 1)
   {
+    std::vector<int> *player_rankings = this->get_player_rankings();
     al_clear_to_color(al_color_name("black"));
-    std::string text = "Current Standing";
+    std::string text = "";
+    ALLEGRO_COLOR color;
+    if (!game_over)
+    {
+      text = "Current Standings";
+      color = al_color_name("white");
+    }
+    else
+    {
+      text = "Player " + std::to_string(player_rankings->front()+1) + " Wins!";
+      color = this->get_player_color(player_rankings->front());
+    }
     float y = m_screen_height/50;
-    al_draw_text(m_font_large, al_color_name("white"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
-    y += m_font_large_incrementor;
+    al_draw_text(m_font_large, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
+    float menu_size = m_font_medium_incrementor * m_num_snakes;
+    y = (m_screen_height/2) - (menu_size/2);
+    
+    for (int i = 0; i < m_num_snakes; i++)
+    {
+      switch (i)
+      {
+        case 0:
+          text = "1st: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          break;
+        case 1:
+          text = "2nd: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          break;
+        case 2:
+          text = "3rd: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          break;
+        case 3:
+          text = "4th: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          break;
+        default:
+          assert(false);
+      }
+      if (m_win_condition == 0)
+        text += std::to_string(m_player_scores[player_rankings->at(i)]);
+      else
+        text += std::to_string(m_player_wins[player_rankings->at(i)]);
+      if (m_player_wins[player_rankings->at(i)] == 1)
+        text += " point";
+      else
+        text += " points";
+      color = this->get_player_color(player_rankings->at(i));
+      al_draw_text(m_font_medium, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
+      y += m_font_medium_incrementor;
+    }
     al_flip_display();
+    delete player_rankings;
 
     //Wait for one of the users to press a key
     for (int i = 0; i < 10; i++)
@@ -333,5 +452,6 @@ void Game::show_current_standing(bool hide_standing, bool game_over)
     al_flip_display();
     al_rest(3);
   }
+  al_flush_event_queue(m_event);
 }
 
