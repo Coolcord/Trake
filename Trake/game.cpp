@@ -168,6 +168,9 @@ void Game::run()
     al_clear_to_color(al_color_name("black"));
     if (m_scoreboard)
       m_scoreboard->draw();
+    for (int i = 0; i < m_num_snakes; i++)
+      m_snakes[i]->draw();
+    m_pellet->draw();
     al_flip_display();
 
     while (!quit)
@@ -214,6 +217,7 @@ void Game::run()
       }
       al_flip_display();
     }
+    //Get Score
     if (m_win_condition == 1)
     {
       int winner = this->get_survivor();
