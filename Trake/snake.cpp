@@ -145,13 +145,7 @@ void Snake::move()
     (*iter)->set_x(prev_x);
     (*iter)->set_y(prev_y);
     (*iter)->set_direction(prev_direction);
-    if ((*iter) != m_pieces->back())
-    {
-      prev_x = tmp_x;
-      prev_y = tmp_y;
-      prev_direction = tmp_direction;
-    }
-    else //tail
+    if ((*iter) == m_pieces->back()) //tail
     {
       if (m_tron || m_grow > 0)
       {
@@ -194,6 +188,12 @@ void Snake::move()
         }
         break;
       }
+    }
+    else
+    {
+      prev_x = tmp_x;
+      prev_y = tmp_y;
+      prev_direction = tmp_direction;
     }
   }
   if (m_next_direction != Input::NONE)
@@ -254,19 +254,30 @@ void Snake::draw()
       //Only draw within the boundaries
       if ((*iter)->get_x() <= m_max_x
           && (*iter)->get_y() <= m_max_y)
-        (*iter)->draw();
+      {
+        if (m_grow == 0 || (*iter) != m_pieces->back())
+          (*iter)->draw();
+      }
     }
   }
   else //display differently on death
   {
     for (std::vector<Snake_Piece*>::iterator iter = m_pieces->begin(); iter != m_pieces->end(); ++iter)
     {
-      ALLEGRO_COLOR tmp_color = (*iter)->get_color();
-      (*iter)->set_color(al_color_name("black"));
-      (*iter)->draw();
-      (*iter)->set_filled(false);
-      (*iter)->set_color(tmp_color);
-      (*iter)->draw();
+      //Only draw within the boundaries
+      if ((*iter)->get_x() <= m_max_x
+          && (*iter)->get_y() <= m_max_y)
+      {
+        if (m_grow == 0 || (*iter) != m_pieces->back())
+        {
+          ALLEGRO_COLOR tmp_color = (*iter)->get_color();
+          (*iter)->set_color(al_color_name("black"));
+          (*iter)->draw();
+          (*iter)->set_filled(false);
+          (*iter)->set_color(tmp_color);
+          (*iter)->draw();
+        }
+      }
     }
   }
 }
