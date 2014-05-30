@@ -1,17 +1,24 @@
 #include "high_scores.h"
-#include <allegro5/allegro5.h>
 #include <assert.h>
 
-High_Scores::High_Scores()
+High_Scores::High_Scores(float font_small_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_large)
 {
-  m_snake_high_scores = NULL;
-  m_tron_high_scores = NULL;
+  m_snake_high_scores = new std::array<std::pair<std::string, int>, 10>();
+  m_tron_high_scores = new std::array<std::pair<std::string, int>, 10>();
+  m_font_small_incrementor = font_small_incrementor;
+  m_font_large_incrementor = font_large_incrementor;
+  m_font_small = font_small;
+  m_font_large = font_large;
 }
 
-High_Scores::High_Scores(std::list<int> *snake_high_scores, std::list<int> *tron_high_scores)
+High_Scores::High_Scores(std::array<std::pair<std::string, int>, 10> *snake_high_scores, std::array<std::pair<std::string, int>, 10> *tron_high_scores, float font_small_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_large)
 {
   m_snake_high_scores = snake_high_scores;
   m_tron_high_scores = tron_high_scores;
+  m_font_small_incrementor = font_small_incrementor;
+  m_font_large_incrementor = font_large_incrementor;
+  m_font_small = font_small;
+  m_font_large = font_large;
 }
 
 High_Scores::~High_Scores()
@@ -31,13 +38,13 @@ int High_Scores::get_highest_score(bool tron)
   {
     assert(m_tron_high_scores);
     assert(m_tron_high_scores->size() == 10);
-    return m_tron_high_scores->front();
+    return m_tron_high_scores->front().second;
   }
   else
   {
     assert(m_snake_high_scores);
     assert(m_snake_high_scores->size() == 10);
-    return m_snake_high_scores->front();
+    return m_snake_high_scores->front().second;
   }
 }
 
