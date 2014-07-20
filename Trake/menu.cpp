@@ -26,9 +26,9 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_music_level = 10;
   m_sound_effects_level = 10;
-  m_controls = NULL;
+  m_controls = new Controls();
   Save_File_Manager save_file_manager = Save_File_Manager();
-  save_file_manager.load(m_music_level, m_sound_effects_level, m_controls);
+  save_file_manager.load(m_music_level, m_sound_effects_level, *m_controls);
   m_font_small_incrementor = (m_screen_height/24);
   m_font_medium_incrementor = (m_screen_height/(128/7));
   m_font_large_incrementor = (m_screen_height/(32/3));
@@ -58,27 +58,6 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   x = (m_screen_width - x)/2;
   this->create_title(x, m_title_snake_width);
   m_music_fade_thread = NULL;
-
-  //Assign controls
-  m_controls = new Controls();
-  m_controls->set_control(ALLEGRO_KEY_ENTER, Controls::PLAYER_1_CONFIRM);
-  m_controls->set_control(ALLEGRO_KEY_ESCAPE, Controls::PLAYER_1_CANCEL);
-  m_controls->set_control(ALLEGRO_KEY_LEFT, Controls::PLAYER_1_LEFT);
-  m_controls->set_control(ALLEGRO_KEY_RIGHT, Controls::PLAYER_1_RIGHT);
-  m_controls->set_control(ALLEGRO_KEY_DOWN, Controls::PLAYER_1_DOWN);
-  m_controls->set_control(ALLEGRO_KEY_UP, Controls::PLAYER_1_UP);
-  m_controls->set_control(ALLEGRO_KEY_A, Controls::PLAYER_2_LEFT);
-  m_controls->set_control(ALLEGRO_KEY_D, Controls::PLAYER_2_RIGHT);
-  m_controls->set_control(ALLEGRO_KEY_S, Controls::PLAYER_2_DOWN);
-  m_controls->set_control(ALLEGRO_KEY_W, Controls::PLAYER_2_UP);
-  m_controls->set_control(ALLEGRO_KEY_J, Controls::PLAYER_3_LEFT);
-  m_controls->set_control(ALLEGRO_KEY_L, Controls::PLAYER_3_RIGHT);
-  m_controls->set_control(ALLEGRO_KEY_K, Controls::PLAYER_3_DOWN);
-  m_controls->set_control(ALLEGRO_KEY_I, Controls::PLAYER_3_UP);
-  m_controls->set_control(ALLEGRO_KEY_PAD_4, Controls::PLAYER_4_LEFT);
-  m_controls->set_control(ALLEGRO_KEY_PAD_6, Controls::PLAYER_4_RIGHT);
-  m_controls->set_control(ALLEGRO_KEY_PAD_5, Controls::PLAYER_4_DOWN);
-  m_controls->set_control(ALLEGRO_KEY_PAD_8, Controls::PLAYER_4_UP);
 }
 
 Menu::~Menu()
