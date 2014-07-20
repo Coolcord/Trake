@@ -4,7 +4,7 @@ INCLUDE=`pkg-config --cflags --libs allegro-5.0 allegro_acodec-5.0 allegro_audio
 
 SOURCES=ai.cpp controls.cpp save_file_manager.cpp music.cpp collision_table.cpp pellet.cpp input.cpp rectangle.cpp snake_piece.cpp snake.cpp scoreboard.cpp menu.cpp pause_menu.cpp game.cpp main.cpp
 OBJS=$(SOURCES:.cpp=.o)
-OUT=trake
+OUT=Trake
 
 make: $(OBJS)
 	$(CXX) $(CFLAGS) -o $(OUT) $(OBJS) $(INCLUDE)

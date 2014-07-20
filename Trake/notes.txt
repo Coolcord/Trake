@@ -1,4 +1,0 @@
-To Do:
-Build on Windows
-Make an Icon
-
