@@ -102,14 +102,14 @@ void Menu::show()
 void Menu::show_title()
 {
   int selection = 0;
-  std::string items[4] = { "Start", "High Scores", "Options", "Exit" };
+  std::string items[3] = { "Start", "Options", "Exit" };
   while (true)
   {
     al_clear_to_color(al_color_name("black"));
     this->draw_title_logo();
 
     //Draw Selections
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 3; i++)
     {
       ALLEGRO_COLOR color;
       if (selection == i)
@@ -137,7 +137,7 @@ void Menu::show_title()
         case Controls::PLAYER_3_DOWN:
         case Controls::PLAYER_4_DOWN:
           if (m_move_sound_down) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-          selection = (selection + 1) % 4;
+          selection = (selection + 1) % 3;
           break;
         case Controls::PLAYER_1_UP:
         case Controls::PLAYER_2_UP:
@@ -145,7 +145,7 @@ void Menu::show_title()
         case Controls::PLAYER_4_UP:
           if (m_move_sound_up) al_play_sample(m_move_sound_up, 2.5*m_sound_effects_level*0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
           selection -= 1;
-          if (selection < 0) selection = 3;
+          if (selection < 0) selection = 2;
           break;
         case Controls::PLAYER_1_CONFIRM:
         case Controls::PLAYER_2_CONFIRM:
@@ -157,15 +157,11 @@ void Menu::show_title()
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_game_setup();
               break;
-            case 1: //High Scores
-              if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
-              this->show_high_scores();
-              break;
-            case 2: //Options
+            case 1: //Options
               if (m_move_sound_up) al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
               this->show_options();
               break;
-            case 3: //Exit
+            case 2: //Exit
               if (m_move_sound_down)
               {
                 al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -442,11 +438,6 @@ void Menu::show_game_setup()
       }
     }
   }
-}
-
-void Menu::show_high_scores()
-{
-
 }
 
 void Menu::show_options()

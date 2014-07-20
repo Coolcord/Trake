@@ -28,7 +28,6 @@ class Menu
   private:
     void show_title();
     void show_game_setup();
-    void show_high_scores();
     void show_options();
     void show_controls();
     void show_control_setup(int player_num);
