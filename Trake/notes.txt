@@ -1,6 +1,12 @@
 To Do:
 Save all settings to disk
-Add a way to unassign keys
+  - All controls
+  - Music volume
+  - Sound volume
+
+
+
+
 Build on Windows
 Make an Icon
 

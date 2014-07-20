@@ -42,3 +42,8 @@ void Controls::set_control(int key, int control)
   m_controls->insert(std::pair<int, int>(key, control));
 }
 
+std::unordered_map<int, int> *Controls::get_map()
+{
+  return m_controls;
+}
+

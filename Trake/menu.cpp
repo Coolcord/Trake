@@ -3,6 +3,7 @@
 #include "rectangle.h"
 #include "game.h"
 #include "music.h"
+#include "save_file_manager.h"
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 #include <assert.h>
@@ -25,6 +26,9 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   m_screen_height = screen_height;
   m_music_level = 10;
   m_sound_effects_level = 10;
+  m_controls = NULL;
+  Save_File_Manager save_file_manager = Save_File_Manager();
+  save_file_manager.load(m_music_level, m_sound_effects_level, m_controls);
   m_font_small_incrementor = (m_screen_height/24);
   m_font_medium_incrementor = (m_screen_height/(128/7));
   m_font_large_incrementor = (m_screen_height/(32/3));
@@ -165,6 +169,8 @@ void Menu::show_title()
               if (m_move_sound_down)
               {
                 al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+                Save_File_Manager save_file_manager = Save_File_Manager();
+                save_file_manager.save(m_music_level, m_sound_effects_level, m_controls);
                 m_music->fade_to_stop();
               }
               return;
@@ -179,6 +185,8 @@ void Menu::show_title()
           if (m_move_sound_down)
           {
             al_play_sample(m_move_sound_down, 2.5*m_sound_effects_level*0.1, 0.0, 0.7, ALLEGRO_PLAYMODE_ONCE, NULL);
+            Save_File_Manager save_file_manager = Save_File_Manager();
+            save_file_manager.save(m_music_level, m_sound_effects_level, m_controls);
             m_music->fade_to_stop();
           }
           return;

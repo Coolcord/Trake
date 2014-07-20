@@ -39,6 +39,7 @@ class Controls
     int get_control(int key);
     int get_key(int control);
     void set_control(int key, int control);
+    std::unordered_map<int, int> *get_map();
   private:
     std::unordered_map<int, int> *m_controls;
 };
