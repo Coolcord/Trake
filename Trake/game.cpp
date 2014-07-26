@@ -369,10 +369,17 @@ void Game::show_current_standing(bool hide_standing, bool game_over)
     al_clear_to_color(al_color_name("black"));
     std::string text = "";
     ALLEGRO_COLOR color;
+    bool draw = false;
     if (!game_over)
     {
       text = "Current Standings";
       color = al_color_name("white");
+    }
+    else if (m_player_scores[player_rankings->at(0)] == m_player_scores[player_rankings->at(1)])
+    {
+      text = "Draw...";
+      color = al_color_name("purple");
+      draw = true;
     }
     else
     {
@@ -386,19 +393,24 @@ void Game::show_current_standing(bool hide_standing, bool game_over)
     
     for (int i = 0; i < m_num_snakes; i++)
     {
+      text = "";
       switch (i)
       {
         case 0:
-          text = "1st: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          if (!draw) text = "1st: ";
+          text += "Player " + std::to_string(player_rankings->at(i)+1) + " with ";
           break;
         case 1:
-          text = "2nd: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          if (!draw) text = "2nd: ";
+          text += "Player " + std::to_string(player_rankings->at(i)+1) + " with ";
           break;
         case 2:
-          text = "3rd: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          if (!draw) text = "3rd: ";
+          text += "Player " + std::to_string(player_rankings->at(i)+1) + " with ";
           break;
         case 3:
-          text = "4th: Player " + std::to_string(player_rankings->at(i)+1) + " with ";
+          if (!draw) text = "4th: ";
+          text += "Player " + std::to_string(player_rankings->at(i)+1) + " with ";
           break;
         default:
           assert(false);
