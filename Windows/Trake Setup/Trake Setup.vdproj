@@ -81,19 +81,25 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6A9985ACAC8F4E55B6140A1379BF198F"
+        "OwnerKey" = "8:_ED909C7684554CCE9339DA0D20F88AC9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6C84575F41FC4A8387773637EDC88240"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7A1EB099599341FDA71DA69A45DE9798"
+        "MsmKey" = "8:_6C98F5D4F4BD4D9F8D5B2DF2D3BE414A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_903CA04AA83647E18F390046ACFE7BFF"
+        "MsmKey" = "8:_7A1EB099599341FDA71DA69A45DE9798"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -107,12 +113,6 @@
         {
         "MsmKey" = "8:_999F0217E07F41D1B62FDE996D979F4F"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9A806F9DA6374401A9849609142AB27B"
-        "OwnerKey" = "8:_ED909C7684554CCE9339DA0D20F88AC9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -169,6 +169,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -185,6 +193,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -454,12 +483,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7A1EB099599341FDA71DA69A45DE9798"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C98F5D4F4BD4D9F8D5B2DF2D3BE414A"
             {
-            "SourcePath" = "8:..\\Release\\sounds\\eat.wav"
-            "TargetName" = "8:eat.wav"
+            "SourcePath" = "8:..\\Release\\TrakeSettings.cfg"
+            "TargetName" = "8:TrakeSettings.cfg"
             "Tag" = "8:"
-            "Folder" = "8:_F4F2458AC9ED4EFA963E0AA086125A81"
+            "Folder" = "8:_62980C5315E34087B681EF5D03177A7D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -474,12 +503,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_903CA04AA83647E18F390046ACFE7BFF"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7A1EB099599341FDA71DA69A45DE9798"
             {
-            "SourcePath" = "8:..\\Release\\TrakeSettings.cfg"
-            "TargetName" = "8:TrakeSettings.cfg"
+            "SourcePath" = "8:..\\Release\\sounds\\eat.wav"
+            "TargetName" = "8:eat.wav"
             "Tag" = "8:"
-            "Folder" = "8:_62980C5315E34087B681EF5D03177A7D"
+            "Folder" = "8:_F4F2458AC9ED4EFA963E0AA086125A81"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -704,7 +733,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Trake"
         "ProductCode" = "8:{8ECDE8C7-BC24-468C-B139-53A612E7EB2D}"
-        "PackageCode" = "8:{185E2953-4A56-4976-9A16-635BDFFD64C6}"
+        "PackageCode" = "8:{3D5BCC3C-5530-479E-831D-2C22DED63287}"
         "UpgradeCode" = "8:{882B8ADF-37A8-44BB-8EB9-F868EEA48B65}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1248,7 +1277,7 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_9A806F9DA6374401A9849609142AB27B"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_6A9985ACAC8F4E55B6140A1379BF198F"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
