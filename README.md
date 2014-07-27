@@ -120,29 +120,40 @@ Competitive Tron and Snake written in C++11 with Allegro 5
 -============================- Troubleshooting and FAQ -============================-
 
  Q: How do I compile on Linux?
+ 
  A: If you have gcc and Allegro installed, it should be as simple as running the
     command "make" under the Linux folder.
-
+    
+ 
  Q: How do I compile on Windows?
+ 
  A: Start by reading the included "How to compile Trake for Windows.txt".
 
+ 
  Q: What about Mac?
+ 
  A: I have no plans to support Trake on Mac. However, C++11 and Allegro 5 can be compiled
     on Mac, so it shouldn't be too hard to get a build environment set up and run the
     Makefile
 
+ 
  Q: The screen is flickering and the graphics are going crazy!!!
+ 
  A: This is technically a graphics driver bug. Trake relies on vsync and expects there
     to be only one graphical back buffer provided. It also expects this graphical buffer
     to not be touched by anything else. This is due to how Trake draws its frames, as it
     simply modifies the previous frame, rather than redrawing the whole thing.
 
+ 
  Q: What's with the weird framerate? Why doesn't this game simply run at my monitor's refresh rate?
+ 
  A: Again, this has to do with how Trake draws frames. A frame is only sent every time the snakes
     move. However, as the round lasts longer, the speed of the game increases, which means more
     frames. At the game's max speed, Trake runs at 60fps.
 
+ 
  Q: Help! I've unassigned an important key in the controls menu and now I can't play the game!
+ 
  A: Close the game with Alt+F4. Go to the game's directory and delete the file "TrakeSettings.cfg".
     Now, restart the game, and all of the settings will be returned to their default values.
 
