@@ -1,0 +1,8 @@
+Read through the steps in "How to compile with allegro 5.htm" or at https://wiki.allegro.cc/index.php?title=Windows,_Visual_Studio_2010_and_Allegro_5
+
+Move the included "allegro" folder to the root of your C drive during compilation
+
+This version of Trake was built with Allegro 5.0.10 x86 using Visual Studio 2010.
+
+- Coolcord
+

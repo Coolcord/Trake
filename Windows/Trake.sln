@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Trake", "Trake\Trake.vcxproj", "{46E1D8FC-1D2B-4E98-AA99-DF0E9254FEE4}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Trake Setup", "Trake Setup\Trake Setup.vdproj", "{80C8D9E9-4E9A-496A-A7DB-FBD08674A2C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46E1D8FC-1D2B-4E98-AA99-DF0E9254FEE4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{46E1D8FC-1D2B-4E98-AA99-DF0E9254FEE4}.Debug|Win32.Build.0 = Debug|Win32
+		{46E1D8FC-1D2B-4E98-AA99-DF0E9254FEE4}.Release|Win32.ActiveCfg = Release|Win32
+		{46E1D8FC-1D2B-4E98-AA99-DF0E9254FEE4}.Release|Win32.Build.0 = Release|Win32
+		{80C8D9E9-4E9A-496A-A7DB-FBD08674A2C2}.Debug|Win32.ActiveCfg = Debug
+		{80C8D9E9-4E9A-496A-A7DB-FBD08674A2C2}.Release|Win32.ActiveCfg = Release
+		{80C8D9E9-4E9A-496A-A7DB-FBD08674A2C2}.Release|Win32.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
