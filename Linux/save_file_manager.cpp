@@ -48,6 +48,8 @@ void Save_File_Manager::load(int &music_level, int &sound_level, Controls &contr
     controls.set_control(ALLEGRO_KEY_RIGHT, Controls::PLAYER_1_RIGHT);
     controls.set_control(ALLEGRO_KEY_DOWN, Controls::PLAYER_1_DOWN);
     controls.set_control(ALLEGRO_KEY_UP, Controls::PLAYER_1_UP);
+    controls.set_control(ALLEGRO_KEY_PAD_ENTER, Controls::PLAYER_2_CONFIRM);
+    controls.set_control(ALLEGRO_KEY_BACKSPACE, Controls::PLAYER_2_CANCEL);
     controls.set_control(ALLEGRO_KEY_A, Controls::PLAYER_2_LEFT);
     controls.set_control(ALLEGRO_KEY_D, Controls::PLAYER_2_RIGHT);
     controls.set_control(ALLEGRO_KEY_S, Controls::PLAYER_2_DOWN);
