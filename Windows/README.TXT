@@ -1,4 +1,4 @@
-Trake
+﻿Trake
 =====
 
 Competitive Tron and Snake written in C++11 with Allegro 5
