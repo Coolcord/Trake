@@ -23,7 +23,10 @@ int main(int argc, char **argv){
  
   al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
   al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-  al_set_new_display_option(ALLEGRO_VSYNC, 1, ALLEGRO_DONTCARE);
+  al_set_new_display_refresh_rate(60);
+  al_inhibit_screensaver(true);
+  al_set_new_display_option(ALLEGRO_VSYNC, 1, ALLEGRO_SUGGEST);
+  al_set_new_display_option(ALLEGRO_SINGLE_BUFFER, 1, ALLEGRO_SUGGEST);
   display = al_create_display(disp_data.width, disp_data.height);
   al_hide_mouse_cursor(display);
   if(!display) {

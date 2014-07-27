@@ -45,7 +45,7 @@ void Collision_Table::insert(std::string key, Snake *snake)
 
 void Collision_Table::insert(float x, float y, Snake *snake)
 {
-  return this->insert(std::to_string(x) + std::to_string(y), snake);
+  return this->insert(std::to_string(x) + "x" + std::to_string(y), snake);
 }
 
 void Collision_Table::insert(std::string key, Pellet *pellet)
@@ -55,7 +55,7 @@ void Collision_Table::insert(std::string key, Pellet *pellet)
 
 void Collision_Table::insert(float x, float y, Pellet *pellet)
 {
-  return this->insert(std::to_string(x) + std::to_string(y), pellet);
+  return this->insert(std::to_string(x) + "x" + std::to_string(y), pellet);
 }
 
 void Collision_Table::insert(std::string key, Collision_Table::Node *node)
@@ -70,7 +70,7 @@ void Collision_Table::remove(std::string key)
 
 void Collision_Table::remove(float x, float y)
 {
-  return this->remove(std::to_string(x) + std::to_string(y));
+  return this->remove(std::to_string(x) + "x" + std::to_string(y));
 }
 
 Collision_Table::Type Collision_Table::check_collision(std::string key)
@@ -84,7 +84,7 @@ Collision_Table::Type Collision_Table::check_collision(std::string key)
 
 Collision_Table::Type Collision_Table::check_collision(float x, float y)
 {
-  return this->check_collision(std::to_string(x) + std::to_string(y));
+  return this->check_collision(std::to_string(x) + "x" + std::to_string(y));
 }
 
 Snake *Collision_Table::get_snake(std::string key)
@@ -98,7 +98,7 @@ Snake *Collision_Table::get_snake(std::string key)
 
 Snake *Collision_Table::get_snake(float x, float y)
 {
-  return this->get_snake(std::to_string(x) + std::to_string(y));
+  return this->get_snake(std::to_string(x) + "x" + std::to_string(y));
 }
 
 Pellet *Collision_Table::get_pellet(std::string key)
@@ -112,6 +112,6 @@ Pellet *Collision_Table::get_pellet(std::string key)
 
 Pellet *Collision_Table::get_pellet(float x, float y)
 {
-  return this->get_pellet(std::to_string(x) + std::to_string(y));
+  return this->get_pellet(std::to_string(x) + "x" + std::to_string(y));
 }
 

@@ -116,8 +116,7 @@ void Snake::move()
   }
   float front_x = m_pieces->front()->get_x();
   float front_y = m_pieces->front()->get_y();
-  std::string collision_key = std::to_string(front_x) + std::to_string(front_y);
-  Collision_Table::Type collision = m_collision_table->check_collision(collision_key);
+  Collision_Table::Type collision = m_collision_table->check_collision(front_x, front_y);
   if (collision == Collision_Table::SNAKE)
   {
     m_dead = true;
@@ -131,10 +130,10 @@ void Snake::move()
   }
   else if (collision == Collision_Table::PELLET)
   {
-    m_collision_table->get_pellet(collision_key)->eat(this);
+    m_collision_table->get_pellet(front_x, front_y)->eat(this);
   }
   m_pieces->front()->draw();
-  m_collision_table->insert(collision_key, this);
+  m_collision_table->insert(front_x, front_y, this);
   //Move the body
   for (std::vector<Snake_Piece*>::iterator iter = std::next(m_pieces->begin()); iter != m_pieces->end(); ++iter)
   {
