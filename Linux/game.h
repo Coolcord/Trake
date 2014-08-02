@@ -20,7 +20,7 @@ class Pause_Menu;
 class Game
 {
   public:
-    Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up);
+    Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int ai_difficulty, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up);
     ~Game();
     void run();
     void draw_loading();
@@ -46,6 +46,7 @@ class Game
     float m_sound_effects_level;
     int m_num_snakes;
     int m_num_ai;
+    int m_ai_difficulty;
     int m_rounds;
     bool m_tron;
     int m_win_condition;

@@ -47,6 +47,7 @@ class Menu
     int m_rounds;
     int m_human_players;
     int m_ai_players;
+    int m_ai_difficulty;
     float m_screen_width;
     float m_screen_height;
     float m_title_snake_width;

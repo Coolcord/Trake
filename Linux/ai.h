@@ -9,7 +9,7 @@ class Pellet;
 class AI
 {
   public:
-    AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron);
+    AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, int difficulty, bool tron);
     ~AI();
     void read_input();
   private:
@@ -66,6 +66,8 @@ class AI
     float m_max_y;
     bool m_tron;
     int m_offensive_count;
+    int m_notice_pellet;
+    int m_ai_difficulty;
 };
 
 #endif
