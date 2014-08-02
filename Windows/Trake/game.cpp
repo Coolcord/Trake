@@ -15,7 +15,7 @@
 #include <iterator>
 #include <sstream>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int ai_difficulty, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
   assert(event);
   assert(controls);
@@ -60,6 +60,7 @@ Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music
     m_game_height = m_max_y;
   m_num_snakes = ai_players + human_players;
   m_num_ai = ai_players;
+  m_ai_difficulty = ai_difficulty;
   if (gametype == 0)
     m_tron = false;
   else
@@ -139,7 +140,7 @@ void Game::run()
     for (int i = 0; i < 4; i++)
     {
       if (m_num_snakes >= i+1 && m_num_snakes - m_num_ai < i+1)
-        m_ai[i] = new AI(m_snakes, i, m_pellet, m_collision_table, m_tron);
+        m_ai[i] = new AI(m_snakes, i, m_pellet, m_collision_table, m_ai_difficulty, m_tron);
     }
 
     //Prepare Input Thread

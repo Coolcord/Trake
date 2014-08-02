@@ -1,0 +1,53 @@
+﻿Build started 8/2/2014 1:40:43 PM.
+     1>Project "D:\Documents\Visual Studio 2010\Projects\Trake\Trake\Trake.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\Trake.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\allegro\include /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ai.cpp collision_table.cpp controls.cpp game.cpp input.cpp main.cpp menu.cpp music.cpp pause_menu.cpp pellet.cpp save_file_manager.cpp scoreboard.cpp simple_rectangle.cpp snake.cpp snake_piece.cpp
+         ai.cpp
+         collision_table.cpp
+         controls.cpp
+         game.cpp
+         input.cpp
+         main.cpp
+         menu.cpp
+         music.cpp
+         pause_menu.cpp
+         pellet.cpp
+         save_file_manager.cpp
+         scoreboard.cpp
+         simple_rectangle.cpp
+         snake.cpp
+         snake_piece.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Release\Trake.res" Trake.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Documents\Visual Studio 2010\Projects\Trake\Release\Trake.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\allegro\lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "allegro-5.0.10-monolith-md.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\Trake.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\Documents\Visual Studio 2010\Projects\Trake\Release\Trake.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Documents\Visual Studio 2010\Projects\Trake\Release\Trake.lib" /MACHINE:X86 Release\Trake.res
+         Release\ai.obj
+         Release\collision_table.obj
+         Release\controls.obj
+         Release\game.obj
+         Release\input.obj
+         Release\main.obj
+         Release\menu.obj
+         Release\music.obj
+         Release\pause_menu.obj
+         Release\pellet.obj
+         Release\save_file_manager.obj
+         Release\scoreboard.obj
+         Release\simple_rectangle.obj
+         Release\snake.obj
+         Release\snake_piece.obj
+         Generating code
+         Finished generating code
+         Trake.vcxproj -> D:\Documents\Visual Studio 2010\Projects\Trake\Release\Trake.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\Documents\Visual Studio 2010\Projects\Trake\Release\Trake.exe;#1" /manifest Release\Trake.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\Trake.unsuccessfulbuild".
+         Touching "Release\Trake.lastbuildstate".
+     1>Done Building Project "D:\Documents\Visual Studio 2010\Projects\Trake\Trake\Trake.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.16

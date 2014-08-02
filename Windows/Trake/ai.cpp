@@ -8,12 +8,31 @@
 #include <iterator>
 #include <algorithm>
 
-const int SNAKE_TURN_CHANCE = 25;
-const int TRON_TURN_CHANCE = 40;
-const int MAX_LOOK_AHEAD = 100;
-const int MAX_OFFENSIVE_MOVES = 5;
+int SNAKE_TURN_CHANCE = 25;
+int TRON_TURN_CHANCE = 40;
+int MAX_LOOK_AHEAD = 100;
+int MAX_OFFENSIVE_MOVES = 5;
+int MAX_NOTICE_PELLET = 0;
+int CHECK_FAIL = 0;
 
-AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, bool tron)
+//EASY
+const int EASY_MAX_LOOK_AHEAD = 10;
+const int EASY_MAX_OFFENSIVE_MOVES = 10;
+const int EASY_MAX_NOTICE_PELLET = 30;
+const int EASY_CHECK_FAIL = 20;
+
+//MEDIUM
+const int MEDIUM_MAX_LOOK_AHEAD = 50;
+const int MEDIUM_MAX_OFFENSIVE_MOVES = 5;
+const int MEDIUM_MAX_NOTICE_PELLET = 15;
+const int MEDIUM_CHECK_FAIL = 500;
+
+//HARD
+const int HARD_MAX_LOOK_AHEAD = 100;
+const int HARD_MAX_OFFENSIVE_MOVES = 3;
+const int HARD_MAX_NOTICE_PELLET = 0;
+
+AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collision_table, int difficulty, bool tron)
 {
   for (int i = 0; i < 4; i++)
   {
@@ -23,13 +42,35 @@ AI::AI(Snake *snakes[], int player_num, Pellet *pellet, Collision_Table *collisi
   m_pellet = pellet;
   m_collision_table = collision_table;
   m_player_num = player_num;
+  if (difficulty == 0)
+  { //EASY
+    MAX_LOOK_AHEAD = EASY_MAX_LOOK_AHEAD;
+    MAX_OFFENSIVE_MOVES = EASY_MAX_OFFENSIVE_MOVES;
+    MAX_NOTICE_PELLET = EASY_MAX_NOTICE_PELLET;
+    CHECK_FAIL = EASY_CHECK_FAIL;
+  }
+  else if (difficulty == 1)
+  { //MEDIUM
+    MAX_LOOK_AHEAD = MEDIUM_MAX_LOOK_AHEAD;
+    MAX_OFFENSIVE_MOVES = MEDIUM_MAX_OFFENSIVE_MOVES;
+    MAX_NOTICE_PELLET = MEDIUM_MAX_NOTICE_PELLET;
+    CHECK_FAIL = MEDIUM_CHECK_FAIL;
+  }
+  else
+  { //HARD
+    MAX_LOOK_AHEAD = HARD_MAX_LOOK_AHEAD;
+    MAX_OFFENSIVE_MOVES = HARD_MAX_OFFENSIVE_MOVES;
+    MAX_NOTICE_PELLET = HARD_MAX_NOTICE_PELLET;
+  }
+  m_ai_difficulty = difficulty;
+  m_notice_pellet = MAX_NOTICE_PELLET;
   m_tron = tron;
   assert(snakes[m_player_num]);
   m_max_x = snakes[m_player_num]->get_max_x();
   m_max_y = snakes[m_player_num]->get_max_y();
   m_width = snakes[m_player_num]->get_width();
   if (m_tron)
-    m_offensive_count = rand() % MAX_OFFENSIVE_MOVES + 1;
+    m_offensive_count = rand() % MAX_OFFENSIVE_MOVES + (MAX_OFFENSIVE_MOVES/4) + 1;
   else
     m_offensive_count = 0;
   update_coordinates();
@@ -68,7 +109,16 @@ void AI::read_input()
 
 bool AI::try_move_to_pellet()
 {
-  if (!m_pellet->exists()) return false;
+  if (!m_pellet->exists())
+  {
+    m_notice_pellet = MAX_NOTICE_PELLET; 
+    return false;
+  }
+  else if (m_notice_pellet > 0)
+  {
+    m_notice_pellet--;
+    return false;
+  }
   return move_to_pellet();
 }
 
@@ -302,7 +352,6 @@ int AI::how_long_is_direction_safe(Input::Direction direction)
   //Run simulation
   alive = simulate_direction(m_direction, simulated_table);
   ++safe_moves;
-  assert(alive);
   while (safe_moves < MAX_LOOK_AHEAD)
   {
     if (!is_direction_safe(m_direction))
@@ -326,7 +375,6 @@ int AI::how_long_is_direction_safe(Input::Direction direction)
 bool AI::is_direction_safe_later(Input::Direction direction)
 {
   int safe_moves = how_long_is_direction_safe(direction);
-  assert(safe_moves <= MAX_LOOK_AHEAD);
   if (safe_moves == MAX_LOOK_AHEAD)
     return true;
   else
@@ -355,6 +403,10 @@ bool AI::is_up_safe_later()
 
 bool AI::is_direction_safe(Input::Direction direction)
 {
+  if (m_ai_difficulty < 2 && (rand() % CHECK_FAIL) == 0)
+  {
+    return true;
+  }
   float x = m_x;
   float y = m_y;
   switch (direction)
