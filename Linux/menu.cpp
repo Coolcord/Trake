@@ -372,6 +372,8 @@ void Menu::show_game_setup()
                 m_human_players = 1;
               while (m_ai_players + m_human_players > 4)
                 --m_ai_players;
+              if (m_ai_players == 0)
+                m_ai_difficulty = 3;
               if (m_ai_players + m_human_players == 1)
               {
                 m_win_selection = 0;
