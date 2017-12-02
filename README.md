@@ -33,7 +33,7 @@ Competitive Tron and Snake written in C++11 with Allegro 5
  but they must give me credit. For more information, read the included LICENSE file.
  
  If you wish to contact me about the game, or anything of the like,
- feel free to send me an email at coolcord24@gmail.com
+ feel free to send me an email at coolcord24@tutanota.com
 
 
 
