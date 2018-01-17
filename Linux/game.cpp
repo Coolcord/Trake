@@ -178,16 +178,18 @@ void Game::run()
         m_pause_menu->show();
         paused = false;
         m_music->resume();
-        //Redraw Everything
-        al_clear_to_color(al_color_name("black"));
-        for (int i = 0; i < m_num_snakes; i++)
-        {
-          m_snakes[i]->draw();
+        //Redraw everything twice
+        for (int i = 0; i < 2; ++i) {
+          al_clear_to_color(al_color_name("black"));
+          for (int j = 0; j < m_num_snakes; j++)
+          {
+            m_snakes[j]->draw();
+          }
+          m_pellet->draw();
+          if (m_scoreboard)
+            m_scoreboard->draw();
+          al_flip_display();
         }
-        m_pellet->draw();
-        if (m_scoreboard)
-          m_scoreboard->draw();
-        al_flip_display();
         continue;
       }
 
@@ -223,7 +225,19 @@ void Game::run()
           num_alive = current_living;
         }
       }
-      al_flip_display();
+
+      //Redraw everything twice
+      for (int i = 0; i < 2; ++i) {
+        al_clear_to_color(al_color_name("black"));
+        for (int j = 0; j < m_num_snakes; j++)
+        {
+          m_snakes[j]->draw();
+        }
+        m_pellet->draw();
+        if (m_scoreboard)
+          m_scoreboard->draw();
+        al_flip_display();
+      }
     }
     if (m_scoreboard)
     {

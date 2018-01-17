@@ -40,6 +40,7 @@ std::unordered_map<std::string, Collision_Table::Node*>::iterator Collision_Tabl
 
 void Collision_Table::insert(std::string key, Snake *snake)
 {
+  m_table->erase(key);
   m_table->insert(std::pair<std::string, Collision_Table::Node*>(key, new Node(snake)));
 }
 
@@ -50,6 +51,7 @@ void Collision_Table::insert(float x, float y, Snake *snake)
 
 void Collision_Table::insert(std::string key, Pellet *pellet)
 {
+  m_table->erase(key);
   m_table->insert(std::pair<std::string, Collision_Table::Node*>(key, new Node(pellet)));
 }
 
@@ -60,6 +62,7 @@ void Collision_Table::insert(float x, float y, Pellet *pellet)
 
 void Collision_Table::insert(std::string key, Collision_Table::Node *node)
 {
+  m_table->erase(key);
   m_table->insert(std::pair<std::string, Collision_Table::Node*>(key, node));
 }
 

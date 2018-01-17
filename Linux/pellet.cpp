@@ -80,7 +80,6 @@ void Pellet::spawn()
     m_rectangle->set_y(y);
     m_rectangle->draw();
     m_collision_table->insert(x, y, this);
-    m_rectangle->draw();
   }
 }
 
