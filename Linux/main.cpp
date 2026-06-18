@@ -53,7 +53,7 @@ int main(int argc, char **argv){
   event = al_create_event_queue();
   al_register_event_source(event, al_get_keyboard_event_source());
   al_register_event_source(event, al_get_display_event_source(display));
-  float snake_width = screen_width/100;
+  int snake_width = screen_width/100;
 
   //Show start menu
   Menu *menu = new Menu(event, screen_width, screen_height, snake_width);

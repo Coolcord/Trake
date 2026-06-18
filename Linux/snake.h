@@ -15,18 +15,18 @@ class Collision_Table;
 class Snake
 {
   public:
-    Snake(int player_num, float x, float y, float volume, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron);
+    Snake(int player_num, int x, int y, int volume, Input::Direction direction, int size, ALLEGRO_COLOR color, int width, int max_x, int max_y, bool wrap, Collision_Table *collision_table, bool tron);
     ~Snake();
     void move();
-    Rectangle *create_rectangle(Input::Direction direction, float x, float y, int posiiton);
+    Rectangle *create_rectangle(Input::Direction direction, int x, int y, int posiiton);
     void draw();
     void change_direction(Input::Direction direction);
-    float get_x();
-    float get_y();
-    float get_width();
+    int get_x();
+    int get_y();
+    int get_width();
     Input::Direction get_direction();
-    float get_max_x();
-    float get_max_y();
+    int get_max_x();
+    int get_max_y();
     void grow(int value);
     bool is_dead();
     void kill();
@@ -35,14 +35,14 @@ class Snake
     void set_scoreboard(Scoreboard *scoreboard);
   private:
     int m_player_num;
-    float m_width; //width and height of each piece
+    int m_width; //width and height of each piece
     int m_size; //number of pieces
     ALLEGRO_COLOR m_color;
     std::vector<Snake_Piece*> *m_pieces;
     int m_grow; //the amount left for the snake to grow
-    float m_max_x;
-    float m_max_y;
-    float m_volume;
+    int m_max_x;
+    int m_max_y;
+    int m_volume;
     bool m_wrap;
     Scoreboard *m_scoreboard;
     Collision_Table *m_collision_table;

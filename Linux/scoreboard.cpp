@@ -5,7 +5,7 @@
 #include <string>
 #include <assert.h>
 
-Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_width, float font_small_incrementor, ALLEGRO_FONT *font_small, float y, int num_snakes, int player_scores[], Snake *snakes[])
+Scoreboard::Scoreboard(int screen_width, int screen_height, int snake_width, int font_small_incrementor, ALLEGRO_FONT *font_small, int y, int num_snakes, int player_scores[], Snake *snakes[])
 {
   m_screen_width = screen_width;
   m_screen_height = screen_height;
@@ -24,7 +24,7 @@ Scoreboard::Scoreboard(float screen_width, float screen_height, float snake_widt
   m_width = m_screen_width;
   m_height = m_screen_height - m_y;
   m_text_y = m_screen_height - (m_height / 2);
-  float x = 0;
+  int x = 0;
   for (int i = 0; i < m_num_snakes; i++)
   {
     ALLEGRO_COLOR color;

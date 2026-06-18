@@ -14,7 +14,7 @@
 #include <unordered_map>
 #include <iterator>
 
-Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int ai_difficulty, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
+Game::Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, int screen_width, int screen_height, int snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int ai_difficulty, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up)
 {
   assert(event);
   assert(controls);
@@ -401,9 +401,9 @@ void Game::show_current_standing(bool hide_standing, bool game_over)
       text = "Player " + std::to_string(player_rankings->front()+1) + " Wins!";
       color = this->get_player_color(player_rankings->front());
     }
-    float y = m_screen_height/50;
+    int y = m_screen_height/50;
     al_draw_text(m_font_large, color, m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, text.c_str());
-    float menu_size = m_font_medium_incrementor * m_num_snakes;
+    int menu_size = m_font_medium_incrementor * m_num_snakes;
     y = (m_screen_height/2) - (menu_size/2);
     
     for (int i = 0; i < m_num_snakes; i++)

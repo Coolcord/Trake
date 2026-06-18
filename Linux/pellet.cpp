@@ -7,7 +7,7 @@
 #include "scoreboard.h"
 #include "collision_table.h"
 
-Pellet::Pellet(float width, float max_x, float max_y, float volume, int spawn_countdown_max, Scoreboard *scoreboard, Collision_Table *collision_table, bool tron)
+Pellet::Pellet(int width, int max_x, int max_y, float volume, int spawn_countdown_max, Scoreboard *scoreboard, Collision_Table *collision_table, bool tron)
 {
   assert(collision_table);
   m_scoreboard = scoreboard;
@@ -59,14 +59,14 @@ void Pellet::spawn()
 {
   assert(!m_exists);
   m_value = 3;
-  float test_x = rand() % ((int)m_max_x + 1);
-  float x = 0;
+  int test_x = rand() % ((int)m_max_x + 1);
+  int x = 0;
   while (x < test_x)
   {
     x += m_width;
   }
-  float test_y = rand() % ((int)m_max_y + 1);
-  float y = 0;
+  int test_y = rand() % ((int)m_max_y + 1);
+  int y = 0;
   while (y < test_y)
   {
     y += m_width;
@@ -119,12 +119,12 @@ bool Pellet::exists()
   return m_exists;
 }
 
-float Pellet::get_x()
+int Pellet::get_x()
 {
   return m_rectangle->get_x();
 }
 
-float Pellet::get_y()
+int Pellet::get_y()
 {
   return m_rectangle->get_y();
 }

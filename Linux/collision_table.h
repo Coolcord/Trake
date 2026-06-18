@@ -35,13 +35,13 @@ class Collision_Table
     ~Collision_Table();
     std::unordered_map<std::string, Node*>::iterator begin();
     std::unordered_map<std::string, Node*>::iterator end();
-    void insert(float x, float y, Snake *snake);
-    void insert(float x, float y, Pellet *pellet);
+    void insert(int x, int y, Snake *snake);
+    void insert(int x, int y, Pellet *pellet);
     void insert(std::string key, Node *node);
-    void remove(float x, float y);
-    Type check_collision(float x, float y);
-    Snake *get_snake(float x, float y);
-    Pellet *get_pellet(float x, float y);
+    void remove(int x, int y);
+    Type check_collision(int x, int y);
+    Snake *get_snake(int x, int y);
+    Pellet *get_pellet(int x, int y);
   private:
     std::unordered_map<std::string, Node*> *m_table;
     void insert(std::string key, Snake *snake);

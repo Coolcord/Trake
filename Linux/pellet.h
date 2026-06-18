@@ -12,18 +12,18 @@ class Collision_Table;
 class Pellet
 {
   public:
-    Pellet(float width, float max_x, float max_y, float volume, int spawn_countdown_max, Scoreboard *scoreboard, Collision_Table *collision_table, bool tron);
+    Pellet(int width, int max_x, int max_y, float volume, int spawn_countdown_max, Scoreboard *scoreboard, Collision_Table *collision_table, bool tron);
     ~Pellet();
     void handle_state();
     void eat(Snake *snake);
     bool exists();
-    float get_x();
-    float get_y();
+    int get_x();
+    int get_y();
     void draw();
   private:
-    float m_width;
-    float m_max_x;
-    float m_max_y;
+    int m_width;
+    int m_max_x;
+    int m_max_y;
     float m_volume;
     int m_value;
     bool m_exists;

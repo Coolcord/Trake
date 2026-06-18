@@ -9,7 +9,7 @@
 #include "scoreboard.h"
 #include "collision_table.h"
 
-Snake::Snake(int player_num, float x, float y, float volume, Input::Direction direction, int size, ALLEGRO_COLOR color, float width, float max_x, float max_y, bool wrap, Collision_Table *collision_table, bool tron)
+Snake::Snake(int player_num, int x, int y, int volume, Input::Direction direction, int size, ALLEGRO_COLOR color, int width, int max_x, int max_y, bool wrap, Collision_Table *collision_table, bool tron)
 {
   assert(max_x > 0);
   assert(max_y > 0);
@@ -81,8 +81,8 @@ void Snake::move()
   assert(m_pieces->front());
   assert(m_pieces->front()->get_type() == Snake_Piece::HEAD);
   
-  float prev_x = m_pieces->front()->get_x();
-  float prev_y = m_pieces->front()->get_y();
+  int prev_x = m_pieces->front()->get_x();
+  int prev_y = m_pieces->front()->get_y();
   Input::Direction prev_direction = m_pieces->front()->get_direction();
   //Move the head piece
   switch(m_pieces->front()->get_direction())
@@ -114,14 +114,14 @@ void Snake::move()
     default:
       assert(false);
   }
-  float front_x = m_pieces->front()->get_x();
-  float front_y = m_pieces->front()->get_y();
+  int front_x = m_pieces->front()->get_x();
+  int front_y = m_pieces->front()->get_y();
   Collision_Table::Type collision = m_collision_table->check_collision(front_x, front_y);
   if (collision == Collision_Table::SNAKE)
   {
     m_dead = true;
     if (m_scoreboard) m_scoreboard->draw_player_score(this);
-    float speed = static_cast <float> (rand() / static_cast <float> (RAND_MAX/0.8)) + 0.6;
+    float speed = static_cast <int> (rand() / static_cast <float> (RAND_MAX/0.8)) + 0.6;
     if (m_dead_sound) al_play_sample(m_dead_sound, 2.5*m_volume, 0.0, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
     m_pieces->front()->set_x(prev_x);
     m_pieces->front()->set_y(prev_y);
@@ -138,8 +138,8 @@ void Snake::move()
   for (std::vector<Snake_Piece*>::iterator iter = std::next(m_pieces->begin()); iter != m_pieces->end(); ++iter)
   {
     assert(*iter);
-    float tmp_x = (*iter)->get_x();
-    float tmp_y = (*iter)->get_y();
+    int tmp_x = (*iter)->get_x();
+    int tmp_y = (*iter)->get_y();
     Input::Direction tmp_direction = (*iter)->get_direction();
     (*iter)->set_x(prev_x);
     (*iter)->set_y(prev_y);
@@ -153,7 +153,8 @@ void Snake::move()
           --m_grow;
         }
         (*iter)->set_type(Snake_Piece::BODY);
-        Rectangle *rectangle = this->create_rectangle(tmp_direction, prev_x, prev_y, m_size-1);
+        Rectangle *rectangle = new Rectangle(tmp_x, tmp_y, m_width, m_width, true, m_color);
+	m_collision_table->insert(tmp_x, tmp_y, this);
         Snake_Piece *snake_piece = new Snake_Piece(tmp_direction, Snake_Piece::TAIL, rectangle);
         Snake_Piece *tmp_snake_piece = m_pieces->back();
         assert(snake_piece);
@@ -215,7 +216,7 @@ void Snake::move()
   }
 }
 
-Rectangle *Snake::create_rectangle(Input::Direction direction, float x, float y, int position)
+Rectangle *Snake::create_rectangle(Input::Direction direction, int x, int y, int position)
 {
   Rectangle *rectangle = NULL;
   switch(direction)
@@ -319,17 +320,17 @@ void Snake::change_direction(Input::Direction direction)
   m_pieces->front()->set_direction(direction);
 }
 
-float Snake::get_x()
+int Snake::get_x()
 {
   return m_pieces->front()->get_x();
 }
 
-float Snake::get_y()
+int Snake::get_y()
 {
   return m_pieces->front()->get_y();
 }
 
-float Snake::get_width()
+int Snake::get_width()
 {
   return m_width;
 }
@@ -339,12 +340,12 @@ Input::Direction Snake::get_direction()
   return m_pieces->front()->get_direction();
 }
 
-float Snake::get_max_x()
+int Snake::get_max_x()
 {
   return m_max_x;
 }
 
-float Snake::get_max_y()
+int Snake::get_max_y()
 {
   return m_max_y;
 }

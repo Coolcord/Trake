@@ -6,25 +6,25 @@
 class Rectangle
 {
   public:
-    Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color);
-    Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color, float thickness);
+    Rectangle(int x, int y, int width, int height, bool filled, ALLEGRO_COLOR color);
+    Rectangle(int x, int y, int width, int height, bool filled, ALLEGRO_COLOR color, int thickness);
     ~Rectangle() {}
     void draw();
-    float get_x();
-    float get_y();
-    float get_width();
-    float get_height();
+    int get_x();
+    int get_y();
+    int get_width();
+    int get_height();
     ALLEGRO_COLOR get_color();
-    void set_x(float x);
-    void set_y(float y);
+    void set_x(int x);
+    void set_y(int y);
     void set_color(ALLEGRO_COLOR color);
     void set_filled(bool filled);
   private:
-    float m_x;
-    float m_y;
-    float m_width;
-    float m_height;
-    float m_thickness;
+    int m_x;
+    int m_y;
+    int m_width;
+    int m_height;
+    int m_thickness;
     bool m_filled;
     ALLEGRO_COLOR m_color;
 };

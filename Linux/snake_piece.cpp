@@ -19,12 +19,12 @@ void Snake_Piece::draw()
   m_rectangle->draw();
 }
 
-float Snake_Piece::get_x()
+int Snake_Piece::get_x()
 {
   return m_rectangle->get_x();
 }
 
-float Snake_Piece::get_y()
+int Snake_Piece::get_y()
 {
   return m_rectangle->get_y();
 }
@@ -44,12 +44,12 @@ ALLEGRO_COLOR Snake_Piece::get_color()
   return m_rectangle->get_color();
 }
 
-void Snake_Piece::set_x(float x)
+void Snake_Piece::set_x(int x)
 {
   m_rectangle->set_x(x);
 }
 
-void Snake_Piece::set_y(float y)
+void Snake_Piece::set_y(int y)
 {
   m_rectangle->set_y(y);
 }

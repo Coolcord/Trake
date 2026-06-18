@@ -1,5 +1,5 @@
 #ifndef CONTROLS_H
-#define CONTROlS_H
+#define CONTROLS_H
 
 #include <unordered_map>
 

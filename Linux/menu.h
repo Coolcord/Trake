@@ -22,7 +22,7 @@ namespace Music_Thread
 class Menu
 {
   public:
-    Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width);
+    Menu(ALLEGRO_EVENT_QUEUE *event, int screen_width, int screen_height, int snake_width);
     ~Menu();
     void show();
   private:
@@ -34,12 +34,12 @@ class Menu
     void show_credits();
     void assign_key(int player_num, int selection);
     void draw_title_logo();
-    void create_t(float x, float y);
-    void create_r(float x, float y);
-    void create_a(float x, float y);
-    void create_k(float x, float y);
-    void create_e(float x, float y);
-    void create_title(float x, float y);
+    void create_t(int x, int y);
+    void create_r(int x, int y);
+    void create_a(int x, int y);
+    void create_k(int x, int y);
+    void create_e(int x, int y);
+    void create_title(int x, int y);
     ALLEGRO_THREAD *m_music_fade_thread;
     ALLEGRO_EVENT_QUEUE *m_event;
     int m_gametype_selection;
@@ -48,11 +48,11 @@ class Menu
     int m_human_players;
     int m_ai_players;
     int m_ai_difficulty;
-    float m_screen_width;
-    float m_screen_height;
-    float m_title_snake_width;
-    float m_snake_width;
-    float m_thickness;
+    int m_screen_width;
+    int m_screen_height;
+    int m_title_snake_width;
+    int m_snake_width;
+    int m_thickness;
     float m_font_small_incrementor;
     float m_font_medium_incrementor;
     float m_font_large_incrementor;

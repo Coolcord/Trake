@@ -18,13 +18,13 @@ class Snake_Piece
     Snake_Piece(Input::Direction direction, Type type, Rectangle *rectangle);
     ~Snake_Piece();
     void draw();
-    float get_x();
-    float get_y();
+    int get_x();
+    int get_y();
     Input::Direction get_direction();
     Type get_type();
     ALLEGRO_COLOR get_color();
-    void set_x(float x);
-    void set_y(float y);
+    void set_x(int x);
+    void set_y(int y);
     void set_direction(Input::Direction direction);
     void set_type(Type type);
     void set_color(ALLEGRO_COLOR color);

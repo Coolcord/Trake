@@ -11,7 +11,7 @@
 #include <iterator>
 
 
-Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, float snake_width)
+Menu::Menu(ALLEGRO_EVENT_QUEUE *event, int screen_width, int screen_height, int snake_width)
 {
   assert(event);
   assert(screen_width > 0);
@@ -41,15 +41,15 @@ Menu::Menu(ALLEGRO_EVENT_QUEUE *event, float screen_width, float screen_height, 
   al_flip_display();
   m_music = new Music(m_music_level);
   int i = 0;
-  float title = 0.0;
-  float x = 0.0;
+  int title = 0.0;
+  int x = 0.0;
   do
   {
     x = title;
     ++i;
-    title = snake_width * 24 * (float)i;
+    title = snake_width * 24 * i;
   } while (title < m_screen_width);
-  m_thickness = (float)i-1;
+  m_thickness = i-1;
   m_snake_width = snake_width;
   m_title_snake_width = snake_width * m_thickness;
   m_move_sound_up = al_load_sample("./sounds/pop2.wav");
@@ -191,7 +191,7 @@ void Menu::show_game_setup()
     std::string text = "";
     
     //Draw Selections
-    float y = (m_screen_height/2)-(menu_size/2);
+    int y = (m_screen_height/2)-(menu_size/2);
     for (int i = 0; i < 8; i++)
     {
       ALLEGRO_COLOR color;
@@ -467,7 +467,7 @@ void Menu::show_options()
   while (true)
   {
     al_clear_to_color(al_color_name("black"));
-    float y = m_screen_height/50;
+    int y = m_screen_height/50;
     al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, "Options");
     y = (m_screen_height/2)-(menu_size/2);
 
@@ -619,7 +619,7 @@ void Menu::show_controls()
   while (true)
   {
     al_clear_to_color(al_color_name("black"));
-    float y = m_screen_height/50;
+    int y = m_screen_height/50;
     al_draw_text(m_font_medium, al_color_name("lightgray"), m_screen_width/2, y, ALLEGRO_ALIGN_CENTER, "Controls");
     y += (m_screen_height/2)-(menu_size/2);
 
@@ -721,7 +721,7 @@ void Menu::show_control_setup(int player_num)
   while (true)
   {
     al_clear_to_color(al_color_name("black"));
-    float y = m_screen_height/50;
+    int y = m_screen_height/50;
     std::string text = "Player " + std::to_string(player_num) + " Controls";
     ALLEGRO_COLOR color;
     switch (player_num)
@@ -1129,10 +1129,10 @@ void Menu::draw_title_logo()
   }
 }
 
-void Menu::create_t(float x, float y)
+void Menu::create_t(int x, int y)
 {
   ALLEGRO_COLOR color = al_color_name("lawngreen");
-  float vertical_x = 0.0;
+  int vertical_x = 0.0;
   //Start at the top
   for (int i = 0; i < 5; i++)
   {
@@ -1146,7 +1146,7 @@ void Menu::create_t(float x, float y)
   }
 }
 
-void Menu::create_r(float x, float y)
+void Menu::create_r(int x, int y)
 {
   ALLEGRO_COLOR color = al_color_name("blue");
   //Start with a vertical line
@@ -1165,7 +1165,7 @@ void Menu::create_r(float x, float y)
   m_title->push_back(new Rectangle(x+(3*m_title_snake_width), y+(4*m_title_snake_width), m_title_snake_width, m_title_snake_width, false, color, m_thickness));
 }
 
-void Menu::create_a(float x, float y)
+void Menu::create_a(int x, int y)
 {
   ALLEGRO_COLOR color = al_color_name("white");
   //Draw Vertical Lines
@@ -1182,7 +1182,7 @@ void Menu::create_a(float x, float y)
   }
 }
 
-void Menu::create_k(float x, float y)
+void Menu::create_k(int x, int y)
 {
   ALLEGRO_COLOR color = al_color_name("red");
   //Draw the left side
@@ -1199,7 +1199,7 @@ void Menu::create_k(float x, float y)
 
 }
 
-void Menu::create_e(float x, float y)
+void Menu::create_e(int x, int y)
 {
   ALLEGRO_COLOR color = al_color_name("yellow");
   //Draw the left side
@@ -1216,7 +1216,7 @@ void Menu::create_e(float x, float y)
   }
 }
 
-void Menu::create_title(float x, float y)
+void Menu::create_title(int x, int y)
 {
   this->create_t(x, y);
   this->create_r(x+(6*m_title_snake_width), y);

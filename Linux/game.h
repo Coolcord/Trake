@@ -20,7 +20,7 @@ class Pause_Menu;
 class Game
 {
   public:
-    Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, float screen_width, float screen_height, float snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int ai_difficulty, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up);
+    Game(ALLEGRO_EVENT_QUEUE *event, Controls *controls, ALLEGRO_THREAD *music_fade_thread, int screen_width, int screen_height, int snake_width, float font_small_incrementor, float font_medium_incrementor, float font_large_incrementor, ALLEGRO_FONT *font_small, ALLEGRO_FONT *font_medium, ALLEGRO_FONT *font_large, float music_level, float sound_effects_level, int human_players, int ai_players, int ai_difficulty, int gametype, int win_condition, int rounds, ALLEGRO_SAMPLE *move_sound_down, ALLEGRO_SAMPLE *move_sound_up);
     ~Game();
     void run();
     void draw_loading();
@@ -32,16 +32,16 @@ class Game
     std::vector<int> *get_player_rankings();
     void draw_loading(int round);
     void show_current_standing(bool hide_standing, bool game_over);
-    float m_screen_width;
-    float m_screen_height;
-    float m_snake_width;
+    int m_screen_width;
+    int m_screen_height;
+    int m_snake_width;
     float m_font_small_incrementor;
     float m_font_medium_incrementor;
     float m_font_large_incrementor;
-    float m_max_x;
-    float m_max_y;
-    float m_game_height;
-    float m_scoreboard_y;
+    int m_max_x;
+    int m_max_y;
+    int m_game_height;
+    int m_scoreboard_y;
     float m_music_level;
     float m_sound_effects_level;
     int m_num_snakes;
@@ -52,14 +52,14 @@ class Game
     int m_win_condition;
     int m_start_snake_length;
     int m_max_spawn_time;
-    float m_player_1_start_x;
-    float m_player_1_start_y;
-    float m_player_2_start_x;
-    float m_player_2_start_y;
-    float m_player_3_start_x;
-    float m_player_3_start_y;
-    float m_player_4_start_x;
-    float m_player_4_start_y;
+    int m_player_1_start_x;
+    int m_player_1_start_y;
+    int m_player_2_start_x;
+    int m_player_2_start_y;
+    int m_player_3_start_x;
+    int m_player_3_start_y;
+    int m_player_4_start_x;
+    int m_player_4_start_y;
     int m_player_scores[4];
     ALLEGRO_FONT *m_font_small;
     ALLEGRO_FONT *m_font_medium;

@@ -1,7 +1,7 @@
 #include "rectangle.h"
 #include <allegro5/allegro_primitives.h>
 
-Rectangle::Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color)
+Rectangle::Rectangle(int x, int y, int width, int height, bool filled, ALLEGRO_COLOR color)
 {
   m_x = x;
   m_y = y;
@@ -12,7 +12,7 @@ Rectangle::Rectangle(float x, float y, float width, float height, bool filled, A
   m_thickness = 1;
 }
 
-Rectangle::Rectangle(float x, float y, float width, float height, bool filled, ALLEGRO_COLOR color, float thickness)
+Rectangle::Rectangle(int x, int y, int width, int height, bool filled, ALLEGRO_COLOR color, int thickness)
 {
   m_x = x;
   m_y = y;
@@ -35,22 +35,22 @@ void Rectangle::draw()
   }
 }
 
-float Rectangle::get_x()
+int Rectangle::get_x()
 {
   return m_x;
 }
 
-float Rectangle::get_y()
+int Rectangle::get_y()
 {
   return m_y;
 }
 
-float Rectangle::get_width()
+int Rectangle::get_width()
 {
   return m_width;
 }
 
-float Rectangle::get_height()
+int Rectangle::get_height()
 {
   return m_height;
 }
@@ -60,12 +60,12 @@ ALLEGRO_COLOR Rectangle::get_color()
   return m_color;
 }
 
-void Rectangle::set_x(float x)
+void Rectangle::set_x(int x)
 {
   m_x = x;
 }
 
-void Rectangle::set_y(float y)
+void Rectangle::set_y(int y)
 {
   m_y = y;
 }
