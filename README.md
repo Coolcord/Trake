@@ -27,8 +27,8 @@ Competitive Tron and Snake written in C++11 with Allegro 5
  Daft Punk from their Tron albums. All copyrights to those songs belong to them.
  Keep this in mind if you intend to make use of the source code of this project.
 
- Trake is licensed under the MIT License. All files contained in this project,
- excluding the ones in the Music folders, are made by me and are covered by the MIT
+ Trake is licensed under the GPLv3 License. All files contained in this project,
+ excluding the ones in the Music folders, are made by me and are covered by the GPLv3
  License. Anyone is free to make use of Trake's source code for anything they wish,
  but they must give me credit. For more information, read the included LICENSE file.
  
